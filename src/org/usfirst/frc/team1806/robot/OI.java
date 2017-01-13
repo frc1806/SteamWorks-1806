@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1806.robot;
 
+import org.usfirst.frc.team1806.robot.utils.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
 
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
@@ -9,31 +11,66 @@ import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	//// CREATING BUTTONS
-	// One type of button is a joystick button which is any button on a
-	//// joystick.
-	// You create one by telling it which joystick it's on and which button
-	// number it is.
-	// Joystick stick = new Joystick(port);
-	// Button button = new JoystickButton(stick, buttonNumber);
+	//ds is for driver ;)
+	XboxController dc = new XboxController(0);
+	XboxController oc = new XboxController(1);
+	public double dlsY, drsX, dRT, dLT;
+	boolean dB, dY, dRB, dLB, dStart, dPOVUp, dPOVDown, dPOVLeft, dPOVRight;
+	public boolean dBack, dA, dX;
 
-	// There are a few additional built in buttons you can use. Additionally,
-	// by subclassing Button you can create custom triggers and bind those to
-	// commands the same as any other Button.
+	double olsY, orsY, oRT, oLT;
+	boolean oA, oB, oX, oY, oRB, oLB, oStart, oBack, oRsClick;
+	public boolean oPOVUp, oPOVDown;
+	public void updateButtons(){
+		//so this is pretty much where the buttons on the xbox controller get updated in the code
+			// driver buttons
+			dlsY = dc.getLeftJoyY();
+			drsX = dc.getRightJoyX();
+			dRT = dc.getRightTrigger();
+			dLT = dc.getLeftTrigger();
 
-	//// TRIGGERING COMMANDS WITH BUTTONS
-	// Once you have a button, it's trivial to bind it to a button in one of
-	// three ways:
+			dA = dc.getButtonA();
+			dB = dc.getButtonB();
+			dX = dc.getButtonX();
+			dY = dc.getButtonY();
+			dRB = dc.getButtonRB();
+			dLB = dc.getButtonLB();
+			dStart = dc.getButtonStart();
+			dBack = dc.getButtonBack();
+			dPOVUp = dc.getPOVUp();
+			dPOVDown = dc.getPOVDown();
+			dPOVLeft = dc.getPOVLeft();
+			dPOVRight = dc.getPOVRight();
 
-	// Start the command when the button is pressed and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenPressed(new ExampleCommand());
+			// operator buttons
+			olsY = oc.getLeftJoyY();
+			orsY = oc.getRightJoyY();
+			oRT = oc.getRightTrigger();
+			oLT = oc.getLeftTrigger();
 
-	// Run the command while the button is being held down and interrupt it once
-	// the button is released.
-	// button.whileHeld(new ExampleCommand());
+			oA = oc.getButtonA();
+			oB = oc.getButtonB();
+			oX = oc.getButtonX();
+			oY = oc.getButtonY();
+			oRB = oc.getButtonRB();
+			oLB = oc.getButtonLB();
+			oStart = oc.getButtonStart();
+			oBack = oc.getButtonBack();
+			oRsClick = oc.getButtonRS();
+			oPOVUp = oc.getPOVUp();
+			oPOVDown = oc.getPOVDown();
 
-	// Start the command when the button is released and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenReleased(new ExampleCommand());
+		}
+		
+	public void setDriverRumble(){
+		dc.setRumble(RumbleType.kLeftRumble, 1);
+		dc.setRumble(RumbleType.kRightRumble, 1);
+	}
+	public void stopRumble(){
+		dc.setRumble(RumbleType.kLeftRumble, 0);
+		dc.setRumble(RumbleType.kRightRumble, 0);
+		
+		oc.setRumble(RumbleType.kLeftRumble, 0);
+		oc.setRumble(RumbleType.kRightRumble, 0);
+	}
 }

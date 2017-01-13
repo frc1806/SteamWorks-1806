@@ -13,16 +13,19 @@ public class States {
 	public enum ShootSpeed{
 		LOADING, ATSPEED, IDLE, STOPPED
 	}
-	
+	public enum Driving{
+		DRIVING,AIMING
+	}
 	public IntakeStates intakeStatesTracker;
 	public IntakePosition intakePositionTracker;
 	public Gear gearTracker;
 	public ShootSpeed shootSpeedTracker;
-	
+	public Driving drivingTracker;
 	public void resetStates(){
 		intakeStatesTracker = IntakeStates.STOPPED;
 		intakePositionTracker = IntakePosition.UP;
 		gearTracker = Gear.LOW;
+		drivingTracker = Driving.DRIVING;
 		shootSpeedTracker = ShootSpeed.IDLE;
 	}
 }

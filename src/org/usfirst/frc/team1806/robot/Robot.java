@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
-import org.usfirst.frc.team1806.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team1806.robot.commands.Drivetrain.Drive;
+import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,10 +20,10 @@ import org.usfirst.frc.team1806.robot.subsystems.ExampleSubsystem;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+	public static DrivetrainSubsystem driveSS;
+	public static final DrivetrainSubsystem exampleSubsystem = new DrivetrainSubsystem();
 	public static OI oi;
-
+	States states;
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -32,6 +33,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		states.resetStates();
 		oi = new OI();
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -104,6 +106,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		new Drive().start(); //make the dude drive a wee bit
 	}
 
 	/**
