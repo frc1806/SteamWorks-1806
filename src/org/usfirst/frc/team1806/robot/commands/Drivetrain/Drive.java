@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1806.robot.commands.Drivetrain;
 
-import org.opencv.core.Mat;
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.States;
 import org.usfirst.frc.team1806.robot.States.Driving;

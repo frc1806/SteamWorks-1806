@@ -21,6 +21,12 @@ public class OI {
 	double olsY, orsY, oRT, oLT;
 	boolean oA, oB, oX, oY, oRB, oLB, oStart, oBack, oRsClick;
 	public boolean oPOVUp, oPOVDown;
+	public void updateStates(){
+		// This is where the states get updated to run the commands u know
+	}
+	public void updateCommands(){
+		//This will be where the commands actually execute from the states
+	}
 	public void updateButtons(){
 		//so this is pretty much where the buttons on the xbox controller get updated in the code
 			// driver buttons
@@ -61,8 +67,12 @@ public class OI {
 			oPOVDown = oc.getPOVDown();
 
 		}
-		
 	public void setDriverRumble(){
+		dc.setRumble(RumbleType.kLeftRumble, 1);
+		dc.setRumble(RumbleType.kRightRumble, 1);
+		//egg head vibrator
+	}
+	public void setOperatorRumble(){
 		dc.setRumble(RumbleType.kLeftRumble, 1);
 		dc.setRumble(RumbleType.kRightRumble, 1);
 	}

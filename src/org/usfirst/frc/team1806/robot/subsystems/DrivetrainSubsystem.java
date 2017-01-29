@@ -25,10 +25,10 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightMotor1 = new Talon(RobotMap.rightMotor);
 		rightMotor1 = new Talon(RobotMap.rightMotor);
 		rightMotor1 = new Talon(RobotMap.rightMotor);
-		flyWheel = new Talon(RobotMap.flyWheel);
 		shifter = new DoubleSolenoid(RobotMap.shiftHigh, RobotMap.shiftLow);
 	}
 	public void execute(double power, double turn){
+		states.drivingTracker = States.Driving.DRIVING;
 		arcadeDrive(power, turn);
 	}
 	public void leftDrive(double speed){
