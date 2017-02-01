@@ -8,14 +8,14 @@ package org.usfirst.frc.team1806.robot;
  */
 public class RobotMap {
 	// Left Motors from Top to Bottom
-	 public static int leftMotor = 0;
-	 public static int leftMotor1 = 1;
-	 public static int leftMotor2 = 2;
+	 public static int leftMotor1 = 0;
+	 public static int leftMotor2 = 1;
+	 public static int leftMotor3 = 2;
 	 
 	 //Right Motors from Top to Bottom
-	 public static int rightMotor = 3;
-	 public static int rightMotor1 = 4;
-	 public static int rightMotor2 = 5;
+	 public static int rightMotor1 = 3;
+	 public static int rightMotor2 = 4;
+	 public static int rightMotor3 = 5;
 	 
 	 //Shooter boi
 	 public static int flyWheel = 8;

@@ -5,12 +5,14 @@ import java.awt.Robot;
 import org.usfirst.frc.team1806.robot.RobotMap;
 import org.usfirst.frc.team1806.robot.States;
 import org.usfirst.frc.team1806.robot.States.Gear;
+import org.usfirst.frc.team1806.robot.commands.Drivetrain.Drive;
 
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -22,9 +24,13 @@ public class DrivetrainSubsystem extends Subsystem {
 	States states;
 	DoubleSolenoid shifter;
 	public DrivetrainSubsystem(){
-		rightMotor1 = new Talon(RobotMap.rightMotor);
-		rightMotor1 = new Talon(RobotMap.rightMotor);
-		rightMotor1 = new Talon(RobotMap.rightMotor);
+		rightMotor1 = new Talon(RobotMap.rightMotor1);
+		rightMotor2 = new Talon(RobotMap.rightMotor2);
+		rightMotor3 = new Talon(RobotMap.rightMotor3);
+		
+		leftMotor1 = new Talon(RobotMap.leftMotor1);
+		leftMotor2 = new Talon(RobotMap.leftMotor2);
+		leftMotor3 = new Talon(RobotMap.leftMotor3);
 		shifter = new DoubleSolenoid(RobotMap.shiftHigh, RobotMap.shiftLow);
 	}
 	public void execute(double power, double turn){
@@ -105,6 +111,6 @@ public class DrivetrainSubsystem extends Subsystem {
 	    }
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
+		setDefaultCommand(new Drive());
 	}
 }
