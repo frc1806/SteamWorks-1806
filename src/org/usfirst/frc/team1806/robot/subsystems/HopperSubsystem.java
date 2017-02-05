@@ -15,7 +15,7 @@ public class HopperSubsystem extends Subsystem {
 	}
 	public void setHopperSpeed(){
 		hopperMotor.changeControlMode(TalonControlMode.PercentVbus);
-		hopperMotor.set(.5);
+		hopperMotor.set(.8);
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
