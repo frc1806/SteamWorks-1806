@@ -11,7 +11,8 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.Talon;
-public class FlywheelSubsystem {
+import edu.wpi.first.wpilibj.command.Subsystem;
+public class FlywheelSubsystem extends Subsystem {
 	CANTalon flyWheel;
 	States states;
 	Constants constants;
@@ -19,6 +20,15 @@ public class FlywheelSubsystem {
 		flyWheel = new CANTalon(RobotMap.flyWheel);
 		constants = new Constants();
 		flyWheel.setPID(constants.flyWheelP, constants.flyWheelI, constants.flyWheelD);
+	}
+	public void setP(double p){
+		flyWheel.setP(p);
+	}
+	public void setI(double i){
+		flyWheel.setI(i);
+	}
+	public void setD(double d){
+		flyWheel.setD(d);
 	}
 	public void setIdleSpeed(){
 		// probably not used RIP sorru desu desu 
@@ -65,5 +75,10 @@ public class FlywheelSubsystem {
 	public void setShooterRPM(double power){
 		setRPMMode();
 		flyWheel.set(power);
+	}
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 }

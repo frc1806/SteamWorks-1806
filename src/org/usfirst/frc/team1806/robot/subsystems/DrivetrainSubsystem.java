@@ -109,6 +109,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	    public double getTilt(){
 	    	return Math.sqrt(Math.pow(navx.getPitch(), 2) + Math.pow(navx.getRoll(), 2));
 	    }
+	    
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		setDefaultCommand(new Drive());

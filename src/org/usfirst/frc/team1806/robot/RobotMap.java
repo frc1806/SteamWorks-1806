@@ -23,5 +23,7 @@ public class RobotMap {
 	 //for that little shifter ;)
 	 public static int shiftLow = 6;
 	 public static int shiftHigh = 7;
+	 
+	 public static int intake = 9;
 
 }
