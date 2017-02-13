@@ -4,7 +4,16 @@ import org.usfirst.frc.team1806.robot.utils.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
 
+import org.usfirst.frc.team1806.robot.States.Climber;
+import org.usfirst.frc.team1806.robot.States.Conveyor;
+import org.usfirst.frc.team1806.robot.States.ShootSpeed;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
+import org.usfirst.frc.team1806.robot.commands.climber.RunClimberAtSpeed;
+import org.usfirst.frc.team1806.robot.commands.conveyor.MoveConveyor;
+import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
+import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
+import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
+import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -14,6 +23,7 @@ public class OI {
 	//ds is for driver ;)
 	XboxController dc = new XboxController(0);
 	XboxController oc = new XboxController(1);
+	States states = new States();
 	public double dlsY, drsX, dRT, dLT;
 	boolean dB, dY, dRB, dLB, dStart, dPOVUp, dPOVDown, dPOVLeft, dPOVRight;
 	public boolean dBack, dA, dX;
@@ -23,9 +33,39 @@ public class OI {
 	public boolean oPOVUp, oPOVDown;
 	public void updateStates(){
 		// This is where the states get updated to run the commands u know
+		if(dY){
+			states.shootSpeedTracker = ShootSpeed.ATSPEED;
+		} else {
+			states.shootSpeedTracker = ShootSpeed.STOPPED;
+		}
+		
+		if(dRB){
+			states.conveyorTracker = Conveyor.RUNNING;
+		} else {
+			states.conveyorTracker = Conveyor.STOPPED;
+		}
+		
+		if(dLT > .15){
+			// TODO check this .15 value and make sure that's actually right
+			states.climberTracker = Climber.RUNNINGATSPEED;
+		}
+		
 	}
 	public void updateCommands(){
 		//This will be where the commands actually execute from the states
+		if(states.shootSpeedTracker == ShootSpeed.ATSPEED){
+			new StartFlywheel().start();
+		} else if(states.shootSpeedTracker == ShootSpeed.STOPPED){
+			new StopFlywheel().start();
+		}
+		if(states.conveyorTracker == Conveyor.RUNNING && states.shootSpeedTracker == ShootSpeed.ATSPEED){
+			new StartConveyor().start();
+		} else if(states.conveyorTracker == Conveyor.STOPPED){
+			new StopConveyor().start();
+		}
+		if(states.climberTracker == Climber.RUNNINGATSPEED){
+			new RunClimberAtSpeed(dLT);
+		}
 	}
 	public void updateButtons(){
 		//so this is pretty much where the buttons on the xbox controller get updated in the code

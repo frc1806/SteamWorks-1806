@@ -4,8 +4,8 @@ public class States {
 	public enum IntakeStates{
 		INTAKE,STOPPED,OUTTAKE
 	}
-	public enum IntakePosition{
-		UP, DOWN
+	public enum Conveyor{
+		RUNNING,STOPPED
 	}
 	public enum Gear{
 		HIGH, LOW
@@ -16,15 +16,20 @@ public class States {
 	public enum Driving{
 		DRIVING,AIMING
 	}
+	public enum Climber{
+		RUNNINGATSPEED, STOPPED
+	}
 	public IntakeStates intakeStatesTracker;
-	public IntakePosition intakePositionTracker;
+	public Conveyor conveyorTracker;
 	public Gear gearTracker;
 	public ShootSpeed shootSpeedTracker;
 	public Driving drivingTracker;
+	public Climber climberTracker;
 	
 	public void resetStates(){
+		climberTracker = Climber.RUNNINGATSPEED;
 		intakeStatesTracker = IntakeStates.STOPPED;
-		intakePositionTracker = IntakePosition.UP;
+		conveyorTracker = Conveyor.STOPPED;
 		gearTracker = Gear.LOW;
 		drivingTracker = Driving.DRIVING;
 		shootSpeedTracker = ShootSpeed.IDLE;

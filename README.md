@@ -8,10 +8,12 @@ Todo:
     - Turn PID
  - FlyWheel
     - Tune up the PIDF on the 775 FlyWheel
-    - Code for the lift
+    - Code for the Conveyor
     - Study up on stall protection / brownout protection so egg doesn't kill it
  - OI
     - Get wanted controls from drivers so we can put it in the OI
  - Vision
     - Fix bug where crashes when it doesn't see goal
-    - Get it runnning on the pi
+    - Get it runnning on the pi / jetson
+ - Climber
+    - Add ending statement on runpower on climber

@@ -11,8 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
-import org.usfirst.frc.team1806.robot.commands.Drivetrain.Drive;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
+import org.usfirst.frc.team1806.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSubsystem;
+import org.usfirst.frc.team1806.robot.subsystems.FlywheelSubsystem;
+import org.usfirst.frc.team1806.robot.subsystems.HopperSubsystem;
+import org.usfirst.frc.team1806.robot.subsystems.IntakeSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,7 +27,10 @@ import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSubsystem;
  */
 public class Robot extends IterativeRobot {
 	public static DrivetrainSubsystem driveSS;
-	public static final DrivetrainSubsystem exampleSubsystem = new DrivetrainSubsystem();
+	public static FlywheelSubsystem flywheelSS;
+	public static HopperSubsystem hopperSS;
+	public static IntakeSubsystem intakeSS;
+	public static ClimberSubsystem climberSS;
 	public static OI oi;
 	States states;
 	//MjpegServer cameraServer = new MjpegServer("camera", 5000);
@@ -36,6 +43,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		climberSS = new ClimberSubsystem();
+		driveSS = new DrivetrainSubsystem();
+		flywheelSS = new FlywheelSubsystem();
+		hopperSS = new HopperSubsystem();
+		intakeSS = new IntakeSubsystem();
 		states.resetStates();
 		oi = new OI();
 		chooser.addDefault("Default Auto", new ExampleCommand());
@@ -111,7 +123,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
 		oi.updateButtons();
+		oi.updateStates();
+		oi.updateCommands();
+		
 		new Drive().start(); //make the dude drive a wee bit
 	}
 

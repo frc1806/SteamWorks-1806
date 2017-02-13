@@ -5,7 +5,7 @@ import java.awt.Robot;
 import org.usfirst.frc.team1806.robot.RobotMap;
 import org.usfirst.frc.team1806.robot.States;
 import org.usfirst.frc.team1806.robot.States.Gear;
-import org.usfirst.frc.team1806.robot.commands.Drivetrain.Drive;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -60,7 +60,7 @@ public class DrivetrainSubsystem extends Subsystem {
 		shifter.set(Value.kReverse);
 	}
 	public boolean isHigh(){
-		//nigga u lit
+		//home boi u lit
 		return states.gearTracker == Gear.HIGH;
 	}
 	public boolean isLow(){

@@ -38,7 +38,7 @@ public class FlywheelSubsystem extends Subsystem {
 	}
 	public void setToShootingSpeed(){
 		setRPMMode();
-		setShooterRPM(1980);
+		setShooterRPM(constants.camCoder);
 	}
 	public boolean isAtShootingSpeed(){
 		if(getRPM() > constants.minShooterRange && getRPM() < constants.maxShooterRange){

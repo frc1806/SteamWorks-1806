@@ -1,25 +1,19 @@
-package org.usfirst.frc.team1806.robot.commands.drivetrain;
-
-import org.usfirst.frc.team1806.robot.Robot;
-import org.usfirst.frc.team1806.robot.States;
-import org.usfirst.frc.team1806.robot.States.Gear;
+package org.usfirst.frc.team1806.robot.commands.flywheel;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class shiftHigh extends Command {
+public class StopFlywheel extends Command {
 
-    public shiftHigh() {
+    public StopFlywheel() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.driveSS);
-        Robot.driveSS.shiftHigh();
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run
