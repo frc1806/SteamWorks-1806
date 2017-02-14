@@ -11,7 +11,7 @@ public class States {
 		HIGH, LOW
 	}
 	public enum ShootSpeed{
-		ATSPEED, IDLE, STOPPED
+		RUNNING, IDLE, STOPPED
 	}
 	public enum Driving{
 		DRIVING,AIMING

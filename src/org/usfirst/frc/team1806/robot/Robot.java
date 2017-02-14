@@ -49,6 +49,7 @@ public class Robot extends IterativeRobot {
 		hopperSS = new HopperSubsystem();
 		intakeSS = new IntakeSubsystem();
 		states.resetStates();
+		
 		oi = new OI();
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());

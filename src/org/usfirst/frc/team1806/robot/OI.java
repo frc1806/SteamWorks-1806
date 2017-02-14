@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1806.robot;
 
+import org.usfirst.frc.team1806.robot.utils.Latch;
 import org.usfirst.frc.team1806.robot.utils.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -9,18 +10,20 @@ import org.usfirst.frc.team1806.robot.States.Conveyor;
 import org.usfirst.frc.team1806.robot.States.ShootSpeed;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.climber.RunClimberAtSpeed;
-import org.usfirst.frc.team1806.robot.commands.conveyor.MoveConveyor;
+import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
+import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
+import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	//ds is for driver ;)
+	// controller init
 	XboxController dc = new XboxController(0);
 	XboxController oc = new XboxController(1);
 	States states = new States();
@@ -31,10 +34,13 @@ public class OI {
 	double olsY, orsY, oRT, oLT;
 	boolean oA, oB, oX, oY, oRB, oLB, oStart, oBack, oRsClick;
 	public boolean oPOVUp, oPOVDown;
+	
+	Latch shooterLatch;
+	
 	public void updateStates(){
 		// This is where the states get updated to run the commands u know
-		if(dY){
-			states.shootSpeedTracker = ShootSpeed.ATSPEED;
+		if(shooterLatch.update(dY)){
+			states.shootSpeedTracker = ShootSpeed.RUNNING;
 		} else {
 			states.shootSpeedTracker = ShootSpeed.STOPPED;
 		}
@@ -53,18 +59,26 @@ public class OI {
 	}
 	public void updateCommands(){
 		//This will be where the commands actually execute from the states
-		if(states.shootSpeedTracker == ShootSpeed.ATSPEED){
+		if(states.shootSpeedTracker == ShootSpeed.RUNNING){
 			new StartFlywheel().start();
 		} else if(states.shootSpeedTracker == ShootSpeed.STOPPED){
 			new StopFlywheel().start();
 		}
-		if(states.conveyorTracker == Conveyor.RUNNING && states.shootSpeedTracker == ShootSpeed.ATSPEED){
+		
+		if(states.conveyorTracker == Conveyor.RUNNING && states.shootSpeedTracker == ShootSpeed.RUNNING){
 			new StartConveyor().start();
 		} else if(states.conveyorTracker == Conveyor.STOPPED){
 			new StopConveyor().start();
 		}
+		
 		if(states.climberTracker == Climber.RUNNINGATSPEED){
-			new RunClimberAtSpeed(dLT);
+			new RunClimberAtSpeed(dLT).start();
+		}
+		
+		if(states.conveyorTracker == Conveyor.RUNNING){
+			new StopIntake();
+		} else {
+			new StartIntake();
 		}
 	}
 	public void updateButtons(){
