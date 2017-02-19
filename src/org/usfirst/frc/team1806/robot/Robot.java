@@ -2,19 +2,27 @@
 package org.usfirst.frc.team1806.robot;
 
 import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team1806.robot.States.GearHolder;
+import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.turnToAngle;
 import org.usfirst.frc.team1806.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.FlywheelSubsystem;
+import org.usfirst.frc.team1806.robot.subsystems.GearHolderSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.HopperSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.IntakeSubsystem;
 
@@ -26,15 +34,17 @@ import org.usfirst.frc.team1806.robot.subsystems.IntakeSubsystem;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	public static SmartDashboardUpdater ss;
 	public static DrivetrainSubsystem driveSS;
 	public static FlywheelSubsystem flywheelSS;
 	public static HopperSubsystem hopperSS;
 	public static IntakeSubsystem intakeSS;
 	public static ClimberSubsystem climberSS;
+	public static GearHolderSubsystem gearSS;
 	public static OI oi;
-	States states;
+	public static States states;
 	//MjpegServer cameraServer = new MjpegServer("camera", 5000);
-	Command autonomousCommand;
+	CommandGroup autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
 	/**
@@ -43,20 +53,28 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		states = new States();
 		climberSS = new ClimberSubsystem();
 		driveSS = new DrivetrainSubsystem();
 		flywheelSS = new FlywheelSubsystem();
 		hopperSS = new HopperSubsystem();
 		intakeSS = new IntakeSubsystem();
+		gearSS = new GearHolderSubsystem();
 		states.resetStates();
-		
+		ss = new SmartDashboardUpdater();
 		oi = new OI();
+		Robot.states.gearTracker = GearHolder.OUT;
+
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		ss.updateValues();
+		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(640, 480);
+		camera.setFPS(60);        
+	}	
 	
-        CameraServer.getInstance().startAutomaticCapture();
-	}
+		
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -65,7 +83,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		ss.updateValues();
 	}
 
 	@Override
@@ -86,15 +104,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
-
+		autonomousCommand.start();
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-
+		
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
@@ -110,6 +127,9 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
+		Robot.gearSS.extend();
+		Robot.oi.smartDashboardUpdater.updateValues();
+		//Robot.driveSS.shifter.set(Value.kForward);
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -125,9 +145,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		oi.updateButtons();
-		oi.updateStates();
-		oi.updateCommands();
+		oi.update();
 		
 		new Drive().start(); //make the dude drive a wee bit
 	}

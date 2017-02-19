@@ -7,31 +7,40 @@ public class States {
 	public enum Conveyor{
 		RUNNING,STOPPED
 	}
-	public enum Gear{
+	public enum Shifter{
 		HIGH, LOW
 	}
 	public enum ShootSpeed{
 		RUNNING, IDLE, STOPPED
 	}
 	public enum Driving{
-		DRIVING,AIMING
+		DRIVING,AIMING,CREEP
 	}
 	public enum Climber{
 		RUNNINGATSPEED, STOPPED
 	}
+	public enum Hopper{
+		RUNNING,STOPPED
+	}
+	public enum GearHolder{
+		IN, OUT
+	}
 	public IntakeStates intakeStatesTracker;
 	public Conveyor conveyorTracker;
-	public Gear gearTracker;
+	public Shifter shifterTracker;
 	public ShootSpeed shootSpeedTracker;
 	public Driving drivingTracker;
 	public Climber climberTracker;
-	
+	public Hopper hopperTracker;
+	public GearHolder gearTracker;
 	public void resetStates(){
-		climberTracker = Climber.RUNNINGATSPEED;
+		hopperTracker = Hopper.STOPPED;
+		climberTracker = Climber.STOPPED;
 		intakeStatesTracker = IntakeStates.STOPPED;
 		conveyorTracker = Conveyor.STOPPED;
-		gearTracker = Gear.LOW;
+		shifterTracker = Shifter.LOW;
 		drivingTracker = Driving.DRIVING;
-		shootSpeedTracker = ShootSpeed.IDLE;
+		shootSpeedTracker = ShootSpeed.STOPPED;
+		gearTracker = GearHolder.OUT;
 	}
 }

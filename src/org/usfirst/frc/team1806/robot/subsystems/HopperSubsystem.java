@@ -1,30 +1,45 @@
 package org.usfirst.frc.team1806.robot.subsystems;
 
+import org.usfirst.frc.team1806.robot.Constants;
+import org.usfirst.frc.team1806.robot.RobotMap;
+import org.usfirst.frc.team1806.robot.commands.sequences.BallStuck;
+
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *
  */
 public class HopperSubsystem extends Subsystem {
-	CANTalon hopperMotor;
-	double desiredOutputCurrent = 5;
+	public CANTalon hopperMotor;
+	double desiredOutputCurrent = 2.3;
+	Timer timer = new Timer();
 	public HopperSubsystem() {
-		hopperMotor = new CANTalon(0);
+		hopperMotor = new CANTalon(RobotMap.hopperMotor);
+	}
+	
+	public void setForwardPower(){
+		hopperMotor.changeControlMode(TalonControlMode.PercentVbus);
+		hopperMotor.set(-Constants.hopperSpeed);
+	}
+	
+	public void setReverseMotor(){
+		System.out.println("REVERSING MOTOR");
+		hopperMotor.changeControlMode(TalonControlMode.PercentVbus);
+		hopperMotor.set(.2);
 	}
 	public void setHopperSpeed(){
-		hopperMotor.changeControlMode(TalonControlMode.PercentVbus);
-		if(returnCurrentDraw() < desiredOutputCurrent){
-			hopperMotor.set(.2);
-		} else{
-			hopperMotor.set(0);
+		if(returnCurrentDraw() > desiredOutputCurrent){
+		
+		} else {
+			setForwardPower();
 		}
 	}
 	public double returnCurrentDraw(){
-		double n = hopperMotor.getOutputCurrent();
-		return n;
+		return hopperMotor.getOutputCurrent();
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

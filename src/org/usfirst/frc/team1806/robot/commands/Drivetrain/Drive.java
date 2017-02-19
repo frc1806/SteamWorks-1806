@@ -11,25 +11,27 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class Drive extends Command {
     States states;
-    double deadZone = .1;
+    double deadZone = .2;
     public Drive() {
+    	states = new States();
         // Use requires() here to declare subsystem dependencies
         requires(Robot.driveSS);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	states.drivingTracker = Driving.DRIVING;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(states.drivingTracker == Driving.DRIVING){
     		if(Math.abs(Robot.oi.dlsY) > deadZone && Math.abs(Robot.oi.drsX) > deadZone){
-    			Robot.driveSS.execute(Robot.oi.dlsY, Robot.oi.drsX);
+    			Robot.driveSS.execute(Robot.oi.dlsY, -Robot.oi.drsX);
     		}else if(Math.abs(Robot.oi.dlsY) > deadZone){
     			Robot.driveSS.execute(Robot.oi.dlsY, 0);
     		} else if(Math.abs(Robot.oi.drsX) > deadZone){
-    			Robot.driveSS.execute(0, Robot.oi.drsX);
+    			Robot.driveSS.execute(0, -Robot.oi.drsX);
     		} else {
     			Robot.driveSS.execute(0, 0);
     		}

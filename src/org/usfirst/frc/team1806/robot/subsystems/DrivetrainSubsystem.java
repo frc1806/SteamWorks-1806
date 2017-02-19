@@ -4,7 +4,9 @@ import java.awt.Robot;
 
 import org.usfirst.frc.team1806.robot.RobotMap;
 import org.usfirst.frc.team1806.robot.States;
-import org.usfirst.frc.team1806.robot.States.Gear;
+import org.usfirst.frc.team1806.robot.States.Driving;
+import org.usfirst.frc.team1806.robot.States.Shifter;
+import org.usfirst.frc.team1806.robot.States.Shifter;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -19,53 +21,50 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class DrivetrainSubsystem extends Subsystem {
-	Talon rightMotor1, rightMotor2, rightMotor3, leftMotor1, leftMotor2, leftMotor3, flyWheel;
-	AHRS navx;
+	public Talon rightMotor1;
+	public Talon leftMotor1;
+	Talon leftMotor2;
+	public AHRS navx;
 	States states;
-	DoubleSolenoid shifter;
+	public DoubleSolenoid shifter;
+	public boolean creep = false;
 	public DrivetrainSubsystem(){
-		rightMotor1 = new Talon(RobotMap.rightMotor1);
-		rightMotor2 = new Talon(RobotMap.rightMotor2);
-		rightMotor3 = new Talon(RobotMap.rightMotor3);
-		
-		leftMotor1 = new Talon(RobotMap.leftMotor1);
-		leftMotor2 = new Talon(RobotMap.leftMotor2);
-		leftMotor3 = new Talon(RobotMap.leftMotor3);
+		rightMotor1 = new Talon(RobotMap.rightMotor);
+		leftMotor1 = new Talon(RobotMap.leftMotor);
+		leftMotor1.setInverted(true);
 		shifter = new DoubleSolenoid(RobotMap.shiftHigh, RobotMap.shiftLow);
 	}
 	public void execute(double power, double turn){
-		states.drivingTracker = States.Driving.DRIVING;
 		arcadeDrive(power, turn);
+		if(creep){
+			arcadeDrive(power / 2, turn / 2);
+		}
 	}
 	public void leftDrive(double speed){
 		leftMotor1.set(speed);
-		leftMotor2.set(speed);
-		leftMotor3.set(speed);
 	}
 	public void rightDrive(double speed){
 		rightMotor1.set(speed);
-		rightMotor2.set(speed);
-		rightMotor3.set(speed);
 	}
 	public void arcadeDrive(double power, double turn){
 		leftDrive(power - turn);
 		rightDrive(power + turn);
 	}
 	public void shiftHigh(){
-		states.gearTracker = Gear.LOW;
+		System.out.println("shifted high");
 		shifter.set(Value.kForward);
 	}
 	public void shiftLow() {
-		states.gearTracker = Gear.LOW;
+		System.out.println("shifted low");
 		shifter.set(Value.kReverse);
 	}
 	public boolean isHigh(){
 		//home boi u lit
-		return states.gearTracker == Gear.HIGH;
+		return states.shifterTracker == Shifter.HIGH;
 	}
 	public boolean isLow(){
 		//sad pepe
-		return states.gearTracker == Gear.LOW;
+		return states.shifterTracker == Shifter.LOW;
 	}
 	//------------NAVX --------------------
 	   public void resetYaw(){

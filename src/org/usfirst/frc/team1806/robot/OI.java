@@ -2,19 +2,34 @@ package org.usfirst.frc.team1806.robot;
 
 import org.usfirst.frc.team1806.robot.utils.Latch;
 import org.usfirst.frc.team1806.robot.utils.XboxController;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
 
+import java.nio.file.StandardOpenOption;
+
 import org.usfirst.frc.team1806.robot.States.Climber;
 import org.usfirst.frc.team1806.robot.States.Conveyor;
+import org.usfirst.frc.team1806.robot.States.Shifter;
+import org.usfirst.frc.team1806.robot.States.GearHolder;
+import org.usfirst.frc.team1806.robot.States.Hopper;
+import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.States.ShootSpeed;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.climber.RunClimberAtSpeed;
+import org.usfirst.frc.team1806.robot.commands.climber.StopClimber;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.ShiftLow;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
+import org.usfirst.frc.team1806.robot.commands.gear.ExtendGear;
+import org.usfirst.frc.team1806.robot.commands.gear.RectractGear;
+import org.usfirst.frc.team1806.robot.commands.hopper.RunHopper;
+import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
 import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
 import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
 
@@ -23,62 +38,124 @@ import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+	SmartDashboardUpdater smartDashboardUpdater = new SmartDashboardUpdater();
 	// controller init
+	Constants constants = new Constants();
 	XboxController dc = new XboxController(0);
 	XboxController oc = new XboxController(1);
 	States states = new States();
 	public double dlsY, drsX, dRT, dLT;
-	boolean dB, dY, dRB, dLB, dStart, dPOVUp, dPOVDown, dPOVLeft, dPOVRight;
+	boolean dB, dY, dRB, dLB, dStart, dPOVUp, dPOVDown, dPOVLeft, dPOVRight, dLClick;
 	public boolean dBack, dA, dX;
 
 	double olsY, orsY, oRT, oLT;
 	boolean oA, oB, oX, oY, oRB, oLB, oStart, oBack, oRsClick;
 	public boolean oPOVUp, oPOVDown;
+	double maxCurrent = 0;
 	
-	Latch shooterLatch;
-	
+	Latch intakeLatch = new Latch();
+	Latch shooterLatch = new Latch();			// This is making the latchs to update the states
+	Latch conveyorLatch = new Latch();
+	Latch gearHolderLatch = new Latch();
+	Latch shifterLatch = new Latch();
+	public void update(){
+		updateButtons();
+		updateStates();
+		updateCommands();
+		smartDashboardUpdater.updateValues();
+	}
 	public void updateStates(){
-		// This is where the states get updated to run the commands u know
+		if(shifterLatch.update(dStart)){
+			states.shifterTracker = Shifter.HIGH;
+		} else {
+			states.shifterTracker = Shifter.LOW;
+		}
+		if(gearHolderLatch.update(dBack)){
+			states.gearTracker = GearHolder.OUT;
+		} else {
+			states.gearTracker = GearHolder.IN;
+		}
+		if(intakeLatch.update(dX)){
+			states.intakeStatesTracker = IntakeStates.INTAKE;
+		} else {
+			states.intakeStatesTracker = IntakeStates.STOPPED;
+		}
 		if(shooterLatch.update(dY)){
+			//System.out.println(states.shootSpeedTracker.toString());
 			states.shootSpeedTracker = ShootSpeed.RUNNING;
 		} else {
 			states.shootSpeedTracker = ShootSpeed.STOPPED;
+			//System.out.println(states.shootSpeedTracker.toString());
 		}
 		
 		if(dRB){
 			states.conveyorTracker = Conveyor.RUNNING;
+			states.hopperTracker = Hopper.RUNNING;
 		} else {
+			states.hopperTracker = Hopper.STOPPED;
 			states.conveyorTracker = Conveyor.STOPPED;
 		}
-		
+		System.out.println(Robot.driveSS.leftMotor1.get());
+		if(dLClick){
+			Robot.driveSS.creep = true;
+		} else {
+			Robot.driveSS.creep = false;
+		}
 		if(dLT > .15){
 			// TODO check this .15 value and make sure that's actually right
 			states.climberTracker = Climber.RUNNINGATSPEED;
 		}
+		if(dB){
+			constants.camCoder += 25;
+		}
+		if(dA){
+			constants.camCoder += -25;
+		}
 		
 	}
 	public void updateCommands(){
+		System.out.println(constants.camCoder);
 		//This will be where the commands actually execute from the states
 		if(states.shootSpeedTracker == ShootSpeed.RUNNING){
-			new StartFlywheel().start();
-		} else if(states.shootSpeedTracker == ShootSpeed.STOPPED){
-			new StopFlywheel().start();
+			Robot.flywheelSS.setToShootingSpeed();
+		} else {
+			Robot.flywheelSS.stopFlyWheel();
 		}
-		
-		if(states.conveyorTracker == Conveyor.RUNNING && states.shootSpeedTracker == ShootSpeed.RUNNING){
+		if(states.gearTracker == GearHolder.IN){
+			new RectractGear().start();
+		} else if(states.gearTracker == GearHolder.OUT){
+			new ExtendGear().start();
+		}
+		if(states.conveyorTracker == Conveyor.RUNNING && states.hopperTracker == Hopper.RUNNING){
 			new StartConveyor().start();
-		} else if(states.conveyorTracker == Conveyor.STOPPED){
+			new RunHopper().start();
+		} else if(states.conveyorTracker == Conveyor.STOPPED && states.hopperTracker == Hopper.STOPPED ){
 			new StopConveyor().start();
+			new StopHopper().start();
 		}
 		
 		if(states.climberTracker == Climber.RUNNINGATSPEED){
 			new RunClimberAtSpeed(dLT).start();
-		}
-		
-		if(states.conveyorTracker == Conveyor.RUNNING){
-			new StopIntake();
 		} else {
-			new StartIntake();
+			new StopClimber().start();
+		}
+		if(states.shifterTracker == Shifter.HIGH){
+			Robot.states.shifterTracker = Shifter.HIGH;
+			Robot.driveSS.shifter.set(Value.kForward);
+		} else if(states.shifterTracker == Shifter.LOW) {
+			Robot.states.shifterTracker = Shifter.LOW;
+			Robot.driveSS.shifter.set(Value.kReverse);
+		}
+		if(states.intakeStatesTracker == IntakeStates.INTAKE && states.gearTracker == GearHolder.OUT){
+			Robot.intakeSS.intakeMotor.set(.8);
+			Robot.states.intakeStatesTracker = IntakeStates.INTAKE;
+			System.out.println(Robot.intakeSS.intakeMotor.get());
+		} else{
+			Robot.intakeSS.intakeMotor.set(0);
+			Robot.states.intakeStatesTracker = IntakeStates.STOPPED;
+		}
+		if(maxCurrent < Robot.hopperSS.returnCurrentDraw()){
+			maxCurrent = Robot.hopperSS.returnCurrentDraw();
 		}
 	}
 	public void updateButtons(){
@@ -101,7 +178,7 @@ public class OI {
 			dPOVDown = dc.getPOVDown();
 			dPOVLeft = dc.getPOVLeft();
 			dPOVRight = dc.getPOVRight();
-
+			dLClick = dc.getButtonLS();
 			// operator buttons
 			olsY = oc.getLeftJoyY();
 			orsY = oc.getRightJoyY();

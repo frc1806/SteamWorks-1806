@@ -12,12 +12,19 @@ public class Constants {
 	// This is for the shooter RPM range, adjust this if needed
 	public final double minShooterRange = 1880;
 	// cam u are in the code 
-	public final static double camCoder = 1980;
-	public final double maxShooterRange = 2080;
+	public static double camCoder = 2200;
+	public double maxShooterRange = 2080;
 	
 	// This is the coast range, measure this after every change min - coast, not sure if used
 	public final double coastRange = 345;
 	
 	//-------------------------- INTAKE ---------------------------------
-	public final double intakeSpeed = .7;
+	public final double intakeSpeed = .6;
+	//-------------------------- CONVEYOR ---------------------------------
+	public final static double conveyorSpeed = .60;
+	
+	//-------------------------- hopper ---------------------------------
+	public final static double hopperSpeed = .65;
+
+	
 }

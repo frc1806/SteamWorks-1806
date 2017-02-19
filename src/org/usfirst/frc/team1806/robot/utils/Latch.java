@@ -2,10 +2,19 @@ package org.usfirst.frc.team1806.robot.utils;
 
 public class Latch {
     private boolean lastVal;
-
+    boolean toggle = false;
+    boolean theThingToRun = false;
     public boolean update(boolean newVal) {
-        boolean result = newVal && !lastVal;
-        lastVal = newVal;
-        return result;
+		if (toggle && newVal) {  // Only execute once per Button push
+			  toggle = false;  // Prevents this section of code from being called again until the Button is released and re-pressed
+			  if (theThingToRun) {  // Decide which way to set the motor this time through (or use this as a motor value instead)
+				  theThingToRun= false;
+			  } else {
+			    theThingToRun = true;
+			  }
+			} else if(!newVal) { 
+			    toggle = true; // Button has been released, so this allows a re-press to activate the code above.
+			}
+		return theThingToRun;
     }
 }

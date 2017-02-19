@@ -8,20 +8,20 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class RunClimberAtSpeed extends Command {
-	double power;
+	double lol;
     public RunClimberAtSpeed(double power) {
-    	power = power;
+    	lol = power;
         // Use requires() here to declare subsystem dependencies
         requires(Robot.climberSS);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.climberSS.climbAtSpeed(power);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.climberSS.climbAtSpeed(lol);
     }
 
     // Make this return true when this Command no longer needs to run execute()

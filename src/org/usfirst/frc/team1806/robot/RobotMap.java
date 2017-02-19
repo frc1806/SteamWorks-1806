@@ -8,22 +8,30 @@ package org.usfirst.frc.team1806.robot;
  */
 public class RobotMap {
 	// Left Motors from Top to Bottom
-	 public static int leftMotor1 = 0;
-	 public static int leftMotor2 = 1;
-	 public static int leftMotor3 = 2;
+	 public static int leftMotor = 1;
+	 public static int rightMotor = 0;
 	 
-	 //Right Motors from Top to Bottom
-	 public static int rightMotor1 = 3;
-	 public static int rightMotor2 = 4;
-	 public static int rightMotor3 = 5;
+	 // hopper motor
+	 public static int hopperMotor = 1;
+	 
+	 // conveyor motor
+	 public static int conveyorMotor = 2;
 	 
 	 //Shooter boi
-	 public static int flyWheel = 8;
+	 public static int flyWheel = 0;
 	 
 	 //for that little shifter ;)
 	 public static int shiftLow = 6;
 	 public static int shiftHigh = 7;
 	 
-	 public static int intake = 9;
+	 // intake 
+	 public static int intake = 3;
+	 // our two climbers
+	 public static int climber = 4;
+	 public static int climber1 = 5;
+	 
+	 // two solenoides for our gear holder
+	 public static int gearHolderOut = 5;
+	 public static int gearHolderIn = 4;
 
 }

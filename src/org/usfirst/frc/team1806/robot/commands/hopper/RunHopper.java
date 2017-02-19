@@ -2,6 +2,7 @@ package org.usfirst.frc.team1806.robot.commands.hopper;
 
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.States.Hopper;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -22,6 +23,7 @@ public class RunHopper extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.states.hopperTracker = Hopper.RUNNING;
     	Robot.hopperSS.setHopperSpeed();
     }
 
