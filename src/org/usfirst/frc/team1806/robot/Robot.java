@@ -5,6 +5,7 @@ import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -19,6 +20,7 @@ import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.turnToAngle;
+import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
 import org.usfirst.frc.team1806.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.FlywheelSubsystem;
@@ -42,6 +44,7 @@ public class Robot extends IterativeRobot {
 	public static ClimberSubsystem climberSS;
 	public static GearHolderSubsystem gearSS;
 	public static OI oi;
+	public static PowerDistributionPanel pdPowerDistributionPanel;
 	public static States states;
 	//MjpegServer cameraServer = new MjpegServer("camera", 5000);
 	CommandGroup autonomousCommand;
@@ -53,6 +56,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		pdPowerDistributionPanel = new PowerDistributionPanel();
 		states = new States();
 		climberSS = new ClimberSubsystem();
 		driveSS = new DrivetrainSubsystem();
@@ -104,14 +108,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand.start();
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-		
+		new SeizureMode().start();
+
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
@@ -144,10 +148,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
-		oi.update();
-		
-		new Drive().start(); //make the dude drive a wee bit
+		System.out.println(Robot.oi.seizureMode);
+		if(!Robot.oi.seizureMode){
+			oi.update();
+			new Drive().start(); //make the dude drive a wee bit
+		}
 	}
 
 	/**

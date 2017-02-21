@@ -92,7 +92,7 @@ public class FlywheelSubsystem extends Subsystem {
 	}
 	public void setConveyor(){
 		Robot.states.conveyorTracker = Conveyor.RUNNING;
-		conveyor.set(-Constants.conveyorSpeed);
+		conveyor.set(Constants.conveyorSpeed);
 	}
 	public void stopConveyor(){
 		Robot.states.conveyorTracker = Conveyor.STOPPED;

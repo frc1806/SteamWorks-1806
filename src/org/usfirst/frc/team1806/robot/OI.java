@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1806.robot;
 
+import org.usfirst.frc.team1806.robot.utils.CommandLatch;
 import org.usfirst.frc.team1806.robot.utils.Latch;
 import org.usfirst.frc.team1806.robot.utils.XboxController;
 
@@ -22,6 +23,7 @@ import org.usfirst.frc.team1806.robot.commands.climber.StopClimber;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.RunDrive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
@@ -32,6 +34,7 @@ import org.usfirst.frc.team1806.robot.commands.hopper.RunHopper;
 import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
 import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
 import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
+import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -52,16 +55,25 @@ public class OI {
 	boolean oA, oB, oX, oY, oRB, oLB, oStart, oBack, oRsClick;
 	public boolean oPOVUp, oPOVDown;
 	double maxCurrent = 0;
-	
+	public boolean seizureMode = false;
 	Latch intakeLatch = new Latch();
 	Latch shooterLatch = new Latch();			// This is making the latchs to update the states
 	Latch conveyorLatch = new Latch();
 	Latch gearHolderLatch = new Latch();
 	Latch shifterLatch = new Latch();
+	CommandLatch seizureLatch = new CommandLatch();
 	public void update(){
 		updateButtons();
+		if(seizureMode){
+			
+		} else if(dA && seizureMode == false){
+			seizureMode = true;
+			new SeizureMode().start();
+
+			//System.out.println(seizureMode);	
+		}
 		updateStates();
-		updateCommands();
+		//updateCommands();
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
@@ -95,7 +107,7 @@ public class OI {
 			states.hopperTracker = Hopper.STOPPED;
 			states.conveyorTracker = Conveyor.STOPPED;
 		}
-		System.out.println(Robot.driveSS.leftMotor1.get());
+		//System.out.println(Robot.driveSS.leftMotor1.get());
 		if(dLClick){
 			Robot.driveSS.creep = true;
 		} else {
@@ -108,13 +120,12 @@ public class OI {
 		if(dB){
 			constants.camCoder += 25;
 		}
-		if(dA){
-			constants.camCoder += -25;
-		}
+		
+
 		
 	}
 	public void updateCommands(){
-		System.out.println(constants.camCoder);
+		//System.out.println(constants.camCoder);
 		//This will be where the commands actually execute from the states
 		if(states.shootSpeedTracker == ShootSpeed.RUNNING){
 			Robot.flywheelSS.setToShootingSpeed();

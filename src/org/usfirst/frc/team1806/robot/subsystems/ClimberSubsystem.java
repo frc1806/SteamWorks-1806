@@ -12,18 +12,21 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class ClimberSubsystem extends Subsystem {
 	public Talon climber, climber1;
-	
+	double max = 0; 
 	public ClimberSubsystem(){
 		climber = new Talon(RobotMap.climber);
-		climber1 = new Talon(RobotMap.climber1);
 
 	}
 	
 	public void climbAtSpeed(double power){
+		if(Robot.pdPowerDistributionPanel.getCurrent(12) > max || Robot.pdPowerDistributionPanel.getCurrent(3) > max){
+			max = Robot.pdPowerDistributionPanel.getCurrent(12);
+		}
 		Robot.states.climberTracker = Climber.RUNNINGATSPEED;
-		climber.set(power);
-		climber1.set(power);
-
+		climber.set(-power);
+		if(Robot.pdPowerDistributionPanel.getCurrent(12) > 37.5|| Robot.pdPowerDistributionPanel.getCurrent(3) > 37.5){
+			climber.set(0);
+		}
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

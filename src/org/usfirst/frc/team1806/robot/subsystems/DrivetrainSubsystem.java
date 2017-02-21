@@ -1,13 +1,14 @@
 package org.usfirst.frc.team1806.robot.subsystems;
 
-import java.awt.Robot;
 
+import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.RobotMap;
 import org.usfirst.frc.team1806.robot.States;
 import org.usfirst.frc.team1806.robot.States.Driving;
 import org.usfirst.frc.team1806.robot.States.Shifter;
 import org.usfirst.frc.team1806.robot.States.Shifter;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
+import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -31,14 +32,14 @@ public class DrivetrainSubsystem extends Subsystem {
 	public DrivetrainSubsystem(){
 		rightMotor1 = new Talon(RobotMap.rightMotor);
 		leftMotor1 = new Talon(RobotMap.leftMotor);
-		leftMotor1.setInverted(true);
+		rightMotor1.setInverted(true);
 		shifter = new DoubleSolenoid(RobotMap.shiftHigh, RobotMap.shiftLow);
 	}
 	public void execute(double power, double turn){
 		arcadeDrive(power, turn);
 		if(creep){
-			arcadeDrive(power / 2, turn / 2);
-		}
+			arcadeDrive(power / 3, turn / 3);
+		} 
 	}
 	public void leftDrive(double speed){
 		leftMotor1.set(speed);
