@@ -21,7 +21,7 @@ public class StopFlywheel extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.flywheelSS.stopFlyWheel();
+    	Robot.flywheelSS.flyWheel.set(0);
 
     }
 

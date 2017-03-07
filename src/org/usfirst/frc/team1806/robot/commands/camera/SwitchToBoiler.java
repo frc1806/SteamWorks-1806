@@ -1,43 +1,37 @@
-package org.usfirst.frc.team1806.robot.commands;
+package org.usfirst.frc.team1806.robot.commands.camera;
 
-import edu.wpi.first.wpilibj.Timer;
+import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.States.CameraType;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class Wait extends Command {
-	Timer timer;
-	double seconds;
-    public Wait(double _seconds) {
+public class SwitchToBoiler extends Command {
+
+    public SwitchToBoiler() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	seconds = _seconds;
-    	timer = new Timer();
+    	requires(Robot.cameraS);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	timer.reset();
-    	timer.start();
+    	Robot.states.cameraTracker = CameraType.BOILER;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(timer.get() > seconds){
-    		return true;
-    	}
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("wait is done nigga");
     }
 
     // Called when another command which requires one or more of the same

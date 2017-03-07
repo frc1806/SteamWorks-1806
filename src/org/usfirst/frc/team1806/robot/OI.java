@@ -4,14 +4,17 @@ import org.usfirst.frc.team1806.robot.utils.CommandLatch;
 import org.usfirst.frc.team1806.robot.utils.Latch;
 import org.usfirst.frc.team1806.robot.utils.XboxController;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import java.nio.file.StandardOpenOption;
 
 import org.usfirst.frc.team1806.robot.States.Climber;
 import org.usfirst.frc.team1806.robot.States.Conveyor;
+import org.usfirst.frc.team1806.robot.States.Driving;
 import org.usfirst.frc.team1806.robot.States.Shifter;
 import org.usfirst.frc.team1806.robot.States.GearHolder;
 import org.usfirst.frc.team1806.robot.States.Hopper;
@@ -23,6 +26,8 @@ import org.usfirst.frc.team1806.robot.commands.climber.StopClimber;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.Creep;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.RunDrive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
@@ -40,12 +45,15 @@ import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+
 public class OI {
 	SmartDashboardUpdater smartDashboardUpdater = new SmartDashboardUpdater();
 	// controller init
 	Constants constants = new Constants();
 	XboxController dc = new XboxController(0);
 	XboxController oc = new XboxController(1);
+	Joystick stick = new Joystick(0);
+	Button dAB = new JoystickButton(stick, 1);
 	States states = new States();
 	public double dlsY, drsX, dRT, dLT;
 	boolean dB, dY, dRB, dLB, dStart, dPOVUp, dPOVDown, dPOVLeft, dPOVRight, dLClick;
@@ -55,29 +63,29 @@ public class OI {
 	boolean oA, oB, oX, oY, oRB, oLB, oStart, oBack, oRsClick;
 	public boolean oPOVUp, oPOVDown;
 	double maxCurrent = 0;
-	public boolean seizureMode = false;
 	Latch intakeLatch = new Latch();
 	Latch shooterLatch = new Latch();			// This is making the latchs to update the states
 	Latch conveyorLatch = new Latch();
 	Latch gearHolderLatch = new Latch();
 	Latch shifterLatch = new Latch();
 	CommandLatch seizureLatch = new CommandLatch();
+	public SeizureMode seizure = new SeizureMode();
+	public boolean seizureBoolean = false;
 	public void update(){
 		updateButtons();
-		if(seizureMode){
-			
-		} else if(dA && seizureMode == false){
-			seizureMode = true;
-			new SeizureMode().start();
-
-			//System.out.println(seizureMode);	
-		}
 		updateStates();
-		//updateCommands();
+		updateCommands();
+		if(Robot.states.drivingTracker == Driving.DRIVING && !Robot.driveSS.isSeizureMode){
+			new Drive().start(); //make the dude drive a wee bit
+		} else if(Robot.states.drivingTracker == Driving.CREEP){
+			new Creep().start();
+		} else if(Robot.states.drivingTracker == Driving.SEIZURE){
+			new SeizureMode().start();
+		}
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
-		if(shifterLatch.update(dStart)){
+		if(shifterLatch.update(dLB)){
 			states.shifterTracker = Shifter.HIGH;
 		} else {
 			states.shifterTracker = Shifter.LOW;
@@ -93,11 +101,9 @@ public class OI {
 			states.intakeStatesTracker = IntakeStates.STOPPED;
 		}
 		if(shooterLatch.update(dY)){
-			//System.out.println(states.shootSpeedTracker.toString());
 			states.shootSpeedTracker = ShootSpeed.RUNNING;
 		} else {
 			states.shootSpeedTracker = ShootSpeed.STOPPED;
-			//System.out.println(states.shootSpeedTracker.toString());
 		}
 		
 		if(dRB){
@@ -109,24 +115,31 @@ public class OI {
 		}
 		//System.out.println(Robot.driveSS.leftMotor1.get());
 		if(dLClick){
-			Robot.driveSS.creep = true;
+			Robot.states.drivingTracker = Driving.CREEP;
 		} else {
-			Robot.driveSS.creep = false;
+			Robot.states.drivingTracker = Driving.DRIVING;
 		}
 		if(dLT > .15){
 			// TODO check this .15 value and make sure that's actually right
 			states.climberTracker = Climber.RUNNINGATSPEED;
 		}
+		/*
 		if(dB){
 			constants.camCoder += 25;
-		}
+		} else if(dA){
+			constants.camCoder -= 25;
+		} */
 		
-
+		if(seizureLatch.update(dA)){
+			Robot.states.drivingTracker = Driving.SEIZURE;
+		} else {
+			Robot.states.drivingTracker = Driving.DRIVING;
+		}		
 		
 	}
 	public void updateCommands(){
-		//System.out.println(constants.camCoder);
 		//This will be where the commands actually execute from the states
+		//dAB.whenActive(seizure);
 		if(states.shootSpeedTracker == ShootSpeed.RUNNING){
 			Robot.flywheelSS.setToShootingSpeed();
 		} else {

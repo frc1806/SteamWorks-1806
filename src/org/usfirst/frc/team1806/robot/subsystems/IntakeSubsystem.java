@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class IntakeSubsystem extends Subsystem {
 	// There isn't much here to do lmao
-	States states;
+	States states = new States();
 	public Talon intakeMotor;
 	Constants constants;
 	public IntakeSubsystem(){

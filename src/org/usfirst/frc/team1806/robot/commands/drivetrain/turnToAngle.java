@@ -1,44 +1,39 @@
 package org.usfirst.frc.team1806.robot.commands.drivetrain;
 
 import org.usfirst.frc.team1806.robot.Robot;
-import org.usfirst.frc.team1806.robot.States;
-import org.usfirst.frc.team1806.robot.States.Driving;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class turnToAngle extends Command {
+public class TurnToAngle extends Command {
+	
     int targetAngle;
+    
+    //PID constants
     double kP = 0.03;
-    double kI, kD;
-    double cDist, ccDist;
+    double kD = 0.225;
+    
+    //variables for PID outputs
+    double Pout;
+    double Kout;
+    
+    //variables for chekcing positions later
     double currentPos;
     double error;
     double leftPower, rightPower;
-    double initialPos;
     boolean isClockwise;
-    public turnToAngle(int angle, double power, double timeout) {
-    	requires(Robot.driveSS);
-    	targetAngle = angle;
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	Robot.driveSS.navx.reset();
-    	initialPos = Robot.driveSS.navx.getYaw();
-    	cDist = normalize(targetAngle - initialPos);
-    	ccDist = normalize(initialPos - targetAngle);
-    	
-    	
-    	
-    	leftPower = 1.0;
-       	rightPower = 1.0;
-
-       	if(ccDist > cDist) {
+    double motorBaseSpeed;
+    double rate;    
+    double timeoutTaker;
+    Timer timeOutTaker;
+    
+    public TurnToAngle(int angle, double power, double timeout) {
+       	if(angle > 0) {
     		//turning clockwise
     		isClockwise = true;
     	}
@@ -46,48 +41,97 @@ public class turnToAngle extends Command {
     		//turning counter clockwise
     		isClockwise = false;
     	}
+
+       	requires(Robot.driveSS);
+    	timeOutTaker = new Timer();
+    	
+    	//sets arguments to fields
+    	timeoutTaker = timeout;
+    	targetAngle = angle;
+       	motorBaseSpeed = power;
+    }
+
+    // Called just before this Command runs the first time
+    protected void initialize() {
+    	Robot.driveSS.navx.reset();
+    	try {
+    		Thread.sleep(100);
+    	}
+    	catch (Exception e) {
+    		System.out.println("sleep didn't work");
+    	}
+    	targetAngle = (int) (Robot.driveSS.navx.getYaw() + targetAngle);
+    	timeOutTaker.start();
+    	leftPower = motorBaseSpeed;
+       	rightPower = motorBaseSpeed;
+    	
+    	
+    	
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	//determining current state of motion
     	currentPos = Robot.driveSS.navx.getYaw();
+    	rate = Robot.driveSS.navx.getRate();
+    	    	
+    	//setting PID outputs
+    	
+    	//TODO reverse left and right
     	
     	if(isClockwise) {
-    		error = normalize(targetAngle - currentPos);
+    		//finds distance to target
+    		error = targetAngle - currentPos;
+
+        	Pout = kP * error;
+    		Kout = rate * kD;
     		
+	    	//initiates PID control
     		if(error < 20) {
-    			leftPower = kP * error;
-    			rightPower = kP * error;
+    			System.out.println("PID kicking in");
+    			leftPower = Pout - Kout;
+    			rightPower = Pout - Kout;
     		}
+
+    		System.out.println("leftPower: " + leftPower);
+   			System.out.println("rightPower: " + rightPower);
     		
-    		rightPower = makeNeg(rightPower);
-    		System.out.println(error);
+   			Robot.driveSS.leftDrive(leftPower);
+        	Robot.driveSS.rightDrive(-rightPower);
     	}
     	else {
-    		error = normalize(currentPos - targetAngle);
+    		//finds distance to target
+    		error = currentPos - targetAngle;
+
+        	Pout = kP * error;
+    		Kout = -rate * kD; 
+
+	    	//initiates PID control
+			if(error < 20) {
+				System.out.println("PID kicking in");
+				leftPower = Pout - Kout;
+				rightPower = Pout - Kout;
+			}
+
+			System.out.println("leftPower: " + leftPower);
+			System.out.println("rightPower: " + rightPower);
     		
-    		if(error < 20) {
-    			leftPower = kP * error;
-    			rightPower = kP * error;
-    		}
-
-    		leftPower = makeNeg(leftPower);
-
-    		System.out.println(error);
+    		Robot.driveSS.leftDrive(-leftPower);
+        	Robot.driveSS.rightDrive(rightPower);
     	}
     	
-    	Robot.driveSS.leftDrive(leftPower);
-    	Robot.driveSS.rightDrive(rightPower);
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(error - targetAngle) < 5;
+        return (error < 2);
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	System.out.println(currentPos);
     }
 
     // Called when another command which requires one or more of the same
@@ -95,19 +139,4 @@ public class turnToAngle extends Command {
     protected void interrupted() {
     }
     
-    protected double normalize(double angle) {
-    	while(angle < -180 || angle > 180) {
-    		if (angle < -180) {    		
-				angle += 360;
-			}
-    		if (angle > 180) {    		
-				angle -= 360;
-			}
-    	}
-    	return angle;
-    }
-    private double makeNeg(double x) {
-    	if (x > 0) x *= -1;
-    	return x;
-    }
 }

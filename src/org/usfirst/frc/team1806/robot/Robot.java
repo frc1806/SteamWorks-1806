@@ -11,16 +11,29 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team1806.robot.States.GearHolder;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
+import org.usfirst.frc.team1806.robot.commands.Wait;
+import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
+import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.RunDrive;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.TurnToAngle;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
-import org.usfirst.frc.team1806.robot.commands.drivetrain.turnToAngle;
+import org.usfirst.frc.team1806.robot.commands.flywheel.RunFlywheelTime;
+import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
+import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
+import org.usfirst.frc.team1806.robot.commands.hopper.RunHopper;
+import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
+import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
+import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
 import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
+import org.usfirst.frc.team1806.robot.subsystems.CameraSwitcher;
 import org.usfirst.frc.team1806.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.FlywheelSubsystem;
@@ -43,6 +56,8 @@ public class Robot extends IterativeRobot {
 	public static IntakeSubsystem intakeSS;
 	public static ClimberSubsystem climberSS;
 	public static GearHolderSubsystem gearSS;
+	public static CameraSwitcher cameraS;
+	public static NetworkTable networkTable;
 	public static OI oi;
 	public static PowerDistributionPanel pdPowerDistributionPanel;
 	public static States states;
@@ -56,6 +71,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		
 		pdPowerDistributionPanel = new PowerDistributionPanel();
 		states = new States();
 		climberSS = new ClimberSubsystem();
@@ -67,15 +83,26 @@ public class Robot extends IterativeRobot {
 		states.resetStates();
 		ss = new SmartDashboardUpdater();
 		oi = new OI();
-		Robot.states.gearTracker = GearHolder.OUT;
-
-		chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
+		
+		autonomousCommand = new CommandGroup();
+		Robot.driveSS.navx.reset();
 		ss.updateValues();
-		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-		camera.setResolution(640, 480);
-		camera.setFPS(60);        
+		//UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		//camera.setResolution(640, 480);
+		//camera.setFPS(60);        
+		autonomousCommand.addParallel(new StartFlywheel());
+		autonomousCommand.addSequential(new Wait(1));
+
+		autonomousCommand.addParallel(new StartConveyor());
+		autonomousCommand.addParallel(new RunHopper());
+
+		autonomousCommand.addSequential(new Wait(4));
+		
+		autonomousCommand.addParallel(new StopConveyor());
+		autonomousCommand.addParallel(new StopHopper());
+		autonomousCommand.addParallel(new StopFlywheel());
+		
+		autonomousCommand.addSequential(new TurnToAngle(-120, .4, 0));
 	}	
 	
 		
@@ -114,8 +141,8 @@ public class Robot extends IterativeRobot {
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-		new SeizureMode().start();
-
+		//new SeizureMode().start();
+		autonomousCommand.start();
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
@@ -126,6 +153,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		ss.updateValues();
 		Scheduler.getInstance().run();
 	}
 
@@ -133,6 +161,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		Robot.gearSS.extend();
 		Robot.oi.smartDashboardUpdater.updateValues();
+		Robot.states.resetStates();
 		//Robot.driveSS.shifter.set(Value.kForward);
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -148,11 +177,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		System.out.println(Robot.oi.seizureMode);
-		if(!Robot.oi.seizureMode){
-			oi.update();
-			new Drive().start(); //make the dude drive a wee bit
-		}
+		oi.update();
 	}
 
 	/**

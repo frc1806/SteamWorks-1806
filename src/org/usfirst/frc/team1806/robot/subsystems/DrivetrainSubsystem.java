@@ -15,6 +15,8 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -28,18 +30,24 @@ public class DrivetrainSubsystem extends Subsystem {
 	public AHRS navx;
 	States states;
 	public DoubleSolenoid shifter;
-	public boolean creep = false;
+	public Encoder leftEncoder;
+	public Encoder rightEncoder;
+	public boolean isSeizureMode = false;
 	public DrivetrainSubsystem(){
 		rightMotor1 = new Talon(RobotMap.rightMotor);
 		leftMotor1 = new Talon(RobotMap.leftMotor);
-		rightMotor1.setInverted(true);
-		shifter = new DoubleSolenoid(RobotMap.shiftHigh, RobotMap.shiftLow);
+
+		leftEncoder = new Encoder(0, 1);
+		rightEncoder = new Encoder(2,3);
+		rightEncoder.setReverseDirection(true);
+		leftMotor1.setInverted(true);
+		rightEncoder.reset();
+		leftEncoder.reset();
+		navx = new AHRS(Port.kMXP);
+		shifter = new DoubleSolenoid(RobotMap.shiftLow, RobotMap.shiftHigh);
 	}
 	public void execute(double power, double turn){
 		arcadeDrive(power, turn);
-		if(creep){
-			arcadeDrive(power / 3, turn / 3);
-		} 
 	}
 	public void leftDrive(double speed){
 		leftMotor1.set(speed);
@@ -48,16 +56,16 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightMotor1.set(speed);
 	}
 	public void arcadeDrive(double power, double turn){
-		leftDrive(power - turn);
-		rightDrive(power + turn);
+		leftDrive(power + turn); //verify signs
+		rightDrive(power - turn);
 	}
 	public void shiftHigh(){
 		System.out.println("shifted high");
-		shifter.set(Value.kForward);
+		shifter.set(Value.kReverse);
 	}
 	public void shiftLow() {
 		System.out.println("shifted low");
-		shifter.set(Value.kReverse);
+		shifter.set(Value.kForward);
 	}
 	public boolean isHigh(){
 		//home boi u lit

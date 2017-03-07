@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1806.robot;
 
+import org.usfirst.frc.team1806.robot.subsystems.CameraSwitcher;
+
 public class States {
 	public enum IntakeStates{
 		INTAKE,STOPPED,OUTTAKE
@@ -14,7 +16,7 @@ public class States {
 		RUNNING, IDLE, STOPPED
 	}
 	public enum Driving{
-		DRIVING,AIMING,CREEP
+		DRIVING,AIMING,CREEP,SEIZURE
 	}
 	public enum Climber{
 		RUNNINGATSPEED, STOPPED
@@ -25,6 +27,9 @@ public class States {
 	public enum GearHolder{
 		IN, OUT
 	}
+	public enum CameraType{
+		LIFT, BOILER
+	}
 	public IntakeStates intakeStatesTracker;
 	public Conveyor conveyorTracker;
 	public Shifter shifterTracker;
@@ -33,6 +38,7 @@ public class States {
 	public Climber climberTracker;
 	public Hopper hopperTracker;
 	public GearHolder gearTracker;
+	public CameraType cameraTracker;
 	public void resetStates(){
 		hopperTracker = Hopper.STOPPED;
 		climberTracker = Climber.STOPPED;
@@ -42,5 +48,6 @@ public class States {
 		drivingTracker = Driving.DRIVING;
 		shootSpeedTracker = ShootSpeed.STOPPED;
 		gearTracker = GearHolder.OUT;
+		cameraTracker = CameraType.LIFT;
 	}
 }

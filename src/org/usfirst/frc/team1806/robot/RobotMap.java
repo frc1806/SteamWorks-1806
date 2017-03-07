@@ -8,8 +8,8 @@ package org.usfirst.frc.team1806.robot;
  */
 public class RobotMap {
 	// Left Motors from Top to Bottom
-	 public static int leftMotor = 1;
-	 public static int rightMotor = 0;
+	 public static int leftMotor = 0;
+	 public static int rightMotor = 1;
 	 
 	 // hopper motor
 	 public static int hopperMotor = 1;

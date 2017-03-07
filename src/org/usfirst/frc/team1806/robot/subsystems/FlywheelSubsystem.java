@@ -16,7 +16,7 @@ import com.ctre.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 public class FlywheelSubsystem extends Subsystem {
-	CANTalon flyWheel;
+	public CANTalon flyWheel;
 	Talon conveyor;
 	States states;
 	Constants constants;

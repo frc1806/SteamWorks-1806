@@ -12,7 +12,7 @@ public class Constants {
 	// This is for the shooter RPM range, adjust this if needed
 	public final double minShooterRange = 1880;
 	// cam u are in the code 
-	public static double camCoder = 2100;
+	public static double camCoder = 2400;
 	public double maxShooterRange = 2080;
 	
 	// This is the coast range, measure this after every change min - coast, not sure if used
