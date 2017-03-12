@@ -25,17 +25,17 @@ public class Drive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(states.drivingTracker == Driving.DRIVING){
+		if(states.drivingTracker == Driving.DRIVING){
     		if(Math.abs(Robot.oi.dlsY) > deadZone && Math.abs(Robot.oi.drsX) > deadZone){
-    			Robot.driveSS.execute(Robot.oi.dlsY, -Robot.oi.drsX);
+    			Robot.driveSS.execute(Robot.oi.dlsY, Robot.oi.drsX);
     		}else if(Math.abs(Robot.oi.dlsY) > deadZone){
     			Robot.driveSS.execute(Robot.oi.dlsY, 0);
     		} else if(Math.abs(Robot.oi.drsX) > deadZone){
-    			Robot.driveSS.execute(0, -Robot.oi.drsX);
+    			Robot.driveSS.execute(0, Robot.oi.drsX);
     		} else {
     			Robot.driveSS.execute(0, 0);
     		}
-    	}
+		} 
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -22,7 +22,6 @@ public class FlywheelSubsystem extends Subsystem {
 	Constants constants;
 	public FlywheelSubsystem(){
 		flyWheel = new CANTalon(RobotMap.flyWheel);
-		flyWheel = new CANTalon(0);
 		
 		flyWheel.setControlMode(0);
         flyWheel.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -32,8 +31,9 @@ public class FlywheelSubsystem extends Subsystem {
     	flyWheel.reverseSensor(false);		
     	conveyor = new Talon(RobotMap.conveyorMotor);
 		constants = new Constants();
-		//flyWheel.setPID(constants.flyWheelP, constants.flyWheelI, constants.flyWheelD);
-	}
+
+
+			}
 	public void setP(double p){
 		flyWheel.setP(p);
 	}

@@ -12,13 +12,13 @@ public class RobotMap {
 	 public static int rightMotor = 1;
 	 
 	 // hopper motor
-	 public static int hopperMotor = 1;
+	 public static int hopperMotor = 0;
 	 
 	 // conveyor motor
 	 public static int conveyorMotor = 3;
 	 
 	 //Shooter boi
-	 public static int flyWheel = 0;
+	 public static int flyWheel = 1;
 	 
 	 //for that little shifter ;)
 	 public static int shiftLow = 6;
@@ -29,7 +29,7 @@ public class RobotMap {
 	 // our two climbers
 	 public static int climber = 4;
 	 
-	 // two solenoides for our gear holder
+	 // two things for our gear holder
 	 public static int gearHolderOut = 5;
 	 public static int gearHolderIn = 4;
 

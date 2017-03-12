@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands.flywheel;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.States.ShootSpeed;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -17,6 +18,7 @@ public class StartFlywheel extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.states.shootSpeedTracker = ShootSpeed.RUNNING;
     }
 
     // Called repeatedly when this Command is scheduled to run

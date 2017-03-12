@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1806.robot.commands.drivetrain;
+package org.usfirst.frc.team1806.robot.commands.drivetrain.auto;
 
 import org.usfirst.frc.team1806.robot.Robot;
 
@@ -54,12 +54,6 @@ public class TurnToAngle extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.driveSS.navx.reset();
-    	try {
-    		Thread.sleep(100);
-    	}
-    	catch (Exception e) {
-    		System.out.println("sleep didn't work");
-    	}
     	targetAngle = (int) (Robot.driveSS.navx.getYaw() + targetAngle);
     	timeOutTaker.start();
     	leftPower = motorBaseSpeed;

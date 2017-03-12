@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands.conveyor;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.States.Conveyor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -17,6 +18,7 @@ public class StopConveyor extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.states.conveyorTracker = Conveyor.STOPPED;
     }
 
     // Called repeatedly when this Command is scheduled to run

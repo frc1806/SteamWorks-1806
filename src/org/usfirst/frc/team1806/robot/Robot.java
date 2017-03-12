@@ -22,9 +22,12 @@ import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
-import org.usfirst.frc.team1806.robot.commands.drivetrain.RunDrive;
-import org.usfirst.frc.team1806.robot.commands.drivetrain.TurnToAngle;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.DriveAngle;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.DriveToPosition;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.RunDrive;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.TurnToAngle;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.VisionDriveStraight;
 import org.usfirst.frc.team1806.robot.commands.flywheel.RunFlywheelTime;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
@@ -33,6 +36,7 @@ import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
 import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
 import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
 import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
+import org.usfirst.frc.team1806.robot.commands.sequences.Shimmy;
 import org.usfirst.frc.team1806.robot.subsystems.CameraSwitcher;
 import org.usfirst.frc.team1806.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSubsystem;
@@ -61,6 +65,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static PowerDistributionPanel pdPowerDistributionPanel;
 	public static States states;
+	public UsbCamera camera;
 	//MjpegServer cameraServer = new MjpegServer("camera", 5000);
 	CommandGroup autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -71,9 +76,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		
 		pdPowerDistributionPanel = new PowerDistributionPanel();
 		states = new States();
+		cameraS = new CameraSwitcher();
 		climberSS = new ClimberSubsystem();
 		driveSS = new DrivetrainSubsystem();
 		flywheelSS = new FlywheelSubsystem();
@@ -83,26 +88,17 @@ public class Robot extends IterativeRobot {
 		states.resetStates();
 		ss = new SmartDashboardUpdater();
 		oi = new OI();
-		
+		networkTable = NetworkTable.getTable("LiftTracker");
+		networkTable.putDouble("ayylmao", 86950346);
 		autonomousCommand = new CommandGroup();
 		Robot.driveSS.navx.reset();
 		ss.updateValues();
-		//UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-		//camera.setResolution(640, 480);
-		//camera.setFPS(60);        
-		autonomousCommand.addParallel(new StartFlywheel());
-		autonomousCommand.addSequential(new Wait(1));
-
-		autonomousCommand.addParallel(new StartConveyor());
-		autonomousCommand.addParallel(new RunHopper());
-
-		autonomousCommand.addSequential(new Wait(4));
-		
-		autonomousCommand.addParallel(new StopConveyor());
-		autonomousCommand.addParallel(new StopHopper());
-		autonomousCommand.addParallel(new StopFlywheel());
-		
-		autonomousCommand.addSequential(new TurnToAngle(-120, .4, 0));
+		 camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(640, 480);
+		camera.setFPS(30);
+//		camera.setExposureAuto();
+		autonomousCommand.addSequential(new VisionDriveStraight(.25, driveSS.getVisionAngle()));
+		autonomousCommand.addSequential(new Shimmy());
 	}	
 	
 		
@@ -142,6 +138,8 @@ public class Robot extends IterativeRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 		//new SeizureMode().start();
+		
+
 		autonomousCommand.start();
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
@@ -159,7 +157,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		Robot.gearSS.extend();
 		Robot.oi.smartDashboardUpdater.updateValues();
 		Robot.states.resetStates();
 		//Robot.driveSS.shifter.set(Value.kForward);

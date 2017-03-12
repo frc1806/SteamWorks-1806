@@ -1,6 +1,8 @@
 package org.usfirst.frc.team1806.robot.commands.flywheel;
 
+import org.usfirst.frc.team1806.robot.Commands.ShootSpeedRequest;
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.States.ShootSpeed;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -17,6 +19,7 @@ public class StopFlywheel extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.states.shootSpeedTracker = ShootSpeed.STOPPED;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,7 +30,7 @@ public class StopFlywheel extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

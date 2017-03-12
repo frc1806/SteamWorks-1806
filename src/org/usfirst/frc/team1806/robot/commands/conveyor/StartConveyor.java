@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands.conveyor;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.States.Conveyor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -17,11 +18,12 @@ public class StartConveyor extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.flywheelSS.setConveyor();
+    	Robot.states.conveyorTracker = Conveyor.RUNNING;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.flywheelSS.setConveyor();
     }
 
     // Make this return true when this Command no longer needs to run execute()

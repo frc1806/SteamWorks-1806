@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.subsystems;
 
 import org.usfirst.frc.team1806.robot.Constants;
+import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.RobotMap;
 import org.usfirst.frc.team1806.robot.States;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
@@ -24,11 +25,11 @@ public class IntakeSubsystem extends Subsystem {
 	}
 	public void setIntaking(){
 		states.intakeStatesTracker = IntakeStates.INTAKE;
-		intakeMotor.set(.3);
+		intakeMotor.set(Constants.intakeSpeed);
 	}
 	public void setOuttaking(){
 		states.intakeStatesTracker = IntakeStates.OUTTAKE;
-		intakeMotor.set(-.3);
+		intakeMotor.set(-Constants.intakeSpeed);
 	}
 	public void stopIntake(){
 		states.intakeStatesTracker = IntakeStates.STOPPED;

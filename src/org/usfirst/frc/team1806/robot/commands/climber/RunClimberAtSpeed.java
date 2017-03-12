@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands.climber;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.States.Climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -17,6 +18,7 @@ public class RunClimberAtSpeed extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.states.climberTracker = Climber.RUNNINGATSPEED;
     }
 
     // Called repeatedly when this Command is scheduled to run

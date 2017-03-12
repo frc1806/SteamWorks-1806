@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands.gear;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.States.GearHolder;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -17,6 +18,7 @@ public class RectractGear extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.states.gearTracker = GearHolder.IN;
     	Robot.gearSS.retract();
     }
 

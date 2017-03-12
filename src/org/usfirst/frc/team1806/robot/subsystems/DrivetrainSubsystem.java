@@ -32,17 +32,19 @@ public class DrivetrainSubsystem extends Subsystem {
 	public DoubleSolenoid shifter;
 	public Encoder leftEncoder;
 	public Encoder rightEncoder;
+	public boolean isShimmy = false;
 	public boolean isSeizureMode = false;
 	public DrivetrainSubsystem(){
 		rightMotor1 = new Talon(RobotMap.rightMotor);
 		leftMotor1 = new Talon(RobotMap.leftMotor);
-
 		leftEncoder = new Encoder(0, 1);
 		rightEncoder = new Encoder(2,3);
 		rightEncoder.setReverseDirection(true);
 		leftMotor1.setInverted(true);
 		rightEncoder.reset();
 		leftEncoder.reset();
+		leftEncoder.setDistancePerPulse(24);
+		rightEncoder.setDistancePerPulse(24); //TODO Fix these values
 		navx = new AHRS(Port.kMXP);
 		shifter = new DoubleSolenoid(RobotMap.shiftLow, RobotMap.shiftHigh);
 	}
@@ -60,11 +62,9 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightDrive(power - turn);
 	}
 	public void shiftHigh(){
-		System.out.println("shifted high");
 		shifter.set(Value.kReverse);
 	}
 	public void shiftLow() {
-		System.out.println("shifted low");
 		shifter.set(Value.kForward);
 	}
 	public boolean isHigh(){
@@ -116,6 +116,12 @@ public class DrivetrainSubsystem extends Subsystem {
 	    
 	    public double getTilt(){
 	    	return Math.sqrt(Math.pow(navx.getPitch(), 2) + Math.pow(navx.getRoll(), 2));
+	    }
+	    public double getVisionAngle(){ 
+	    	return Robot.networkTable.getNumber("angleFromGoal", 0);
+	    }
+	    public double getVisionDistance(){
+	    	return Robot.networkTable.getDouble("distanceFromTarget");
 	    }
 	    
 	public void initDefaultCommand() {
