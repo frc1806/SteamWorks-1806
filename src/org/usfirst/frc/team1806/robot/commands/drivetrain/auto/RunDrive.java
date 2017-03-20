@@ -20,20 +20,17 @@ public class RunDrive extends Command {
     	power = newPower;
     	timeout = newTimeout;
     	newTurn = turn;
-    	System.out.println("Run Drive Command ");
     	//initialize();
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("Run Drive Initalize");
     	timer.reset();
     	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println("running");
     	Robot.driveSS.arcadeDrive(power, newTurn);
     }
 

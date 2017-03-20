@@ -6,6 +6,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -19,6 +20,7 @@ import org.usfirst.frc.team1806.robot.States.GearHolder;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.Wait;
+import org.usfirst.frc.team1806.robot.commands.blue.BoilerToGear;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
@@ -35,6 +37,10 @@ import org.usfirst.frc.team1806.robot.commands.hopper.RunHopper;
 import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
 import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
 import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
+import org.usfirst.frc.team1806.robot.commands.red.BoilerandGear;
+import org.usfirst.frc.team1806.robot.commands.red.Center;
+import org.usfirst.frc.team1806.robot.commands.red.LeftSide;
+import org.usfirst.frc.team1806.robot.commands.red.RightSide;
 import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
 import org.usfirst.frc.team1806.robot.commands.sequences.Shimmy;
 import org.usfirst.frc.team1806.robot.subsystems.CameraSwitcher;
@@ -67,8 +73,9 @@ public class Robot extends IterativeRobot {
 	public static States states;
 	public UsbCamera camera;
 	//MjpegServer cameraServer = new MjpegServer("camera", 5000);
-	CommandGroup autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	Command autonomousCommand;
+	SendableChooser chooser = new SendableChooser<>();
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -88,17 +95,28 @@ public class Robot extends IterativeRobot {
 		states.resetStates();
 		ss = new SmartDashboardUpdater();
 		oi = new OI();
+		
 		networkTable = NetworkTable.getTable("LiftTracker");
 		networkTable.putDouble("ayylmao", 86950346);
-		autonomousCommand = new CommandGroup();
 		Robot.driveSS.navx.reset();
 		ss.updateValues();
-		 camera = CameraServer.getInstance().startAutomaticCapture();
+				
+	    camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(640, 480);
 		camera.setFPS(30);
-//		camera.setExposureAuto();
-		autonomousCommand.addSequential(new VisionDriveStraight(.25, driveSS.getVisionAngle()));
-		autonomousCommand.addSequential(new Shimmy());
+		camera.setExposureManual(16);
+		chooser.addDefault("Default Wait 1", new Wait(2));
+		chooser.addObject("Red: Shoot 10 + Gear", new BoilerandGear());
+		chooser.addObject("Red: Center", new Center());
+		chooser.addObject("Red: Left", new LeftSide());
+		chooser.addObject("Red: Right", new RightSide());
+		///
+		chooser.addObject("Blue: Shoot 10 + Gear", new BoilerToGear());
+		chooser.addObject("Blue: Center", new org.usfirst.frc.team1806.robot.commands.blue.Center());
+		chooser.addObject("Blue: Left", new org.usfirst.frc.team1806.robot.commands.blue.LeftSide());
+		chooser.addObject("Blue: Right", new org.usfirst.frc.team1806.robot.commands.blue.RightSide());
+		SmartDashboard.putData("Chooser", chooser);
+		
 	}	
 	
 		
@@ -137,9 +155,7 @@ public class Robot extends IterativeRobot {
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-		//new SeizureMode().start();
-		
-
+		autonomousCommand = (Command) chooser.getSelected();
 		autonomousCommand.start();
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
@@ -157,13 +173,8 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		Robot.oi.smartDashboardUpdater.updateValues();
+		ss.updateValues();
 		Robot.states.resetStates();
-		//Robot.driveSS.shifter.set(Value.kForward);
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}

@@ -13,8 +13,13 @@ public class Shimmy extends CommandGroup {
 
     public Shimmy() {
     	addSequential(new ShimmyChange(true));
-    	addSequential(new RunDrive(.3, .15, .3));
-    	addSequential(new RunDrive(.3, -.2, .3));
+    	addSequential(new RunDrive(.4,0, .05));
+    	addSequential(new RunDrive(-.4,0, .03));
+    	addSequential(new RunDrive(.4,0, .05));
+    	addSequential(new RunDrive(0,-.4, .05));
+    	addSequential(new RunDrive(.4,0, .05));
+    	addSequential(new RunDrive(0,.45, .05));
+    	addSequential(new RunDrive(.4,0, .05));
     	addSequential(new ShimmyChange(false));
     }
 }

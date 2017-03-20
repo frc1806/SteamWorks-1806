@@ -13,8 +13,10 @@ public class SeizureMode extends CommandGroup {
 	public Timer seizureTime;
     public SeizureMode() {
     		addSequential(new SeizureChange(true));
-        	addSequential(new RunDrive(-.3,0, .1));
-        	addSequential(new RunDrive(.3,0, .1));
+        	addSequential(new RunDrive(-.4,0, .03));
+        	addSequential(new RunDrive(.4,0, .1));
+        	addSequential(new RunDrive(0,-.2, .15));
+        	addSequential(new RunDrive(0,.2, .15));
     		addSequential(new SeizureChange(false));
     	}
 	}

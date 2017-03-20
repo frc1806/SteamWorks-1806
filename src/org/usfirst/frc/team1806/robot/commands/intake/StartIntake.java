@@ -19,7 +19,6 @@ public class StartIntake extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.states.intakeStatesTracker = IntakeStates.INTAKE;
-    	Robot.intakeSS.setIntaking();
     }
 
     // Called repeatedly when this Command is scheduled to run

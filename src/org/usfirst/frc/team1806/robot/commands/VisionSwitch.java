@@ -1,24 +1,24 @@
-package org.usfirst.frc.team1806.robot.commands.camera;
+package org.usfirst.frc.team1806.robot.commands;
 
 import org.usfirst.frc.team1806.robot.Robot;
-import org.usfirst.frc.team1806.robot.States.CameraType;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class SwitchToBoiler extends Command {
-
-    public SwitchToBoiler() {
+public class VisionSwitch extends Command {
+	boolean a;
+    public VisionSwitch(boolean ahh) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.cameraS);
+    	requires(Robot.driveSS);
+    	a = ahh;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.states.cameraTracker = CameraType.BOILER;
+    	Robot.driveSS.isVision = a;
     }
 
     // Called repeatedly when this Command is scheduled to run

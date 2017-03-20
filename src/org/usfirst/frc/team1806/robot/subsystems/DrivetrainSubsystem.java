@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -34,6 +35,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	public Encoder rightEncoder;
 	public boolean isShimmy = false;
 	public boolean isSeizureMode = false;
+	public boolean isVision= false;
 	public DrivetrainSubsystem(){
 		rightMotor1 = new Talon(RobotMap.rightMotor);
 		leftMotor1 = new Talon(RobotMap.leftMotor);
@@ -45,7 +47,7 @@ public class DrivetrainSubsystem extends Subsystem {
 		leftEncoder.reset();
 		leftEncoder.setDistancePerPulse(24);
 		rightEncoder.setDistancePerPulse(24); //TODO Fix these values
-		navx = new AHRS(Port.kMXP);
+		navx = new AHRS(SPI.Port.kMXP);
 		shifter = new DoubleSolenoid(RobotMap.shiftLow, RobotMap.shiftHigh);
 	}
 	public void execute(double power, double turn){

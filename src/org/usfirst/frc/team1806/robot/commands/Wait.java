@@ -37,7 +37,7 @@ public class Wait extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("wait is done nigga");
+    	System.out.println("wait is done");
     }
 
     // Called when another command which requires one or more of the same

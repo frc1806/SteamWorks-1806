@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import java.nio.file.StandardOpenOption;
 
+import org.omg.CORBA.SystemException;
 import org.usfirst.frc.team1806.robot.Commands.ClimberRequest;
 import org.usfirst.frc.team1806.robot.Commands.ConveyorRequest;
 import org.usfirst.frc.team1806.robot.Commands.DrivingRequest;
@@ -88,19 +89,27 @@ public class OI {
 		updateStates();
 		updateCommands();
 		
-		if(requestCommands.drivingRequestTracker == DrivingRequest.DRIVING && !Robot.driveSS.isSeizureMode){
+		if(requestCommands.drivingRequestTracker == DrivingRequest.DRIVING){
 			new Drive().start(); //make the dude drive a wee bit
+			Robot.driveSS.isSeizureMode = false;
+			Robot.driveSS.isShimmy = false;
+			Robot.driveSS.isVision = false;
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.CREEP){
-			new Creep().start();
+			if(Robot.states.drivingTracker != States.Driving.CREEP){
+				new Creep().start();
+			}
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.SEIZURE){
 			if(!Robot.driveSS.isSeizureMode){
 				new SeizureMode().start();
 			}
-			
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.SHIMMY){
 			if(!Robot.driveSS.isShimmy){
 				new Shimmy().start();
 			}	
+		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION){
+			if(!Robot.driveSS.isVision){
+				new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 36).start();
+			}
 		}
 		
 		smartDashboardUpdater.updateValues();
@@ -111,22 +120,27 @@ public class OI {
 		} else {
 			requestCommands.shiferRequestTracker = ShifterRequest.LOW;
 		}
+		
 		if(gearHolderLatch.update(dBack)){
 			requestCommands.gearRequestTracker = GearHolderRequest.OUT;
 		} else {
 			requestCommands.gearRequestTracker = GearHolderRequest.IN;
 		}
+		
 		if(intakeLatch.update(dX)){
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.INTAKE;
+			System.out.println("updated state");
 		} else {
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.STOPPED;
 		}
+		
 		if(shooterLatch.update(dY)){
 			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.RUNNING;
 		} else {
 			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.STOPPED;
 		}
 		
+
 		if(dRB){
 			requestCommands.conveyorRequestTracker = ConveyorRequest.RUNNING;
 			requestCommands.hopperRequestTracker = HopperRequest.RUNNING;
@@ -134,11 +148,7 @@ public class OI {
 			requestCommands.hopperRequestTracker = HopperRequest.STOPPED;
 			requestCommands.conveyorRequestTracker = ConveyorRequest.STOPPED;
 		}
-		if(dLClick){
-			requestCommands.drivingRequestTracker = DrivingRequest.CREEP;		//TODO double check and see if this is still needed? lmao
-		} else {
-			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;	
-		}
+
 		if(dLT > .15){
 			requestCommands.climberRequestTracker = ClimberRequest.RUNNINGATSPEED;
 		} else {
@@ -155,22 +165,25 @@ public class OI {
 			requestCommands.drivingRequestTracker = DrivingRequest.SEIZURE;
 		} else if(dRClick){
 			requestCommands.drivingRequestTracker = DrivingRequest.SHIMMY;
-		} else {
+		}else if(dLClick){
+			requestCommands.drivingRequestTracker = DrivingRequest.CREEP;
+		} else if(dB){
+			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
+		}else {
 			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;
 		}		
 
 		
 	}
 	public void updateCommands(){
-		if(liftTracker.update(dB)){
-			new VisionDriveStraight(.25, Robot.driveSS.getVisionAngle());
-		}
+
 		//This will be where the commands actually execute from the states
 		if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.RUNNING){
-			Robot.flywheelSS.setToShootingSpeed();
-		} else {
-			Robot.flywheelSS.stopFlyWheel();
+			new StartFlywheel().start();
+		} else if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.STOPPED) {
+			new StopFlywheel().start();
 		}
+		
 		if(requestCommands.gearRequestTracker == GearHolderRequest.IN){
 			new RectractGear().start();
 		} else if(requestCommands.gearRequestTracker == GearHolderRequest.OUT){
@@ -185,6 +198,7 @@ public class OI {
 			new StopHopper().start();
 		}
 		
+		/*
 		if(requestCommands.climberRequestTracker == ClimberRequest.RUNNINGATSPEED){
 			new RunClimberAtSpeed(dLT).start();
 		} else {
@@ -195,12 +209,15 @@ public class OI {
 		} else if(requestCommands.shiferRequestTracker == ShifterRequest.LOW) {
 			Robot.driveSS.shiftLow();
 		}
-		if(requestCommands.intakeRequestTracker == IntakeStatesRequest.INTAKE && states.gearTracker == GearHolder.OUT){
-			new StartIntake().start();
+		if(requestCommands.intakeRequestTracker == IntakeStatesRequest.INTAKE ){
+			if(Robot.states.intakeStatesTracker != IntakeStates.INTAKE){
+				new StartIntake().start();
+			}
+			System.out.println("starting command");
 		} else{
 			new StopIntake().start();
 		}
-
+*/
 	}
 	public void updateButtons(){
 		//so this is pretty much where the buttons on the xbox controller get updated in the code

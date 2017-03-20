@@ -15,7 +15,7 @@ public class TurnToAngle extends Command {
     int targetAngle;
     
     //PID constants
-    double kP = 0.03;
+    double kP = 0.06;
     double kD = 0.225;
     
     //variables for PID outputs
@@ -33,6 +33,7 @@ public class TurnToAngle extends Command {
     Timer timeOutTaker;
     
     public TurnToAngle(int angle, double power, double timeout) {
+    	Robot.driveSS.navx.zeroYaw();
        	if(angle > 0) {
     		//turning clockwise
     		isClockwise = true;
@@ -53,8 +54,7 @@ public class TurnToAngle extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.driveSS.navx.reset();
-    	targetAngle = (int) (Robot.driveSS.navx.getYaw() + targetAngle);
+    	Robot.driveSS.navx.zeroYaw();
     	timeOutTaker.start();
     	leftPower = motorBaseSpeed;
        	rightPower = motorBaseSpeed;
@@ -79,18 +79,18 @@ public class TurnToAngle extends Command {
     		error = targetAngle - currentPos;
 
         	Pout = kP * error;
-    		Kout = rate * kD;
+    		//Kout = rate * kD;
     		
 	    	//initiates PID control
-    		if(error < 20) {
+    		/*if(error < 20) {
     			System.out.println("PID kicking in");
-    			leftPower = Pout - Kout;
-    			rightPower = Pout - Kout;
+    			leftPower = Pout;
+    			rightPower = Pout ;
     		}
-
+*/
     		System.out.println("leftPower: " + leftPower);
    			System.out.println("rightPower: " + rightPower);
-    		
+    		System.out.println("error: " + error);
    			Robot.driveSS.leftDrive(leftPower);
         	Robot.driveSS.rightDrive(-rightPower);
     	}
@@ -102,14 +102,16 @@ public class TurnToAngle extends Command {
     		Kout = -rate * kD; 
 
 	    	//initiates PID control
+    		/*
 			if(error < 20) {
 				System.out.println("PID kicking in");
-				leftPower = Pout - Kout;
-				rightPower = Pout - Kout;
+				leftPower = Pout ;
+				rightPower = Pout ;
 			}
-
-			System.out.println("leftPower: " + leftPower);
-			System.out.println("rightPower: " + rightPower);
+*/
+    		System.out.println("error: " + error);
+			System.out.println("current : " + currentPos);
+			System.out.println("targetAngle: " + targetAngle);
     		
     		Robot.driveSS.leftDrive(-leftPower);
         	Robot.driveSS.rightDrive(rightPower);
@@ -126,6 +128,9 @@ public class TurnToAngle extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	System.out.println(currentPos);
+    	Robot.driveSS.navx.zeroYaw();
+    	Robot.driveSS.leftDrive(0);
+    	Robot.driveSS.rightDrive(0);
     }
 
     // Called when another command which requires one or more of the same

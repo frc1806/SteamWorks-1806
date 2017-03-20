@@ -13,27 +13,30 @@ public class VisionDriveStraight extends Command {
 	double desiredAngle;
 	double desiredPower;
 	double currentAngle;
-	double kP = .025;
-    public VisionDriveStraight(double power, double vision) {
+	double desiredDistance;
+    public VisionDriveStraight(double power, double vision, int distance) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.driveSS);
     	desiredPower = power;
     	desiredAngle = vision;
+    	desiredDistance = distance * 24;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
+    	Robot.driveSS.leftEncoder.reset();
+    	Robot.driveSS.rightEncoder.reset();
+    	Robot.driveSS.isVision = true;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	currentAngle = Robot.driveSS.getVisionAngle();
-    	if(Math.abs(currentAngle) > 3){
+    	if(Math.abs(currentAngle) > 5){
     		System.out.println(currentAngle);
     		if(Math.signum(currentAngle) == 1){
-    			Robot.driveSS.leftDrive(desiredPower + (currentAngle * .015));
+    			Robot.driveSS.leftDrive(desiredPower + (currentAngle * .01));
     			System.out.println("is it positive");
     			Robot.driveSS.rightDrive(desiredPower);
     		} else {
@@ -50,11 +53,14 @@ public class VisionDriveStraight extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.driveSS.getVisionDistance() < 32;
+        return Robot.driveSS.leftEncoder.get() > desiredDistance &&
+        		Robot.driveSS.rightEncoder.get() > desiredDistance;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	System.out.println("it finished");
+    	Robot.driveSS.isVision = false;
     }
 
     // Called when another command which requires one or more of the same

@@ -19,6 +19,7 @@ public class StopHopper extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.states.hopperTracker = Hopper.STOPPED;
+    	Robot.hopperSS.hopperMotor.set(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -29,7 +30,8 @@ public class StopHopper extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+    
+        return true;
     }
 
     // Called once after isFinished returns true
