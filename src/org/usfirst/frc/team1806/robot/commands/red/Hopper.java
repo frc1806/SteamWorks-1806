@@ -21,12 +21,8 @@ public class Hopper extends CommandGroup {
     	addParallel(new StartFlywheel());
     	addSequential(new DriveToPosition(-104, .7, 2));
     	addSequential(new TurnToAngle(-30, .4, 1));
-    	addParallel(new StartConveyor());
-    	addSequential(new DriveToPosition(14, .5, .5));
+    	addSequential(new StartConveyor());
+    	addSequential(new DriveToPosition(18, .5, .5));
     	addSequential(new RunHopper());
-    	addSequential(new Wait(9));
-    	addSequential(new StopHopper());
-    	addSequential(new StopConveyor());
-    	addSequential(new StopFlywheel());
     }
 }
