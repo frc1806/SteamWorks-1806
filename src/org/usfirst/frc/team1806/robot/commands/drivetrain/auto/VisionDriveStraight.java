@@ -36,13 +36,13 @@ public class VisionDriveStraight extends Command {
     	if(Math.abs(currentAngle) > 5){
     		System.out.println(currentAngle);
     		if(Math.signum(currentAngle) == 1){
-    			Robot.driveSS.leftDrive(desiredPower + (currentAngle * .01));
+    			Robot.driveSS.leftDrive(desiredPower + (currentAngle * .02));
     			System.out.println("is it positive");
     			Robot.driveSS.rightDrive(desiredPower);
     		} else {
     			Robot.driveSS.leftDrive(desiredPower);
     			System.out.println("is negative");
-    			Robot.driveSS.rightDrive(desiredPower+ (-currentAngle * .015));
+    			Robot.driveSS.rightDrive(desiredPower+ (-currentAngle * .02));
     		}
     	}else if (Robot.driveSS.getVisionAngle() == 0.0){
     		System.out.println("ayylmao");

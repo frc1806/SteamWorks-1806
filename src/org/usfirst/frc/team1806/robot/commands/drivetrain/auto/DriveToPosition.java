@@ -31,25 +31,26 @@ public class DriveToPosition extends Command {
     protected void initialize() {
     	timer.start();
     	Robot.driveSS.rightEncoder.reset();
+    	Robot.driveSS.navx.reset();
     	Robot.driveSS.leftEncoder.reset();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	double currentAngle = Robot.driveSS.getYaw();
     	currentDisplacement = ((Robot.driveSS.rightEncoder.getDistance() / encoderValue) + Robot.driveSS.leftEncoder.getDistance() / encoderValue) / 2;
     	double error = desiredDistance - currentDisplacement;
     	if(currentDisplacement > (desiredDistance - pThreshold)){
-    		Robot.driveSS.leftDrive(error * .00005);
-    		Robot.driveSS.rightDrive(error * .00005);
+    		Robot.driveSS.autoArcadeDrive(error * .003, currentAngle * .003);
     	} else {
-        	Robot.driveSS.arcadeDrive(desiredPower, 0);
+    		Robot.driveSS.autoArcadeDrive(desiredPower, currentAngle * .003);
     	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(currentDisplacement) > Math.abs(desiredDistance) - 1 && 
-        		Math.abs(currentDisplacement) < desiredDistance + 1 || timer.get() > time;
+        return Math.abs(currentDisplacement) > Math.abs(desiredDistance) - 2 && 
+        		Math.abs(currentDisplacement) < desiredDistance + 2 || timer.get() > time;
     }
 
     // Called once after isFinished returns true

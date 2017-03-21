@@ -39,6 +39,7 @@ import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
 import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
 import org.usfirst.frc.team1806.robot.commands.red.BoilerandGear;
 import org.usfirst.frc.team1806.robot.commands.red.Center;
+import org.usfirst.frc.team1806.robot.commands.red.Hopper;
 import org.usfirst.frc.team1806.robot.commands.red.LeftSide;
 import org.usfirst.frc.team1806.robot.commands.red.RightSide;
 import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
@@ -104,12 +105,14 @@ public class Robot extends IterativeRobot {
 	    camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(640, 480);
 		camera.setFPS(30);
-		camera.setExposureManual(16);
+		camera.setExposureManual(50); //7
+		
 		chooser.addDefault("Default Wait 1", new Wait(2));
 		chooser.addObject("Red: Shoot 10 + Gear", new BoilerandGear());
 		chooser.addObject("Red: Center", new Center());
 		chooser.addObject("Red: Left", new LeftSide());
 		chooser.addObject("Red: Right", new RightSide());
+		chooser.addObject("Red: Hopper", new Hopper());
 		///
 		chooser.addObject("Blue: Shoot 10 + Gear", new BoilerToGear());
 		chooser.addObject("Blue: Center", new org.usfirst.frc.team1806.robot.commands.blue.Center());

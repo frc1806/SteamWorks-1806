@@ -108,7 +108,7 @@ public class OI {
 			}	
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION){
 			if(!Robot.driveSS.isVision){
-				new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 36).start();
+				new VisionDriveStraight(.4, Robot.driveSS.getVisionAngle(), 36).start();
 			}
 		}
 		
@@ -198,7 +198,7 @@ public class OI {
 			new StopHopper().start();
 		}
 		
-		/*
+		
 		if(requestCommands.climberRequestTracker == ClimberRequest.RUNNINGATSPEED){
 			new RunClimberAtSpeed(dLT).start();
 		} else {
@@ -217,7 +217,7 @@ public class OI {
 		} else{
 			new StopIntake().start();
 		}
-*/
+
 	}
 	public void updateButtons(){
 		//so this is pretty much where the buttons on the xbox controller get updated in the code

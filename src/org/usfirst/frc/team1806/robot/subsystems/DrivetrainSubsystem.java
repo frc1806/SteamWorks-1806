@@ -63,6 +63,10 @@ public class DrivetrainSubsystem extends Subsystem {
 		leftDrive(power + turn); //verify signs
 		rightDrive(power - turn);
 	}
+	public void autoArcadeDrive(double power, double turn){
+		leftDrive(power + turn); //verify signs
+		rightDrive((power * 1.04) - turn);
+	}
 	public void shiftHigh(){
 		shifter.set(Value.kReverse);
 	}

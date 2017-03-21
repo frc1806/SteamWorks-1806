@@ -16,7 +16,7 @@ public class TurnToAngle extends Command {
     
     //PID constants
     double kP = 0.06;
-    double kD = 0.225;
+    double kD = 0.725;
     
     //variables for PID outputs
     double Pout;

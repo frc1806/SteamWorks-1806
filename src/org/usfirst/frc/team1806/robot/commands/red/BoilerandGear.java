@@ -22,21 +22,23 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BoilerandGear extends CommandGroup {
 	
     public BoilerandGear() {
-		addSequential(new StartFlywheel());
+		//addSequential(new StartFlywheel());
 		addSequential(new Wait(1.5));
-		addParallel(new StartConveyor());
-		addParallel(new RunHopper());
+		//addParallel(new StartConveyor());
+		//addParallel(new RunHopper());
 		addSequential(new Wait(4));
-		addSequential(new StopHopper());
-		addSequential(new StopConveyor());
-		addSequential(new StopFlywheel());
+		//addSequential(new StopHopper());
+		//addSequential(new StopConveyor());
+		//addSequential(new StopFlywheel());
 		
-		addSequential(new TurnToAngle(-60, .7, 2));
-		addSequential(new DriveToPosition(46, .9, 2));
-		addSequential(new TurnToAngle(-70, .7, 2.5));
-		addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 42));
+		addSequential(new TurnToAngle(-50, .7, 2));
+		addSequential(new DriveToPosition(77, 1, 3));
+		addSequential(new TurnToAngle(-60, .7, 2.5));
+		addSequential(new VisionDriveStraight(.4, Robot.driveSS.getVisionAngle(), 42));
 		addSequential(new Shimmy());
+		addSequential(new Wait(2));
 		addSequential(new RunDrive(-.3, 0, .3));
+		addSequential(new RunDrive(.3, 0, .3));
 		addSequential(new Shimmy());
     }
 }
