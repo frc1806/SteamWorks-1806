@@ -179,7 +179,10 @@ public class OI {
 
 		//This will be where the commands actually execute from the states
 		if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.RUNNING){
-			new StartFlywheel().start();
+			if(Robot.states.shootSpeedTracker != ShootSpeed.RUNNING){
+				new StartFlywheel().start();
+
+			}
 		} else if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.STOPPED) {
 			new StopFlywheel().start();
 		}

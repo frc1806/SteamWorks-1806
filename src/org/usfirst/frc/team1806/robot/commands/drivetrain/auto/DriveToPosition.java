@@ -12,7 +12,7 @@ public class DriveToPosition extends Command {
 	int desiredDistance;
 	double desiredPower;
 	double currentDisplacement;
-	int pThreshold = 3;
+	int pThreshold = 50;
 	double stopThreshold = .25;
 	int encoderValue = 24;
 	Timer timer;
@@ -49,12 +49,13 @@ public class DriveToPosition extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(currentDisplacement) > Math.abs(desiredDistance) - 2 && 
-        		Math.abs(currentDisplacement) < desiredDistance + 2 || timer.get() > time;
+        return Math.abs(currentDisplacement - desiredDistance) <= 50 || timer.get() > time;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.driveSS.leftDrive(0);
+    	Robot.driveSS.rightDrive(0);
     }
 
     // Called when another command which requires one or more of the same

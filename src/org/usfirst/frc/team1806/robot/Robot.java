@@ -105,7 +105,7 @@ public class Robot extends IterativeRobot {
 	    camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(640, 480);
 		camera.setFPS(30);
-		camera.setExposureManual(7); //7
+		camera.setExposureManual(3); //7
 		
 		chooser.addDefault("Default Wait 1", new Wait(2));
 		chooser.addObject("Red: Shoot 10 + Gear", new BoilerandGear());
