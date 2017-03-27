@@ -24,6 +24,7 @@ public class StartFlywheel extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("it started");
     	Robot.states.shootSpeedTracker = ShootSpeed.RUNNING;
     	timer.reset();
     	timer.start();
@@ -31,24 +32,24 @@ public class StartFlywheel extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println(timer.get());
-    	if(timer.get() > .75){
-    		System.out.println("PID ");
-        	Robot.flywheelSS.setToShootingSpeed();
-    	} else{
-    		System.out.println("100%");
-    		Robot.flywheelSS.setShooterPower(-1);
-    	}
+    		if(Robot.flywheelSS.flyWheel.getSpeed() < 1750){
+    			Robot.flywheelSS.setShooterPower(-1);
+    		} else {
+        		Robot.flywheelSS.setToShootingSpeed();
+        		System.out.println("PID");	
+    		}
+
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > 1;
+        return timer.get() > 1.5;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-
+    	System.out.println("it ended");
     }
 
     // Called when another command which requires one or more of the same

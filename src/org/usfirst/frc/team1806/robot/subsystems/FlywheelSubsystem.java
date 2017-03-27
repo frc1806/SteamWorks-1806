@@ -28,7 +28,7 @@ public class FlywheelSubsystem extends Subsystem {
 		flyWheel.setProfile(0);
     	flyWheel.setInverted(false);
     	flyWheel.reverseOutput(false);
-    	flyWheel.reverseSensor(false);		
+    	flyWheel.reverseSensor(true);		
     	conveyor = new Talon(RobotMap.conveyorMotor);
 		constants = new Constants();
 
@@ -97,6 +97,12 @@ public class FlywheelSubsystem extends Subsystem {
 	public void stopConveyor(){
 		Robot.states.conveyorTracker = Conveyor.STOPPED;
 		conveyor.set(0);
+	}
+	public void magicMotion(){
+		flyWheel.setProfile(0);
+		flyWheel.changeControlMode(TalonControlMode.MotionMagic);
+		flyWheel.setMotionMagicCruiseVelocity(2300);
+		flyWheel.setMotionMagicAcceleration(2300);
 	}
 	@Override
 	protected void initDefaultCommand() {

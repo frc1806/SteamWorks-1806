@@ -11,7 +11,6 @@ import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.VisionDriveStraig
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
 import org.usfirst.frc.team1806.robot.commands.gear.ExtendGear;
-import org.usfirst.frc.team1806.robot.commands.gear.RectractGear;
 import org.usfirst.frc.team1806.robot.commands.hopper.RunHopper;
 import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
 import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
@@ -22,23 +21,21 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class BoilerandGear extends CommandGroup {
-	
-    public BoilerandGear() {
-    	addSequential(new ExtendGear());
+public class BoilerLeftGear extends CommandGroup {
+
+    public BoilerLeftGear() {
 		addSequential(new StartFlywheel());
-		addSequential(new StartConveyor());
-		addSequential(new RunHopper());
-		addSequential(new Wait(3));
+		addParallel(new StartConveyor());
+		addParallel(new RunHopper());
+		addSequential(new Wait(4));
 		addSequential(new StopHopper());
 		addSequential(new StopConveyor());
 		addSequential(new StopFlywheel());
-		addSequential(new RectractGear());
-		addSequential(new TurnToAngle(-50, .7, 2));
+		addSequential(new ExtendGear());
 		addSequential(new StartIntake());
-		addSequential(new DriveToPosition(75, 1, 1.5));
-		addSequential(new TurnToAngle(-47, .7, 2.5));
-		addSequential(new VisionDriveStraight(.45, Robot.driveSS.getVisionAngle(), 53));
+		addSequential(new DriveToPosition(-150, -1, 3));
+		addSequential(new TurnToAngle(-60, .7, 2));
+		addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 36));
 		addSequential(new Shimmy());
 		addSequential(new Wait(2));
 		addSequential(new RunDrive(-.3, 0, .3));

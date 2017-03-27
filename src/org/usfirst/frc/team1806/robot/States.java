@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1806.robot;
 
-import org.usfirst.frc.team1806.robot.subsystems.CameraSwitcher;
 
 public class States {
 	public enum IntakeStates{

@@ -39,6 +39,7 @@ import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Creep;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.ShiftLow;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.VisionandShimmy;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.RunDrive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.VisionDriveStraight;
@@ -106,12 +107,11 @@ public class OI {
 			if(!Robot.driveSS.isShimmy){
 				new Shimmy().start();
 			}	
-		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION){
+		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dB){
 			if(!Robot.driveSS.isVision){
-				new VisionDriveStraight(.4, Robot.driveSS.getVisionAngle(), 36).start();
+				new VisionDriveStraight(.25, Robot.driveSS.getVisionAngle(), 36).start();
 			}
 		}
-		
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
@@ -165,9 +165,7 @@ public class OI {
 			requestCommands.drivingRequestTracker = DrivingRequest.SEIZURE;
 		} else if(dRClick){
 			requestCommands.drivingRequestTracker = DrivingRequest.SHIMMY;
-		}else if(dLClick){
-			requestCommands.drivingRequestTracker = DrivingRequest.CREEP;
-		} else if(dB){
+		}else if(dB){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
 		}else {
 			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;
@@ -179,10 +177,8 @@ public class OI {
 
 		//This will be where the commands actually execute from the states
 		if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.RUNNING){
-			if(Robot.states.shootSpeedTracker != ShootSpeed.RUNNING){
-				new StartFlywheel().start();
-
-			}
+				//TODO Fix this
+				Robot.flywheelSS.setToShootingSpeed();
 		} else if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.STOPPED) {
 			new StopFlywheel().start();
 		}
@@ -216,7 +212,6 @@ public class OI {
 			if(Robot.states.intakeStatesTracker != IntakeStates.INTAKE){
 				new StartIntake().start();
 			}
-			System.out.println("starting command");
 		} else{
 			new StopIntake().start();
 		}

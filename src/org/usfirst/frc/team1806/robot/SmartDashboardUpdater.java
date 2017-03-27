@@ -19,7 +19,7 @@ public class SmartDashboardUpdater {
 		SmartDashboard.putDouble("Flywheel Power ", Robot.flywheelSS.getPower());
 		SmartDashboard.putDouble("Left Motor Speed", Robot.driveSS.leftMotor1.get());
 		SmartDashboard.putDouble("Right Motor Speed", Robot.driveSS.rightMotor1.get());
-		SmartDashboard.putDouble("flyWheelSpeed", Robot.flywheelSS.flyWheel.get());
+		SmartDashboard.putDouble("flyWheelSpeed", Robot.flywheelSS.flyWheel.getSpeed());
 		SmartDashboard.putDouble("Current Fly Wheel Set Speed: ", Robot.oi.constants.camCoder);
 		SmartDashboard.putDouble("Current Yaw: ", Robot.driveSS.navx.getYaw());
 		SmartDashboard.putBoolean("Current Connection State ", Robot.driveSS.navx.isConnected());

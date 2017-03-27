@@ -21,8 +21,8 @@ public class RobotMap {
 	 public static int flyWheel = 1;
 	 
 	 //for that little shifter ;)
-	 public static int shiftLow = 6;
-	 public static int shiftHigh = 7;
+	 public static int shiftLow = 7;
+	 public static int shiftHigh = 6;
 	 
 	 // intake 
 	 public static int intake = 2;

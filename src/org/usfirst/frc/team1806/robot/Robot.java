@@ -4,6 +4,7 @@ package org.usfirst.frc.team1806.robot;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Sendable;
@@ -33,10 +34,12 @@ import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.VisionDriveStraig
 import org.usfirst.frc.team1806.robot.commands.flywheel.RunFlywheelTime;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
+import org.usfirst.frc.team1806.robot.commands.gear.ExtendGear;
 import org.usfirst.frc.team1806.robot.commands.hopper.RunHopper;
 import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
 import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
 import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
+import org.usfirst.frc.team1806.robot.commands.red.BoilerLeftGear;
 import org.usfirst.frc.team1806.robot.commands.red.BoilerandGear;
 import org.usfirst.frc.team1806.robot.commands.red.Center;
 import org.usfirst.frc.team1806.robot.commands.red.Hopper;
@@ -44,7 +47,6 @@ import org.usfirst.frc.team1806.robot.commands.red.LeftSide;
 import org.usfirst.frc.team1806.robot.commands.red.RightSide;
 import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
 import org.usfirst.frc.team1806.robot.commands.sequences.Shimmy;
-import org.usfirst.frc.team1806.robot.subsystems.CameraSwitcher;
 import org.usfirst.frc.team1806.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.FlywheelSubsystem;
@@ -67,7 +69,6 @@ public class Robot extends IterativeRobot {
 	public static IntakeSubsystem intakeSS;
 	public static ClimberSubsystem climberSS;
 	public static GearHolderSubsystem gearSS;
-	public static CameraSwitcher cameraS;
 	public static NetworkTable networkTable;
 	public static OI oi;
 	public static PowerDistributionPanel pdPowerDistributionPanel;
@@ -76,7 +77,7 @@ public class Robot extends IterativeRobot {
 	//MjpegServer cameraServer = new MjpegServer("camera", 5000);
 	Command autonomousCommand;
 	SendableChooser chooser = new SendableChooser<>();
-	
+	Compressor c = new Compressor();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -86,7 +87,6 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		pdPowerDistributionPanel = new PowerDistributionPanel();
 		states = new States();
-		cameraS = new CameraSwitcher();
 		climberSS = new ClimberSubsystem();
 		driveSS = new DrivetrainSubsystem();
 		flywheelSS = new FlywheelSubsystem();
@@ -98,7 +98,6 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		
 		networkTable = NetworkTable.getTable("LiftTracker");
-		networkTable.putDouble("ayylmao", 86950346);
 		Robot.driveSS.navx.reset();
 		ss.updateValues();
 				
@@ -108,16 +107,15 @@ public class Robot extends IterativeRobot {
 		camera.setExposureManual(3); //7
 		
 		chooser.addDefault("Default Wait 1", new Wait(2));
+		
 		chooser.addObject("Red: Shoot 10 + Gear", new BoilerandGear());
 		chooser.addObject("Red: Center", new Center());
 		chooser.addObject("Red: Left", new LeftSide());
 		chooser.addObject("Red: Right", new RightSide());
 		chooser.addObject("Red: Hopper", new Hopper());
+		chooser.addObject("Red: Boiler and Left Gear", new BoilerLeftGear());
 		///
 		chooser.addObject("Blue: Shoot 10 + Gear", new BoilerToGear());
-		chooser.addObject("Blue: Center", new org.usfirst.frc.team1806.robot.commands.blue.Center());
-		chooser.addObject("Blue: Left", new org.usfirst.frc.team1806.robot.commands.blue.LeftSide());
-		chooser.addObject("Blue: Right", new org.usfirst.frc.team1806.robot.commands.blue.RightSide());
 		SmartDashboard.putData("Chooser", chooser);
 		
 	}	
@@ -179,6 +177,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		ss.updateValues();
 		Robot.states.resetStates();
+		new ExtendGear().start();
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}
@@ -190,6 +189,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		oi.update();
+		c.setClosedLoopControl(true);
 	}
 
 	/**

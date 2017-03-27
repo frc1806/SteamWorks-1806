@@ -17,15 +17,15 @@ public class GearHolderSubsystem extends Subsystem {
     // here. Call these from Commands.
 	DoubleSolenoid gearHolderL;
 	public GearHolderSubsystem() {
-		gearHolderL = new DoubleSolenoid(RobotMap.gearHolderOut, RobotMap.gearHolderIn);
+		gearHolderL = new DoubleSolenoid(RobotMap.gearHolderIn, RobotMap.gearHolderOut);
 	}
 	public void extend(){
 		Robot.states.gearTracker = GearHolder.OUT;
-		gearHolderL.set(Value.kForward);
+		gearHolderL.set(Value.kReverse);
 	}
 	public void retract(){
 		Robot.states.gearTracker = GearHolder.IN;
-		gearHolderL.set(Value.kReverse);
+		gearHolderL.set(Value.kForward);
 	}
 	
     public void initDefaultCommand() {

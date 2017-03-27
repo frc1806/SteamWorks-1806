@@ -22,9 +22,10 @@ public class ClimberSubsystem extends Subsystem {
 		if(Robot.pdPowerDistributionPanel.getCurrent(12) > max || Robot.pdPowerDistributionPanel.getCurrent(3) > max){
 			max = Robot.pdPowerDistributionPanel.getCurrent(12);
 		}
+		System.out.println(Robot.pdPowerDistributionPanel.getCurrent(12) + "  " + Robot.pdPowerDistributionPanel.getCurrent(3));
 		Robot.states.climberTracker = Climber.RUNNINGATSPEED;
 		climber.set(-power);
-		if(Robot.pdPowerDistributionPanel.getCurrent(12) > 37.5|| Robot.pdPowerDistributionPanel.getCurrent(3) > 37.5){
+		if(Robot.pdPowerDistributionPanel.getCurrent(12) > 130|| Robot.pdPowerDistributionPanel.getCurrent(3) > 130){
 			climber.set(0);
 		}
 	}

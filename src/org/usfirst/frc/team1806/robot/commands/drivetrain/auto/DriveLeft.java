@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class DriveToPosition extends Command {
-	int desiredDistance;
+public class DriveLeft extends Command {
+	double desiredDistance;
 	double desiredPower;
 	double currentDisplacement;
 	int pThreshold = 125;
@@ -17,7 +17,7 @@ public class DriveToPosition extends Command {
 	int encoderValue = 24;
 	Timer timer;
 	double time;
-    public DriveToPosition(int inches, double power, double seconds) {
+    public DriveLeft(double inches, double power, double seconds) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.driveSS);
@@ -38,18 +38,15 @@ public class DriveToPosition extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double currentAngle = Robot.driveSS.getYaw();
-    	currentDisplacement = ((Robot.driveSS.rightEncoder.getDistance() / encoderValue) + Robot.driveSS.leftEncoder.getDistance() / encoderValue) / 2;
+    	currentDisplacement = Robot.driveSS.leftEncoder.getDistance();
     	double error = desiredDistance - currentDisplacement;
-    	if(currentDisplacement > (desiredDistance - pThreshold)){
-    		Robot.driveSS.autoArcadeDrive(error * .003, -currentAngle * .003);
-    	} else {
-    		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .003);
-    	}
+    		Robot.driveSS.leftDrive(error * .03);
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(currentDisplacement - desiredDistance) <= 50 || timer.get() > time;
+        return Math.abs(currentDisplacement - desiredDistance) <= 2 || timer.get() > time;
     }
 
     // Called once after isFinished returns true

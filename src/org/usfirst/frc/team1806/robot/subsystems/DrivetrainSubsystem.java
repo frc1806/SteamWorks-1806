@@ -68,9 +68,11 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightDrive((power * 1.04) - turn);
 	}
 	public void shiftHigh(){
+		Robot.states.shifterTracker = Shifter.HIGH;
 		shifter.set(Value.kReverse);
 	}
 	public void shiftLow() {
+		Robot.states.shifterTracker = Shifter.LOW;
 		shifter.set(Value.kForward);
 	}
 	public boolean isHigh(){

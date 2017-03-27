@@ -3,6 +3,7 @@ package org.usfirst.frc.team1806.robot.commands.drivetrain;
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.States;
 import org.usfirst.frc.team1806.robot.States.Driving;
+import org.usfirst.frc.team1806.robot.States.Shifter;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -32,6 +33,8 @@ public class Drive extends Command {
     			Robot.driveSS.execute(Robot.oi.dlsY, 0);
     		} else if(Math.abs(Robot.oi.drsX) > deadZone){
     			Robot.driveSS.execute(0, Robot.oi.drsX);
+    		} else if(Math.abs(Robot.oi.dlsY) > deadZone && Math.abs(Robot.oi.drsX) > deadZone && Robot.states.shifterTracker == Shifter.HIGH){
+    			Robot.driveSS.execute(Robot.oi.dlsY, Robot.oi.drsX * .7);
     		} else {
     			Robot.driveSS.execute(0, 0);
     		}

@@ -16,14 +16,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class LeftSide extends CommandGroup {
 
     public LeftSide() {
-      	addSequential(new DriveToPosition(85, .7, 2.5));
-    	addSequential(new TurnToAngle(35, .6, 2));
-    	addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 20));
+    	addSequential(new DriveToPosition(80, .6, 2.5));
+    	addSequential(new TurnToAngle(45, .6, 2));
+    	addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 30));
     	addSequential(new DriveToPosition(8, .5, 2));
 		addSequential(new Shimmy());
 		addSequential(new Wait(2));
-		addSequential(new RunDrive(-.3, 0, .3));
-		addSequential(new RunDrive(.3, 0, .3));
+		addSequential(new RunDrive(-.3, 0, .7));
+		addSequential(new RunDrive(.3, 0, .7));
 		addSequential(new Shimmy());
     }
 }
