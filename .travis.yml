@@ -1,10 +1,3 @@
-{
-  "language": "java",
-  "script": [
-    "./gradlew"
-  ],
-  "jdk": "oraclejdk8",
-  "group": "stable",
-  "dist": "precise",
-  "os": "linux"
-}
+language: java
+jdk:
+  - oraclejdk8
