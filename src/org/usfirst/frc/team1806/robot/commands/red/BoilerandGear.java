@@ -33,16 +33,16 @@ public class BoilerandGear extends CommandGroup {
 		addSequential(new StopHopper());
 		addSequential(new StopConveyor());
 		addSequential(new StopFlywheel());
-		addSequential(new RectractGear());
-		addSequential(new TurnToAngle(-50, .7, 2));
-		addSequential(new StartIntake());
-		addSequential(new DriveToPosition(75, 1, 1.5));
-		addSequential(new TurnToAngle(-47, .7, 2.5));
-		addSequential(new VisionDriveStraight(.45, Robot.driveSS.getVisionAngle(), 53));
-		addSequential(new Shimmy());
-		addSequential(new Wait(2));
-		addSequential(new RunDrive(-.3, 0, .3));
-		addSequential(new RunDrive(.3, 0, .3));
-		addSequential(new Shimmy());
+//		addSequential(new RectractGear());
+//		addSequential(new TurnToAngle(-50, .7, 2));
+//		addSequential(new StartIntake());
+//		addSequential(new DriveToPosition(75, 1, 1.5));
+//		addSequential(new TurnToAngle(-47, .7, 2.5));
+//		addSequential(new VisionDriveStraight(.45, Robot.driveSS.getVisionAngle(), 53));
+//		addSequential(new Shimmy());
+//		addSequential(new Wait(2));
+//		addSequential(new RunDrive(-.3, 0, .3));
+//		addSequential(new RunDrive(.3, 0, .3));
+//		addSequential(new Shimmy());
     }
 }

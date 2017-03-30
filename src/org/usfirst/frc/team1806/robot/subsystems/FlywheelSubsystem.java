@@ -22,16 +22,12 @@ public class FlywheelSubsystem extends Subsystem {
 	Constants constants;
 	public FlywheelSubsystem(){
 		flyWheel = new CANTalon(RobotMap.flyWheel);
-		
-		flyWheel.setControlMode(0);
         flyWheel.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		flyWheel.setProfile(0);
-    	flyWheel.setInverted(false);
-    	flyWheel.reverseOutput(false);
-    	flyWheel.reverseSensor(true);		
+		flyWheel.setProfile(0);		
+		flyWheel.setInverted(true);
     	conveyor = new Talon(RobotMap.conveyorMotor);
 		constants = new Constants();
-
+		
 
 			}
 	public void setP(double p){
@@ -50,9 +46,11 @@ public class FlywheelSubsystem extends Subsystem {
 		flyWheel.set(500);
 	}
 	public void setToShootingSpeed(){
-		setRPMMode();
-		setShooterRPM(constants.camCoder);
+//		setRPMMode();
+		flyWheel.changeControlMode(TalonControlMode.Speed);
+		flyWheel.set(constants.camCoder);
 	}
+	
 	public boolean isAtShootingSpeed(){
 		if(getRPM() > constants.minShooterRange && getRPM() < constants.maxShooterRange){
 			return true;
@@ -101,8 +99,8 @@ public class FlywheelSubsystem extends Subsystem {
 	public void magicMotion(){
 		flyWheel.setProfile(0);
 		flyWheel.changeControlMode(TalonControlMode.MotionMagic);
-		flyWheel.setMotionMagicCruiseVelocity(2300);
-		flyWheel.setMotionMagicAcceleration(2300);
+		flyWheel.setMotionMagicCruiseVelocity(4500);
+		flyWheel.setMotionMagicAcceleration(4500);
 	}
 	@Override
 	protected void initDefaultCommand() {

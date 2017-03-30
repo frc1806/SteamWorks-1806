@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.logging.Logger;
 
 import org.usfirst.frc.team1806.robot.States.GearHolder;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
@@ -78,6 +81,8 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 	SendableChooser chooser = new SendableChooser<>();
 	Compressor c = new Compressor();
+	public static Timer matchTimer = new Timer();
+	DataLogger logger;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -176,6 +181,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		ss.updateValues();
+		matchTimer.reset();
+		matchTimer.start();
+		logger = new DataLogger();
+		logger.addTimestamp();
 		Robot.states.resetStates();
 		new ExtendGear().start();
 		if (autonomousCommand != null)
@@ -189,6 +198,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		oi.update();
+		logger.writeNewTeleopCycle();
 		c.setClosedLoopControl(true);
 	}
 
