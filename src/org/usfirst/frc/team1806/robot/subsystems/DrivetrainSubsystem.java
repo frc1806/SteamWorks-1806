@@ -131,7 +131,9 @@ public class DrivetrainSubsystem extends Subsystem {
 	    public double getVisionDistance(){
 	    	return Robot.networkTable.getDouble("distanceFromTarget");
 	    }
-	    
+	    public double getBoilerAngle(){
+	    	return Robot.boilerTable.getDouble("angleFromGoal", 0 );
+	    }
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		setDefaultCommand(new Drive());

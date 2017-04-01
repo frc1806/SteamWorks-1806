@@ -73,6 +73,7 @@ public class Robot extends IterativeRobot {
 	public static ClimberSubsystem climberSS;
 	public static GearHolderSubsystem gearSS;
 	public static NetworkTable networkTable;
+	public static NetworkTable boilerTable;
 	public static OI oi;
 	public static PowerDistributionPanel pdPowerDistributionPanel;
 	public static States states;
@@ -102,6 +103,7 @@ public class Robot extends IterativeRobot {
 		ss = new SmartDashboardUpdater();
 		oi = new OI();
 		
+		boilerTable = NetworkTable.getTable("BoilerTracker");
 		networkTable = NetworkTable.getTable("LiftTracker");
 		Robot.driveSS.navx.reset();
 		ss.updateValues();

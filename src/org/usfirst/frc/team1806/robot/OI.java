@@ -41,6 +41,7 @@ import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.VisionandShimmy;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.BoilerTurnToAngle;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.RunDrive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.VisionDriveStraight;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
@@ -112,6 +113,11 @@ public class OI {
 				new VisionDriveStraight(.25, Robot.driveSS.getVisionAngle(), 36).start();
 			}
 		}
+		else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRT > .15){
+			if(!Robot.driveSS.isVision){
+				new BoilerTurnToAngle().start();
+			}
+		}
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
@@ -167,7 +173,9 @@ public class OI {
 			requestCommands.drivingRequestTracker = DrivingRequest.SHIMMY;
 		}else if(dB){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
-		}else {
+		} else if(dRT > .15){
+			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
+		} else {
 			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;
 		}		
 
