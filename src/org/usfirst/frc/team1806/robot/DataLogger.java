@@ -73,11 +73,11 @@ public class DataLogger {
             bufferedWriter.close();
         }
         catch(IOException ex) {
-            System.out.println(
-                "failed to write to file '"
-                + fileName + "'");
-            
-            
+//            System.out.println(
+//                "failed to write to file '"
+//                + fileName + "'");
+//            
+//            
             //to prevent spam
             //will disallow any more running of the data logger
 //            Robot.statesObj.dataLogStateTracker = States.dataLogState.OFF;
@@ -90,17 +90,24 @@ public class DataLogger {
         	
        	 FileWriter fileWriter = new FileWriter(fileName, true);
        	 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+         StringBuilder sBuilder = new StringBuilder();
          
-         bufferedWriter.write( "\r\n"+"Timer:  " + Robot.matchTimer.get() + "    " + "RPM:  " + Robot.flywheelSS.flyWheel.getSpeed() + "Power: " + Robot.flywheelSS.getPower()+ "\r\n");
-
+         sBuilder.append( Robot.matchTimer.get());
+         sBuilder.append(",");
+         sBuilder.append(Robot.flywheelSS.flyWheel.getSpeed());
+         sBuilder.append(",");
+         sBuilder.append(Robot.flywheelSS.getPower());
+         sBuilder.append(",");
+         sBuilder.append("\n");
+         bufferedWriter.write(sBuilder.toString());
            // Always close files.
          bufferedWriter.close();
        }
        catch(IOException ex) {
-           System.out.println(
-               "failed to write to file '"
-               + fileName + "'");
-           
+//           System.out.println(
+//               "failed to write to file '"
+//               + fileName + "'");
+//           
        }	
 		
 	}
