@@ -42,7 +42,8 @@ import org.usfirst.frc.team1806.robot.commands.hopper.RunHopper;
 import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
 import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
 import org.usfirst.frc.team1806.robot.commands.intake.StopIntake;
-import org.usfirst.frc.team1806.robot.commands.red.BoilerLeftGear;
+import org.usfirst.frc.team1806.robot.commands.red.BoilerToCenter;
+import org.usfirst.frc.team1806.robot.commands.red.BoilerToLeft;
 import org.usfirst.frc.team1806.robot.commands.red.BoilerandGear;
 import org.usfirst.frc.team1806.robot.commands.red.Center;
 import org.usfirst.frc.team1806.robot.commands.red.Hopper;
@@ -50,6 +51,7 @@ import org.usfirst.frc.team1806.robot.commands.red.LeftSide;
 import org.usfirst.frc.team1806.robot.commands.red.RightSide;
 import org.usfirst.frc.team1806.robot.commands.sequences.SeizureMode;
 import org.usfirst.frc.team1806.robot.commands.sequences.Shimmy;
+import org.usfirst.frc.team1806.robot.subsystems.CameraSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.ClimberSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team1806.robot.subsystems.FlywheelSubsystem;
@@ -82,6 +84,7 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 	SendableChooser chooser = new SendableChooser<>();
 	Compressor c = new Compressor();
+	static CameraSubsystem cameraSS;
 	public static Timer matchTimer = new Timer();
 	DataLogger logger;
 
@@ -93,6 +96,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		pdPowerDistributionPanel = new PowerDistributionPanel();
 		states = new States();
+		cameraSS = new CameraSubsystem();
 		climberSS = new ClimberSubsystem();
 		driveSS = new DrivetrainSubsystem();
 		flywheelSS = new FlywheelSubsystem();
@@ -108,10 +112,10 @@ public class Robot extends IterativeRobot {
 		Robot.driveSS.navx.reset();
 		ss.updateValues();
 				
-	    camera = CameraServer.getInstance().startAutomaticCapture();
-		camera.setResolution(640, 480);
-		camera.setFPS(30);
-		camera.setExposureManual(3); //7
+//	    camera = CameraServer.getInstance().startAutomaticCapture();
+//		camera.setResolution(640, 480);
+//		camera.setFPS(30);
+//		camera.setExposureManual(7); //3
 		
 		chooser.addDefault("Default Wait 1", new Wait(2));
 		
@@ -120,7 +124,8 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Red: Left", new LeftSide());
 		chooser.addObject("Red: Right", new RightSide());
 		chooser.addObject("Red: Hopper", new Hopper());
-		chooser.addObject("Red: Boiler and Left Gear", new BoilerLeftGear());
+		chooser.addObject("Red: Boiler and center Gear", new BoilerToCenter());
+		chooser.addObject("Red: Boiler and Left Gear", new BoilerToLeft());
 		///
 		chooser.addObject("Blue: Shoot 10 + Gear", new BoilerToGear());
 		SmartDashboard.putData("Chooser", chooser);

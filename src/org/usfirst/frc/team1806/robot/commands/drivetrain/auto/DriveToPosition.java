@@ -12,15 +12,18 @@ public class DriveToPosition extends Command {
 	int desiredDistance;
 	double desiredPower;
 	double currentDisplacement;
-	int pThreshold = 125;
+	int pThreshold = 144;
+	
 	double stopThreshold = .25;
 	int encoderValue = 24;
 	Timer timer;
 	double time;
-    public DriveToPosition(int inches, double power, double seconds) {
+	double turn;
+    public DriveToPosition(int inches, double power, double turn, double seconds) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.driveSS);
+    	this.turn = turn;
     	desiredDistance = inches * encoderValue;
     	desiredPower = power;
     	time = seconds;
@@ -39,11 +42,14 @@ public class DriveToPosition extends Command {
     protected void execute() {
     	double currentAngle = Robot.driveSS.getYaw();
     	currentDisplacement = ((Robot.driveSS.rightEncoder.getDistance() / encoderValue) + Robot.driveSS.leftEncoder.getDistance() / encoderValue) / 2;
-    	double error = desiredDistance - currentDisplacement;
-    	if(currentDisplacement > (desiredDistance - pThreshold)){
-    		Robot.driveSS.autoArcadeDrive(error * .003, -currentAngle * .003);
+    	double error = Math.abs(desiredDistance) - Math.abs(currentDisplacement);
+    	System.out.println(error);
+    	if(error < pThreshold){
+    		Robot.driveSS.autoArcadeDrive(error * .0001, -currentAngle * .009);
     	} else {
-    		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .003);
+    		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .009);
+    		//Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .009);
+    		Robot.driveSS.autoArcadeDrive(desiredPower, turn);
     	}
     }
 

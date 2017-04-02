@@ -16,6 +16,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
@@ -33,9 +37,14 @@ public class DrivetrainSubsystem extends Subsystem {
 	public DoubleSolenoid shifter;
 	public Encoder leftEncoder;
 	public Encoder rightEncoder;
+	
+	PIDSource drivePS;
+	PIDOutput drivePO;
+	public static PIDController drivePos;
 	public boolean isShimmy = false;
 	public boolean isSeizureMode = false;
 	public boolean isVision= false;
+	public double maxSpeed = 1;
 	public DrivetrainSubsystem(){
 		rightMotor1 = new Talon(RobotMap.rightMotor);
 		leftMotor1 = new Talon(RobotMap.leftMotor);
@@ -49,7 +58,63 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightEncoder.setDistancePerPulse(24); //TODO Fix these values
 		navx = new AHRS(SPI.Port.kMXP);
 		shifter = new DoubleSolenoid(RobotMap.shiftLow, RobotMap.shiftHigh);
+
+		
+		drivePS = new PIDSource() {
+			
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {
+				// TODO Auto-generated method stub
+				setPIDSourceType(PIDSourceType.kDisplacement);
+			}
+			
+			@Override
+			public double pidGet() {
+				// TODO use two 
+				return Robot.driveSS.rightEncoder.getDistance();
+			}
+			
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				// TODO Auto-generated method stub
+				return PIDSourceType.kDisplacement;
+			}
+		};
+		drivePO = new PIDOutput() {
+			
+			@Override
+			public void pidWrite(double output) {
+				// TODO Auto-generated method stub
+				if(Math.abs(output) > maxSpeed){
+					output = maxSpeed * Math.signum(output);
+				}
+				execute(output, getYaw() * .05);
+			}
+		};
+		drivePos = new PIDController(.03, 0, 0, drivePS, drivePO);
+		drivePos.setContinuous(false);
+		drivePos.setOutputRange(-1, 1);
+		drivePos.setAbsoluteTolerance(48);
 	}
+	
+	
+	
+	
+	public void driveToPositionDisable(){
+		drivePos.reset();
+		drivePos.disable();
+	}
+	public void driveToPositionEnable(){
+		drivePos.reset();
+		drivePos.enable();
+	}
+	public void driveToSetpoint(double pos){
+		drivePos.setSetpoint(pos);
+	}
+	public boolean isDriveOnTarget(){
+		return Math.abs(drivePos.getError()) < 48;
+	}
+
 	public void execute(double power, double turn){
 		arcadeDrive(power, turn);
 	}

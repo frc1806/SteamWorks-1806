@@ -11,6 +11,7 @@ import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.VisionDriveStraig
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
 import org.usfirst.frc.team1806.robot.commands.gear.ExtendGear;
+import org.usfirst.frc.team1806.robot.commands.gear.RectractGear;
 import org.usfirst.frc.team1806.robot.commands.hopper.RunHopper;
 import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
 import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
@@ -21,25 +22,31 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class BoilerLeftGear extends CommandGroup {
+public class BoilerToCenter extends CommandGroup {
 
-    public BoilerLeftGear() {
-		addSequential(new StartFlywheel());
-		addParallel(new StartConveyor());
-		addParallel(new RunHopper());
-		addSequential(new Wait(4));
+    public BoilerToCenter() {
+    	addSequential(new ExtendGear());
+		addParallel(new StartFlywheel());
+		addSequential(new Wait(1.2));
+		addSequential(new StartConveyor());
+		addSequential(new RunHopper());
+		addSequential(new Wait(3));
 		addSequential(new StopHopper());
 		addSequential(new StopConveyor());
 		addSequential(new StopFlywheel());
-		addSequential(new ExtendGear());
+		addSequential(new RectractGear());
+		addSequential(new TurnToAngle(2.5, .25, 2));
 		addSequential(new StartIntake());
-		addSequential(new DriveToPosition(-150, -1, 3));
-		addSequential(new TurnToAngle(-60, .7, 2));
-		addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 36));
-		addSequential(new Shimmy());
-		addSequential(new Wait(2));
-		addSequential(new RunDrive(-.3, 0, .3));
-		addSequential(new RunDrive(.3, 0, .3));
+		addSequential(new DriveToPosition(-53, -.3,0, 1.5));
+		addSequential(new TurnToAngle(-90, .7, 2.5));
+    	addSequential(new RectractGear());
+    	addSequential(new DriveToPosition(30, .5,0 ,2));
+    	addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 25));
+    	addSequential(new DriveToPosition(10, .5,0 ,2));
+    	addSequential(new Shimmy());
+		addSequential(new Wait(5));
+		addSequential(new RunDrive(-.3, 0, .7));
+		addSequential(new RunDrive(.3, 0, .7));
 		addSequential(new Shimmy());
     }
 }

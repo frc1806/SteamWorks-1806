@@ -22,11 +22,11 @@ public class Hopper extends CommandGroup {
     public Hopper() {
     	addSequential(new ExtendGear());
     	addParallel(new StartFlywheel());
-    	addSequential(new DriveToPosition(-104, .7, 2));
+    	addSequential(new DriveToPosition(-104, .7, 0,2));
     	addSequential(new StartIntake());
     	addSequential(new TurnToAngle(-30, .4, 1));
     	addSequential(new StartConveyor());
-    	addSequential(new DriveToPosition(22, .5, .5));
+    	addSequential(new DriveToPosition(22, .5,0 ,.5));
     	addSequential(new RunHopper());
     }
 }

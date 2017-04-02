@@ -85,6 +85,7 @@ public class OI {
 	Latch shooterLatch = new Latch();			// This is making the latchs to update the states
 	CommandLatch seizureLatch = new CommandLatch();
 	CommandLatch bumpLatch = new CommandLatch();
+	CommandLatch cameraLatch = new CommandLatch();
 	public boolean seizureBoolean = false;
 	public void update(){
 		updateButtons();
@@ -121,6 +122,9 @@ public class OI {
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
+		if(cameraLatch.update(dX)){
+			Robot.cameraSS.update();
+		}
 		if(shifterLatch.update(dLB)){
 			requestCommands.shiferRequestTracker = ShifterRequest.HIGH;
 		} else {
@@ -135,7 +139,6 @@ public class OI {
 		
 		if(intakeLatch.update(dX)){
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.INTAKE;
-			System.out.println("updated state");
 		} else {
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.STOPPED;
 		}

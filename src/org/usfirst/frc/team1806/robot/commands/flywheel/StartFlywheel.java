@@ -32,19 +32,13 @@ public class StartFlywheel extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    		if(Robot.flywheelSS.flyWheel.getSpeed() < 1750){
-    			Robot.flywheelSS.setShooterPower(-1);
-    		} else {
-        		Robot.flywheelSS.setToShootingSpeed();
-        		System.out.println("PID");	
-    		}
-
+    	Robot.flywheelSS.setToShootingSpeed();
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > 1.5;
+        return false;
     }
 
     // Called once after isFinished returns true

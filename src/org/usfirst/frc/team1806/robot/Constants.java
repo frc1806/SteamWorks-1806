@@ -10,10 +10,10 @@ public class Constants {
 	public final static double flyWheelF = -.04375;
 	
 	// This is for the shooter RPM range, adjust this if needed
-	public final double minShooterRange = 1880;
+	public final static double minShooterRange = 4800;
 	// cam u are in the code 
-	public static double camCoder = 4800;
-	public static double maxShooterRange = 2080;
+	public static double camCoder = 4900;
+	public static double maxShooterRange = 4950;
 	
 	// This is the coast range, measure this after every change min - coast, not sure if used
 	public final static double coastRange = 345;

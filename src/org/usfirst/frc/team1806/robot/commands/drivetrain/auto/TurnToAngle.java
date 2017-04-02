@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TurnToAngle extends Command {
 	
-    int targetAngle;
+    double targetAngle;
     
     //PID constants
     double kP = 0.06;
@@ -32,7 +32,7 @@ public class TurnToAngle extends Command {
     double timeoutTaker;
     Timer timeOutTaker;
     
-    public TurnToAngle(int angle, double power, double timeout) {
+    public TurnToAngle(double angle, double power, double timeout) {
     	Robot.driveSS.navx.zeroYaw();
        	if(angle > 0) {
     		//turning clockwise
