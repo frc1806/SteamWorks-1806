@@ -129,7 +129,7 @@ public class Robot extends IterativeRobot {
 		///
 		chooser.addObject("Blue: Shoot 10 + Gear", new BoilerToGear());
 		SmartDashboard.putData("Chooser", chooser);
-		
+		Robot.cameraSS.init();
 	}	
 	
 		
@@ -206,6 +206,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		oi.update();
 		logger.writeNewTeleopCycle();
+//		System.out.println(Robot.pdPowerDistributionPanel.getCurrent(15)+ ", "+ Robot.pdPowerDistributionPanel.getCurrent(14)+ ", " + Robot.pdPowerDistributionPanel.getCurrent(13));
 		c.setClosedLoopControl(true);
 	}
 

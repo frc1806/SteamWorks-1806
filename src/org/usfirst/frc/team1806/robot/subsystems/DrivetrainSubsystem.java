@@ -37,11 +37,11 @@ public class DrivetrainSubsystem extends Subsystem {
 	public DoubleSolenoid shifter;
 	public Encoder leftEncoder;
 	public Encoder rightEncoder;
-	
 	PIDSource drivePS;
 	PIDOutput drivePO;
 	public static PIDController drivePos;
 	public boolean isShimmy = false;
+	public boolean isBoiler = false;
 	public boolean isSeizureMode = false;
 	public boolean isVision= false;
 	public double maxSpeed = 1;

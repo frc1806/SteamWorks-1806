@@ -31,6 +31,7 @@ import org.usfirst.frc.team1806.robot.States.Hopper;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.States.ShootSpeed;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
+import org.usfirst.frc.team1806.robot.commands.VisionTeleOp;
 import org.usfirst.frc.team1806.robot.commands.climber.RunClimberAtSpeed;
 import org.usfirst.frc.team1806.robot.commands.climber.StopClimber;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
@@ -109,12 +110,12 @@ public class OI {
 			if(!Robot.driveSS.isShimmy){
 				new Shimmy().start();
 			}	
-		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dB){
+		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRT > .15){
 			if(!Robot.driveSS.isVision){
-				new VisionDriveStraight(.25, Robot.driveSS.getVisionAngle(), 36).start();
+				new VisionTeleOp(.25, Robot.driveSS.getVisionAngle(), 36).start();
 			}
 		}
-		else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRT > .15){
+		else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRB){
 			if(!Robot.driveSS.isVision){
 				new BoilerTurnToAngle().start();
 			}
@@ -122,7 +123,12 @@ public class OI {
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
-		if(cameraLatch.update(dX)){
+		if(Robot.networkTable.getNumber("numberOfContours") >= 2){
+			setDriverRumble();
+		} else {
+			stopRumble();
+		}
+		if(cameraLatch.update(dStart)){
 			Robot.cameraSS.update();
 		}
 		if(shifterLatch.update(dLB)){

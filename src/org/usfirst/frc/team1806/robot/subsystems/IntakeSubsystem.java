@@ -25,7 +25,7 @@ public class IntakeSubsystem extends Subsystem {
 	}
 	public void setIntaking(){
 		states.intakeStatesTracker = IntakeStates.INTAKE;
-		intakeMotor.set(-Constants.intakeSpeed);
+		intakeMotor.set(Constants.intakeSpeed);
 	}
 	public void setOuttaking(){
 		states.intakeStatesTracker = IntakeStates.OUTTAKE;

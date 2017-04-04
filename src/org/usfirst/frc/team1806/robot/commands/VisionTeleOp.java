@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1806.robot.commands.drivetrain.auto;
+package org.usfirst.frc.team1806.robot.commands;
 
 import java.util.function.ObjDoubleConsumer;
 
@@ -10,12 +10,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class VisionDriveStraight extends Command {
+public class VisionTeleOp extends Command {
 	double desiredAngle;
 	double desiredPower;
 	double currentAngle;
 	double desiredDistance;
-    public VisionDriveStraight(double power, double vision, int distance) {
+    public VisionTeleOp(double power, double vision, int distance) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.driveSS);
@@ -54,18 +54,19 @@ public class VisionDriveStraight extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.driveSS.leftEncoder.get() > desiredDistance &&
-        		Robot.driveSS.rightEncoder.get() > desiredDistance;
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("it finished");
+    	System.out.println("vision finished ");
     	Robot.driveSS.isVision = false;
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	//new Shimmy().start();
+    	System.out.println("vision interrupted ");
     }
 }
