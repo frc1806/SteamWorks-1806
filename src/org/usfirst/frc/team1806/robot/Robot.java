@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.logging.Logger;
 
+
 import org.usfirst.frc.team1806.robot.States.GearHolder;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
@@ -46,6 +47,7 @@ import org.usfirst.frc.team1806.robot.commands.red.BoilerToCenter;
 import org.usfirst.frc.team1806.robot.commands.red.BoilerToLeft;
 import org.usfirst.frc.team1806.robot.commands.red.BoilerandGear;
 import org.usfirst.frc.team1806.robot.commands.red.Center;
+import org.usfirst.frc.team1806.robot.commands.red.GearandHopper;
 import org.usfirst.frc.team1806.robot.commands.red.Hopper;
 import org.usfirst.frc.team1806.robot.commands.red.LeftSide;
 import org.usfirst.frc.team1806.robot.commands.red.RightSide;
@@ -111,12 +113,7 @@ public class Robot extends IterativeRobot {
 		networkTable = NetworkTable.getTable("LiftTracker");
 		Robot.driveSS.navx.reset();
 		ss.updateValues();
-				
-//	    camera = CameraServer.getInstance().startAutomaticCapture();
-//		camera.setResolution(640, 480);
-//		camera.setFPS(30);
-//		camera.setExposureManual(7); //3
-		
+
 		chooser.addDefault("Default Wait 1", new Wait(2));
 		
 		chooser.addObject("Red: Shoot 10 + Gear", new BoilerandGear());
@@ -124,8 +121,9 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Red: Left", new LeftSide());
 		chooser.addObject("Red: Right", new RightSide());
 		chooser.addObject("Red: Hopper", new Hopper());
-		chooser.addObject("Red: Boiler and center Gear", new BoilerToCenter());
+		chooser.addObject("Red: Boiler and Center Gear", new BoilerToCenter());
 		chooser.addObject("Red: Boiler and Left Gear", new BoilerToLeft());
+		chooser.addObject("Red: Gear and Hopper", new GearandHopper());
 		///
 		chooser.addObject("Blue: Shoot 10 + Gear", new BoilerToGear());
 		SmartDashboard.putData("Chooser", chooser);
@@ -142,6 +140,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		ss.updateValues();
+		oi.stopRumble();
 	}
 
 	@Override
@@ -208,6 +207,10 @@ public class Robot extends IterativeRobot {
 		logger.writeNewTeleopCycle();
 //		System.out.println(Robot.pdPowerDistributionPanel.getCurrent(15)+ ", "+ Robot.pdPowerDistributionPanel.getCurrent(14)+ ", " + Robot.pdPowerDistributionPanel.getCurrent(13));
 		c.setClosedLoopControl(true);
+		if(networkTable.isConnected()){
+	    	driveSS.getLastKnownAngle();
+
+		}
 	}
 
 	/**

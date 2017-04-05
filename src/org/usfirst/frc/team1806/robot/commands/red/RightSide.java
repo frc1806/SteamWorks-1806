@@ -17,12 +17,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class RightSide extends CommandGroup {
 
     public RightSide() {
-    	addSequential(new DriveToPosition(80, .6,0 ,2.5));
+    	addSequential(new DriveToPosition(90, .7,0 ,2.5));
     	addSequential(new RectractGear());
-    	addSequential(new TurnToAngle(-45, .6, 2));
-    	addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 30));
-    	addSequential(new DriveToPosition(8, .5, 0,2));
+    	addSequential(new TurnToAngle(-37, .45, 2));
+    	addSequential(new VisionDriveStraight(.25, Robot.driveSS.getVisionAngle(), 20));
 		addSequential(new Shimmy());
+    	addSequential(new Shimmy());
 		addSequential(new Wait(2));
 		addSequential(new RunDrive(-.3, 0, .7));
 		addSequential(new RunDrive(.3, 0, .7));

@@ -112,12 +112,14 @@ public class OI {
 			}	
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRT > .15){
 			if(!Robot.driveSS.isVision){
-				new VisionTeleOp(.25, Robot.driveSS.getVisionAngle(), 36).start();
+				new VisionTeleOp(.27, Robot.driveSS.getVisionAngle(), 36).start();
 			}
-		}
-		else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRB){
+		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRClick){
 			if(!Robot.driveSS.isVision){
 				new BoilerTurnToAngle().start();
+			}
+			if(Robot.driveSS.returnCenterY()[0] < 77){
+				Robot.driveSS.arcadeDrive(.1, 0);
 			}
 		}
 		smartDashboardUpdater.updateValues();
@@ -156,7 +158,7 @@ public class OI {
 		}
 		
 
-		if(dRB){
+		if(dB){
 			requestCommands.conveyorRequestTracker = ConveyorRequest.RUNNING;
 			requestCommands.hopperRequestTracker = HopperRequest.RUNNING;
 		} else {
@@ -178,11 +180,11 @@ public class OI {
 		
 		if(dA){
 			requestCommands.drivingRequestTracker = DrivingRequest.SEIZURE;
-		} else if(dRClick){
+		} else if(dRB){
 			requestCommands.drivingRequestTracker = DrivingRequest.SHIMMY;
-		}else if(dB){
+		}else if(dRT > .15){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
-		} else if(dRT > .15){
+		}else if(dRClick){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
 		} else {
 			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;
@@ -276,8 +278,8 @@ public class OI {
 
 		}
 	public void setDriverRumble(){
-		dc.setRumble(RumbleType.kLeftRumble, 1);
-		dc.setRumble(RumbleType.kRightRumble, 1);
+		dc.setRumble(RumbleType.kLeftRumble, .2);
+		dc.setRumble(RumbleType.kRightRumble, .2);
 		//egg head vibrator
 	}
 	public void setOperatorRumble(){

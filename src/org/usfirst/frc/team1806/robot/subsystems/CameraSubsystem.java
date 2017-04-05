@@ -41,6 +41,12 @@ public class CameraSubsystem extends Subsystem {
 		switcher.setSource(cameraAtMoment);
 		System.out.println("Setting the camera" + switcher.getSource().getDescription());
 	}
+	public void setToBoilerCamera(){
+		
+	}
+	public void setToLiftCamera(){
+		
+	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());

@@ -3,6 +3,7 @@ package org.usfirst.frc.team1806.robot.commands;
 import java.util.function.ObjDoubleConsumer;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.TurnToAngle;
 import org.usfirst.frc.team1806.robot.commands.sequences.Shimmy;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,6 +16,8 @@ public class VisionTeleOp extends Command {
 	double desiredPower;
 	double currentAngle;
 	double desiredDistance;
+	boolean isFirstTime = false;
+	double lastKnownAngle = 0;
     public VisionTeleOp(double power, double vision, int distance) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -34,6 +37,8 @@ public class VisionTeleOp extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	currentAngle = Robot.driveSS.getVisionAngle();
+    	lastKnownAngle = Robot.driveSS.lastKnownAngle;
+
     	if(Math.abs(currentAngle) > 5){
     		System.out.println(currentAngle);
     		if(Math.signum(currentAngle) == 1){
@@ -50,6 +55,16 @@ public class VisionTeleOp extends Command {
     	} else {
     		Robot.driveSS.arcadeDrive(desiredPower, 0);
     	} 
+//    	if(Robot.networkTable.getNumber("numberOfContours") == 1 && currentAngle == 0){
+//    		double placeToTurn = Math.signum(lastKnownAngle);
+//    		new TurnToAngle(placeToTurn * 15, .25, .2).start();
+//    	} 
+    	if(Robot.networkTable.getNumberArray("centerX")[0] < 320 / 2 && Robot.networkTable.getNumber("numberOfContours") == 1){
+    		new TurnToAngle(15, .25, .2).start();
+    	} else if(Robot.networkTable.getNumberArray("centerX")[0] > 320 / 2 && Robot.networkTable.getNumber("numberOfContours") == 1){
+    		new TurnToAngle(-15, .25, .2).start();
+
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -68,5 +83,10 @@ public class VisionTeleOp extends Command {
     protected void interrupted() {
     	//new Shimmy().start();
     	System.out.println("vision interrupted ");
+    	if(!isFirstTime){
+    		isFirstTime = true;
+    	} else {
+    		new Shimmy().start();
+    	}
     }
 }

@@ -18,7 +18,7 @@ public class DriveToPosition extends Command {
 	int encoderValue = 24;
 	Timer timer;
 	double time;
-	double turn;
+	double turn = 0;
     public DriveToPosition(int inches, double power, double turn, double seconds) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -47,9 +47,8 @@ public class DriveToPosition extends Command {
     	if(error < pThreshold){
     		Robot.driveSS.autoArcadeDrive(error * .0001, -currentAngle * .009);
     	} else {
-    		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .009);
-    		//Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .009);
     		Robot.driveSS.autoArcadeDrive(desiredPower, turn);
+    		//Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .009);
     	}
     }
 

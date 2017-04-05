@@ -35,11 +35,12 @@ public class BoilerToGear extends CommandGroup {
 		addSequential(new StopConveyor());
 		addSequential(new StopFlywheel());
 		addSequential(new RectractGear());
-		addSequential(new TurnToAngle(50, .7, 2));
+		addSequential(new TurnToAngle(60, .7, 2));
 		addSequential(new StartIntake());
-		addSequential(new DriveToPosition(75, 1,0 ,1.5));
+		addSequential(new DriveToPosition(65, 1, 0 , 1.5));
 		addSequential(new TurnToAngle(47, .7, 2.5));
-		addSequential(new VisionDriveStraight(.45, Robot.driveSS.getVisionAngle(), 53));
+		addSequential(new VisionDriveStraight(.4, Robot.driveSS.getVisionAngle(), 13));
+		addSequential(new VisionDriveStraight(.27, Robot.driveSS.getVisionAngle(), 26));
 		addSequential(new Shimmy());
 		addSequential(new Wait(2));
 		addSequential(new RunDrive(-.3, 0, .3));

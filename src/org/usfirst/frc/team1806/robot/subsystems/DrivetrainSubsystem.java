@@ -45,6 +45,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	public boolean isSeizureMode = false;
 	public boolean isVision= false;
 	public double maxSpeed = 1;
+	public double lastKnownAngle = 0;
 	public DrivetrainSubsystem(){
 		rightMotor1 = new Talon(RobotMap.rightMotor);
 		leftMotor1 = new Talon(RobotMap.leftMotor);
@@ -190,7 +191,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	    public double getTilt(){
 	    	return Math.sqrt(Math.pow(navx.getPitch(), 2) + Math.pow(navx.getRoll(), 2));
 	    }
-	    public double getVisionAngle(){ 
+	    public double getVisionAngle(){
 	    	return Robot.networkTable.getNumber("angleFromGoal", 0);
 	    }
 	    public double getVisionDistance(){
@@ -198,6 +199,17 @@ public class DrivetrainSubsystem extends Subsystem {
 	    }
 	    public double getBoilerAngle(){
 	    	return Robot.boilerTable.getDouble("angleFromGoal", 0 );
+	    }
+	    public double[] returnCenterY(){
+	    	return Robot.boilerTable.getNumberArray("centerY");
+	    }
+	    public double getLastKnownAngle(){
+	    	if(getVisionAngle() != 0){
+	    		lastKnownAngle = getVisionAngle();
+	    	} else {
+	    		
+	    	}
+	    	return lastKnownAngle;
 	    }
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
