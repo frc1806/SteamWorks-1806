@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class XboxController extends Joystick {
-	private DriverStation _ds;
+	public static DriverStation _ds;
 	private final int _port;
 
 	// defaults the deadzone to .15 if a value is not passed in as a parameter

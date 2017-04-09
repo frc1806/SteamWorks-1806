@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands.red;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.commands.SwitchToLift;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BoilerToCenter extends CommandGroup {
 
     public BoilerToCenter() {
+    	addSequential(new SwitchToLift());
     	addSequential(new ExtendGear());
 		addParallel(new StartFlywheel());
 		addSequential(new Wait(1.2));

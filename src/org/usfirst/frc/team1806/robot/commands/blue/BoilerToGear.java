@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands.blue;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.commands.SwitchToLift;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
@@ -8,6 +9,7 @@ import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.DriveToPosition;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.RunDrive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.TurnToAngle;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.VisionDriveStraight;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.VisionTurnToAngle;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
 import org.usfirst.frc.team1806.robot.commands.gear.ExtendGear;
@@ -25,7 +27,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BoilerToGear extends CommandGroup {
 	
     public BoilerToGear() {
-    	addSequential(new ExtendGear());
+    	addSequential(new SwitchToLift());
+    	addSequential(new RectractGear()); //TODO switch back
 		addParallel(new StartFlywheel());
 		addSequential(new Wait(1.2));
 		addSequential(new StartConveyor());
@@ -35,16 +38,20 @@ public class BoilerToGear extends CommandGroup {
 		addSequential(new StopConveyor());
 		addSequential(new StopFlywheel());
 		addSequential(new RectractGear());
-		addSequential(new TurnToAngle(60, .7, 2));
+		addSequential(new TurnToAngle(64, .75, 2));
 		addSequential(new StartIntake());
-		addSequential(new DriveToPosition(65, 1, 0 , 1.5));
-		addSequential(new TurnToAngle(47, .7, 2.5));
-		addSequential(new VisionDriveStraight(.4, Robot.driveSS.getVisionAngle(), 13));
-		addSequential(new VisionDriveStraight(.27, Robot.driveSS.getVisionAngle(), 26));
+		addSequential(new DriveToPosition(75, 1, 0 , 1.5));
+		addSequential(new TurnToAngle(40, .75, 2.5));
+		addSequential(new VisionTurnToAngle(.5));
+		addSequential(new VisionDriveStraight(.27, Robot.driveSS.getVisionAngle(), 30)); //13
 		addSequential(new Shimmy());
 		addSequential(new Wait(2));
 		addSequential(new RunDrive(-.3, 0, .3));
 		addSequential(new RunDrive(.3, 0, .3));
 		addSequential(new Shimmy());
+		addSequential(new Shimmy());
+		addSequential(new Shimmy());
+		addSequential(new Shimmy());
+
     }
 }

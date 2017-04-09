@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1806.robot.commands.red;
+package org.usfirst.frc.team1806.robot.commands.blue;
 
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.commands.SwitchToLift;
@@ -20,11 +20,11 @@ public class GearandHopper extends CommandGroup {
     public GearandHopper() {
     	addSequential(new SwitchToLift());
         addSequential(new DriveToPosition(12, 1, 0, 3));
-        addSequential(new DriveToPosition(77, 1, -.40, 3));
+        addSequential(new DriveToPosition(77, 1, .40, 3));
         addSequential(new VisionDriveStraight(.25, Robot.driveSS.getVisionAngle(), 20));
         addSequential(new Wait(1));
-        addSequential(new DriveToPosition(-60, -1, -0, 2)); // First go backwards
-        addSequential(new DriveToPosition(-10, -1, -.9, 2)); // Drastic turn into hopper
+        addSequential(new DriveToPosition(-60, -1, 0, 2)); // First go backwards
+        addSequential(new DriveToPosition(-20, -1, .9, 2)); // Drastic turn into hopper
         addSequential(new DriveToPosition(14, .6, 0, 2)); // Drastic turn into hopper
     	addSequential(new ExtendGear());
 		addParallel(new StartFlywheel());

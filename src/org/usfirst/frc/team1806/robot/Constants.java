@@ -21,7 +21,7 @@ public class Constants {
 	//-------------------------- INTAKE ---------------------------------
 	public final static double intakeSpeed = .8;
 	//-------------------------- CONVEYOR ---------------------------------
-	public final static double conveyorSpeed = -1;
+	public final static double conveyorSpeed = 1;
 	
 	//-------------------------- hopper ---------------------------------
 	public final static double hopperSpeed = .6;

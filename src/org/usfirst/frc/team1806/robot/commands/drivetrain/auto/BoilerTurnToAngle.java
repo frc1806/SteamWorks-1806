@@ -26,27 +26,27 @@ public class BoilerTurnToAngle extends Command {
     	currentAngle = Robot.driveSS.getBoilerAngle();
     	if(Math.abs(currentAngle) > 3){
     		if(Math.abs(currentAngle) > 9){
-        		pOut = currentAngle * .0095;
+        		pOut = currentAngle * .005;
         		Robot.driveSS.rightDrive(pOut);
         		Robot.driveSS.leftDrive(-pOut);
-        	} else {
-        		if(Math.abs(currentAngle) < 9){
-            		if(Math.signum(currentAngle) == 1){
-            			Robot.driveSS.rightDrive(.15);
-            			Robot.driveSS.leftDrive(-.15);
-            		} else {
-            			Robot.driveSS.rightDrive(-.15);
-            			Robot.driveSS.leftDrive(.15);
-            		}
-        		} else {
-            		if(Math.signum(currentAngle) == 1){
-            			Robot.driveSS.rightDrive(.1);
-            			Robot.driveSS.leftDrive(-.1);
-            		} else {
-            			Robot.driveSS.rightDrive(-.1);
-            			Robot.driveSS.leftDrive(.1);
-            		}
-        		}
+//        	} else {
+//        		if(Math.abs(currentAngle) < 9){
+//            		if(Math.signum(currentAngle) == 1){
+//            			Robot.driveSS.rightDrive(.15);
+//            			Robot.driveSS.leftDrive(-.15);
+//            		} else {
+//            			Robot.driveSS.rightDrive(-.15);
+//            			Robot.driveSS.leftDrive(.15);
+//            		}
+//        		} else {
+//            		if(Math.signum(currentAngle) == 1){
+//            			Robot.driveSS.rightDrive(.1);
+//            			Robot.driveSS.leftDrive(-.1);
+//            		} else {
+//            			Robot.driveSS.rightDrive(-.1);
+//            			Robot.driveSS.leftDrive(.1);
+//            		}
+//        		}
 
         	}
     	}

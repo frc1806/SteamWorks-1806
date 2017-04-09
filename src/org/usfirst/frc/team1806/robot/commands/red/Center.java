@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands.red;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.commands.SwitchToLift;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.DriveToPosition;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.RunDrive;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Center extends CommandGroup {
 
     public Center() {
+    	addSequential(new SwitchToLift());
     	addSequential(new RectractGear());
     	addSequential(new DriveToPosition(30, .5,0, 2));
     	addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 25));

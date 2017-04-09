@@ -17,7 +17,7 @@ public class CameraSubsystem extends Subsystem {
 	UsbCamera cameraAtMoment;
 	public int CAMERA_WIDTH = 320;
 	public int CAMERA_HEIGHT = 240;
-	public int CAMERA_FPS = 15;
+	public int CAMERA_FPS = 25;
 
 	public CameraSubsystem() {
 		
@@ -25,13 +25,13 @@ public class CameraSubsystem extends Subsystem {
 	public void init(){
 		camera0 = new UsbCamera("cam0", 0);
 		camera1 = new UsbCamera("cam1", 1);
-		switcher = new MjpegServer("switcher", 5801);
+		switcher = new MjpegServer("switcher", 1180);
 		camera0.setResolution(CAMERA_WIDTH, CAMERA_HEIGHT);
 		camera0.setFPS(CAMERA_FPS);
-		camera0.setExposureManual(30); //3
+		camera0.setExposureManual(0); //3 // Boiler
 		camera1.setResolution(CAMERA_WIDTH, CAMERA_HEIGHT);
 		camera1.setFPS(CAMERA_FPS);
-		camera1.setExposureManual(7); //3
+		camera1.setExposureManual(0); //3 // lift
 		cameraAtMoment = camera0;
 		cameraAtMoment.setPixelFormat(PixelFormat.kMJPEG);
 		switcher.setSource(cameraAtMoment);	
@@ -42,10 +42,12 @@ public class CameraSubsystem extends Subsystem {
 		System.out.println("Setting the camera" + switcher.getSource().getDescription());
 	}
 	public void setToBoilerCamera(){
-		
+		cameraAtMoment = camera0;
+		switcher.setSource(cameraAtMoment);
 	}
 	public void setToLiftCamera(){
-		
+		cameraAtMoment = camera1;
+		switcher.setSource(cameraAtMoment);
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

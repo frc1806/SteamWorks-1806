@@ -34,7 +34,7 @@ public class Drive extends Command {
     		} else if(Math.abs(Robot.oi.drsX) > deadZone){
     			Robot.driveSS.execute(0, Robot.oi.drsX);
     		} else if(Math.abs(Robot.oi.dlsY) > deadZone && Math.abs(Robot.oi.drsX) > deadZone && Robot.states.shifterTracker == Shifter.HIGH){
-    			Robot.driveSS.execute(Robot.oi.dlsY, Robot.oi.drsX * .7);
+    			Robot.driveSS.execute(Robot.oi.dlsY, Math.pow(Robot.oi.drsX, 2));
     		} else {
     			Robot.driveSS.execute(0, 0);
     		}

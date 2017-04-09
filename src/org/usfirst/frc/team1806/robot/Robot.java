@@ -86,7 +86,7 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 	SendableChooser chooser = new SendableChooser<>();
 	Compressor c = new Compressor();
-	static CameraSubsystem cameraSS;
+	public static CameraSubsystem cameraSS;
 	public static Timer matchTimer = new Timer();
 	DataLogger logger;
 
@@ -115,17 +115,22 @@ public class Robot extends IterativeRobot {
 		ss.updateValues();
 
 		chooser.addDefault("Default Wait 1", new Wait(2));
-		
-		chooser.addObject("Red: Shoot 10 + Gear", new BoilerandGear());
-		chooser.addObject("Red: Center", new Center());
-		chooser.addObject("Red: Left", new LeftSide());
-		chooser.addObject("Red: Right", new RightSide());
+		///
+		chooser.addObject("MAIN MAIN MAIN Red: Shoot 10 + Right Gear", new BoilerandGear());
 		chooser.addObject("Red: Hopper", new Hopper());
 		chooser.addObject("Red: Boiler and Center Gear", new BoilerToCenter());
 		chooser.addObject("Red: Boiler and Left Gear", new BoilerToLeft());
 		chooser.addObject("Red: Gear and Hopper", new GearandHopper());
 		///
-		chooser.addObject("Blue: Shoot 10 + Gear", new BoilerToGear());
+		chooser.addObject("Center", new Center());
+		chooser.addObject("Left", new LeftSide());
+		chooser.addObject("Right", new RightSide());
+		///
+		chooser.addObject("MAIN MAIN MAIN Blue: Shoot 10 + Right Gear", new BoilerToGear());
+		chooser.addObject("Blue: EXPERIMENTAL Hopper ", new org.usfirst.frc.team1806.robot.commands.blue.Hopper());
+		chooser.addObject("Blue: Shoot 10 + Center", new org.usfirst.frc.team1806.robot.commands.blue.BoilerToCenter());
+		chooser.addObject("Blue: EXPERIMENTAL Gear + Hopper Shoot", new org.usfirst.frc.team1806.robot.commands.blue.GearandHopper());
+		chooser.addObject("Blue: EXPERIMENTAL Boiler + Left Side", new org.usfirst.frc.team1806.robot.commands.blue.BoilerToLeft());
 		SmartDashboard.putData("Chooser", chooser);
 		Robot.cameraSS.init();
 	}	
@@ -192,6 +197,7 @@ public class Robot extends IterativeRobot {
 		logger = new DataLogger();
 		logger.addTimestamp();
 		Robot.states.resetStates();
+		Robot.driveSS.navx.reset();
 		new ExtendGear().start();
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
@@ -205,12 +211,11 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		oi.update();
 		logger.writeNewTeleopCycle();
-//		System.out.println(Robot.pdPowerDistributionPanel.getCurrent(15)+ ", "+ Robot.pdPowerDistributionPanel.getCurrent(14)+ ", " + Robot.pdPowerDistributionPanel.getCurrent(13));
 		c.setClosedLoopControl(true);
-		if(networkTable.isConnected()){
-	    	driveSS.getLastKnownAngle();
-
-		}
+//		if(networkTable.isConnected()){
+//	    	driveSS.getLastKnownAngle();
+//
+//		}
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1806.robot.commands.red;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.commands.SwitchToLift;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.DriveToPosition;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.RunDrive;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class RightSide extends CommandGroup {
 
     public RightSide() {
+    	addSequential(new SwitchToLift());
     	addSequential(new DriveToPosition(90, .7,0 ,2.5));
     	addSequential(new RectractGear());
     	addSequential(new TurnToAngle(-37, .45, 2));

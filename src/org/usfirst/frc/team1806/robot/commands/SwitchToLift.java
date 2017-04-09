@@ -1,50 +1,36 @@
-package org.usfirst.frc.team1806.robot.commands.drivetrain.auto;
+package org.usfirst.frc.team1806.robot.commands;
 
 import org.usfirst.frc.team1806.robot.Robot;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class VisionTurnToAngle extends Command {
-	double currentAngle;
-	double pOut;
-	double time;
-	Timer timer;
-    public VisionTurnToAngle(double time) {
+public class SwitchToLift extends Command {
+
+    public SwitchToLift() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.driveSS);
-    	this.time = time;
-    	timer = new Timer();
+    	requires(Robot.cameraSS);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	timer.reset();
-    	timer.start();
+    	Robot.cameraSS.setToLiftCamera();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	currentAngle = Robot.driveSS.getVisionAngle();
-    	if(Math.abs(currentAngle) > 2){
-    		pOut = currentAngle * .035;
-    		Robot.driveSS.rightDrive(-pOut);
-    		Robot.driveSS.leftDrive(pOut);
-    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > time || Math.abs(currentAngle) < 2;
+        return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.driveSS.arcadeDrive(0, 0);
     }
 
     // Called when another command which requires one or more of the same

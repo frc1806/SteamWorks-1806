@@ -4,6 +4,7 @@ import org.usfirst.frc.team1806.robot.utils.CommandLatch;
 import org.usfirst.frc.team1806.robot.utils.Latch;
 import org.usfirst.frc.team1806.robot.utils.XboxController;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -110,17 +111,21 @@ public class OI {
 			if(!Robot.driveSS.isShimmy){
 				new Shimmy().start();
 			}	
-		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRT > .15){
+		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dY){
 			if(!Robot.driveSS.isVision){
-				new VisionTeleOp(.27, Robot.driveSS.getVisionAngle(), 36).start();
+				new VisionTeleOp(.40, Robot.driveSS.getVisionAngle(), 36).start();
 			}
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRClick){
-			if(!Robot.driveSS.isVision){
-				new BoilerTurnToAngle().start();
-			}
-			if(Robot.driveSS.returnCenterY()[0] < 77){
-				Robot.driveSS.arcadeDrive(.1, 0);
-			}
+//			Robot.cameraSS.setToBoilerCamera();
+//			if(Robot.driveSS.returnCenterY()[0] < 77){
+//				Robot.driveSS.arcadeDrive(.1, Robot.driveSS.getBoilerAngle() * .05);
+//				System.out.println("driving towards it");
+//			} else {
+				if(!Robot.driveSS.isVision){
+					new BoilerTurnToAngle().start();
+					System.out.println("turning");
+				}
+			//}
 		}
 		smartDashboardUpdater.updateValues();
 	}
@@ -130,7 +135,7 @@ public class OI {
 		} else {
 			stopRumble();
 		}
-		if(cameraLatch.update(dStart)){
+		if(cameraLatch.update(dc.getPOV() == 0)){
 			Robot.cameraSS.update();
 		}
 		if(shifterLatch.update(dLB)){
@@ -151,7 +156,7 @@ public class OI {
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.STOPPED;
 		}
 		
-		if(shooterLatch.update(dY)){
+		if(shooterLatch.update(dStart)){
 			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.RUNNING;
 		} else {
 			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.STOPPED;
@@ -182,14 +187,15 @@ public class OI {
 			requestCommands.drivingRequestTracker = DrivingRequest.SEIZURE;
 		} else if(dRB){
 			requestCommands.drivingRequestTracker = DrivingRequest.SHIMMY;
+		}else if(dY){
+			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
 		}else if(dRT > .15){
+			requestCommands.drivingRequestTracker = DrivingRequest.CREEP;
+		} else if(dRClick){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
-		}else if(dRClick){
-			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
-		} else {
+		}else {
 			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;
 		}		
-
 		
 	}
 	public void updateCommands(){

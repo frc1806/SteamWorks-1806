@@ -122,7 +122,7 @@ public class TurnToAngle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (error < 2);
+        return (error < 2) || timeOutTaker.get() > timeoutTaker;
     }
 
     // Called once after isFinished returns true
