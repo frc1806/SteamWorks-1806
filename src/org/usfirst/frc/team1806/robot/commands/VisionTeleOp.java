@@ -60,9 +60,9 @@ public class VisionTeleOp extends Command {
 //    		new TurnToAngle(placeToTurn * 15, .25, .2).start();
 //    	} 
     	if(Robot.networkTable.getNumberArray("centerX")[0] < 320 / 2 && Robot.networkTable.getNumber("numberOfContours") == 1){
-    		new TurnToAngle(15, .25, .2).start();
+    		Robot.driveSS.arcadeDrive(0, .25);
     	} else if(Robot.networkTable.getNumberArray("centerX")[0] > 320 / 2 && Robot.networkTable.getNumber("numberOfContours") == 1){
-    		new TurnToAngle(-15, .25, .2).start();
+    		Robot.driveSS.arcadeDrive(0, -.25);
 
     	}
     }

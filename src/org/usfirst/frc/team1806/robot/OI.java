@@ -113,7 +113,7 @@ public class OI {
 			}	
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dY){
 			if(!Robot.driveSS.isVision){
-				new VisionTeleOp(.40, Robot.driveSS.getVisionAngle(), 36).start();
+				new VisionTeleOp(.3, Robot.driveSS.getVisionAngle(), 36).start();
 			}
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRClick){
 //			Robot.cameraSS.setToBoilerCamera();
@@ -130,13 +130,16 @@ public class OI {
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
-		if(Robot.networkTable.getNumber("numberOfContours") >= 2){
-			setDriverRumble();
-		} else {
-			stopRumble();
-		}
+//		if(Robot.networkTable.I){
+//			if(Robot.networkTable.getNumber("numberOfContours") >= 2){
+//				setDriverRumble();
+//			} else {
+//				stopRumble();
+//			}
+//		}
+
 		if(cameraLatch.update(dc.getPOV() == 0)){
-			Robot.cameraSS.update();
+			//Robot.cameraSS.update();
 		}
 		if(shifterLatch.update(dLB)){
 			requestCommands.shiferRequestTracker = ShifterRequest.HIGH;

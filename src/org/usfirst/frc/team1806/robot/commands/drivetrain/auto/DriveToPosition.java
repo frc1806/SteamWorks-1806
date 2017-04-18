@@ -47,8 +47,11 @@ public class DriveToPosition extends Command {
     	if(error < pThreshold){
     		Robot.driveSS.autoArcadeDrive(error * .0001, -currentAngle * .009);
     	} else {
-    		Robot.driveSS.autoArcadeDrive(desiredPower, turn);
-    		//Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .009);
+    		if(turn == 0.0){
+        		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .009);
+    		} else {
+        		Robot.driveSS.autoArcadeDrive(desiredPower, turn);
+    		}
     	}
     }
 
