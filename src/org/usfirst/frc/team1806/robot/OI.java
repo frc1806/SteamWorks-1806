@@ -77,14 +77,17 @@ public class OI {
 	double olsY, orsY, oRT, oLT;
 	boolean oA, oB, oX, oY, oRB, oLB, oStart, oBack, oRsClick;
 	public boolean oPOVUp, oPOVDown;
+	public static boolean isInverse = false;
 	double maxCurrent = 0;
 	Commands requestCommands = new Commands();
+	
 	Latch intakeLatch = new Latch();
 	Latch conveyorLatch = new Latch();
 	Latch gearHolderLatch = new Latch();
 	Latch shifterLatch = new Latch();
-	CommandLatch liftTracker = new CommandLatch();
 	Latch shooterLatch = new Latch();			// This is making the latchs to update the states
+	Latch inverseLatch = new Latch();
+	CommandLatch liftTracker = new CommandLatch();
 	CommandLatch seizureLatch = new CommandLatch();
 	CommandLatch bumpLatch = new CommandLatch();
 	CommandLatch cameraLatch = new CommandLatch();
@@ -110,36 +113,30 @@ public class OI {
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.SHIMMY){
 			if(!Robot.driveSS.isShimmy){
 				new Shimmy().start();
-			}	
+			} 
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dY){
 			if(!Robot.driveSS.isVision){
 				new VisionTeleOp(.3, Robot.driveSS.getVisionAngle(), 36).start();
 			}
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRClick){
-//			Robot.cameraSS.setToBoilerCamera();
-//			if(Robot.driveSS.returnCenterY()[0] < 77){
-//				Robot.driveSS.arcadeDrive(.1, Robot.driveSS.getBoilerAngle() * .05);
-//				System.out.println("driving towards it");
-//			} else {
 				if(!Robot.driveSS.isVision){
 					new BoilerTurnToAngle().start();
 					System.out.println("turning");
 				}
-			//}
 		}
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
-//		if(Robot.networkTable.I){
-//			if(Robot.networkTable.getNumber("numberOfContours") >= 2){
-//				setDriverRumble();
-//			} else {
-//				stopRumble();
-//			}
-//		}
-
+		if(Robot.networkTable.isConnected()){
+			if(Robot.networkTable.getNumber("numberOfContours") >= 2){
+				setDriverRumble();
+			} else {
+				stopRumble();
+			}
+		}
+		
 		if(cameraLatch.update(dc.getPOV() == 0)){
-			//Robot.cameraSS.update();
+			Robot.cameraSS.update();
 		}
 		if(shifterLatch.update(dLB)){
 			requestCommands.shiferRequestTracker = ShifterRequest.HIGH;
@@ -159,33 +156,12 @@ public class OI {
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.STOPPED;
 		}
 		
-		if(shooterLatch.update(dStart)){
-			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.RUNNING;
-		} else {
-			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.STOPPED;
-		}
-		
-
-		if(dB){
-			requestCommands.conveyorRequestTracker = ConveyorRequest.RUNNING;
-			requestCommands.hopperRequestTracker = HopperRequest.RUNNING;
-		} else {
-			requestCommands.hopperRequestTracker = HopperRequest.STOPPED;
-			requestCommands.conveyorRequestTracker = ConveyorRequest.STOPPED;
-		}
-
-		if(dLT > .15){
-			requestCommands.climberRequestTracker = ClimberRequest.RUNNINGATSPEED;
-		} else {
-			requestCommands.climberRequestTracker = ClimberRequest.STOPPED;
-		}
-		
 		if(bumpLatch.update(dPOVUp)){
 			constants.camCoder += 25;
 		} else if(bumpLatch.update(dPOVDown)){
 			constants.camCoder -= 25;
 		}
-		
+		//-------------------- VISION ---------------------------//
 		if(dA){
 			requestCommands.drivingRequestTracker = DrivingRequest.SEIZURE;
 		} else if(dRB){
@@ -196,10 +172,34 @@ public class OI {
 			requestCommands.drivingRequestTracker = DrivingRequest.CREEP;
 		} else if(dRClick){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
-		}else {
+		} else if(inverseLatch.update(dB)){
+			Robot.states.drivingTracker = Driving.INVERSE;
+		} else {
 			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;
 		}		
+		//-------------------- OPERATOR ---------------------------//
 		
+
+		if(oB){
+			requestCommands.conveyorRequestTracker = ConveyorRequest.RUNNING;
+			requestCommands.hopperRequestTracker = HopperRequest.RUNNING;
+		} else {
+			requestCommands.hopperRequestTracker = HopperRequest.STOPPED;
+			requestCommands.conveyorRequestTracker = ConveyorRequest.STOPPED;
+		}
+
+		if(oLT > .15){
+			requestCommands.climberRequestTracker = ClimberRequest.RUNNINGATSPEED;
+		} else {
+			requestCommands.climberRequestTracker = ClimberRequest.STOPPED;
+		}
+		
+		
+		if(shooterLatch.update(oStart)){
+			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.RUNNING;
+		} else {
+			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.STOPPED;
+		}
 	}
 	public void updateCommands(){
 

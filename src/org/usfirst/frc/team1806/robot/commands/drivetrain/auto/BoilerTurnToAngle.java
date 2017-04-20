@@ -23,7 +23,13 @@ public class BoilerTurnToAngle extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	double oldAngle = currentAngle;
     	currentAngle = Robot.driveSS.getBoilerAngle();
+    	if(oldAngle > currentAngle + 10 || oldAngle < currentAngle - 10){
+    		currentAngle = oldAngle;
+    	} else {
+    		System.out.println("error sorry egg");
+    	}
     	if(Math.abs(currentAngle) > 3){
     		if(Math.abs(currentAngle) > 9){
         		pOut = currentAngle * .005;
