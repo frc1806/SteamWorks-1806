@@ -15,7 +15,7 @@ public class States {
 		RUNNING, IDLE, STOPPED
 	}
 	public enum Driving{
-		DRIVING,VISION,CREEP,SEIZURE,SHIMMY
+		DRIVING,VISION,CREEP,SEIZURE,SHIMMY, INVERSE
 	}
 	public enum Climber{
 		RUNNINGATSPEED, STOPPED

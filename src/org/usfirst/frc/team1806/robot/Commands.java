@@ -24,7 +24,7 @@ public class Commands {
 		RUNNING, IDLE, STOPPED
 	}
 	public enum DrivingRequest{
-		DRIVING,VISION,AIMING,CREEP,SEIZURE, SHIMMY
+		DRIVING,VISION,AIMING,CREEP,SEIZURE,SHIMMY, INVERSE
 	}
 	public enum ClimberRequest{
 		RUNNINGATSPEED, STOPPED
