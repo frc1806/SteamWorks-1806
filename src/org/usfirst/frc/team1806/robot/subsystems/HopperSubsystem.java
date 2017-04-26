@@ -15,10 +15,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class HopperSubsystem extends Subsystem {
 	public CANTalon hopperMotor;
+	//HAHA there isnt even a Hopper anymore jokes on you!
 	double desiredOutputCurrent = 2.3;
 	Timer timer = new Timer();
 	public HopperSubsystem() {
-		hopperMotor = new CANTalon(RobotMap.hopperMotor);
+		hopperMotor = new CANTalon(100);
 	}
 	
 	public void setForwardPower(){

@@ -12,7 +12,6 @@ public class RobotMap {
 	 public static int rightMotor = 1;
 	 
 	 // hopper motor
-	 public static int hopperMotor = 1;
 	 
 	 // conveyor motor
 	 public static int conveyorMotor = 3;
@@ -25,7 +24,7 @@ public class RobotMap {
 	 public static int shiftHigh = 6;
 	 
 	 // intake 
-	 public static int intake = 2;
+	 public static int intake = 1;
 	 // our two climbers
 	 public static int climber = 4;
 	 

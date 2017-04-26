@@ -26,6 +26,9 @@ public class Creep extends Command {
     protected void execute() {
     	if(Robot.states.drivingTracker == Driving.CREEP){
 			Robot.driveSS.execute(Robot.oi.dlsY /3, Robot.oi.drsX /3);
+			if(Robot.oi.inverseLatch.returnStatus()){
+				Robot.driveSS.execute(-Robot.oi.dlsY /3, Robot.oi.drsX /3);
+			}
 		}
     }
 

@@ -26,12 +26,14 @@ import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.auto.blue.BoilerToGear;
+import org.usfirst.frc.team1806.robot.commands.auto.red.ActualPoof;
 import org.usfirst.frc.team1806.robot.commands.auto.red.BoilerToCenter;
 import org.usfirst.frc.team1806.robot.commands.auto.red.BoilerToLeft;
 import org.usfirst.frc.team1806.robot.commands.auto.red.BoilerandGear;
 import org.usfirst.frc.team1806.robot.commands.auto.red.GearandHopper;
+import org.usfirst.frc.team1806.robot.commands.auto.red.Hopper;
+import org.usfirst.frc.team1806.robot.commands.auto.red.Poof;
 import org.usfirst.frc.team1806.robot.commands.auto.simple.Center;
-import org.usfirst.frc.team1806.robot.commands.auto.simple.Hopper;
 import org.usfirst.frc.team1806.robot.commands.auto.simple.LeftSide;
 import org.usfirst.frc.team1806.robot.commands.auto.simple.RightSide;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
@@ -131,8 +133,12 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Blue: Shoot 10 + Center", new org.usfirst.frc.team1806.robot.commands.auto.blue.BoilerToCenter());
 		chooser.addObject("Blue: EXPERIMENTAL Gear + Hopper Shoot", new org.usfirst.frc.team1806.robot.commands.auto.blue.GearandHopper());
 		chooser.addObject("Blue: EXPERIMENTAL Boiler + Left Side", new org.usfirst.frc.team1806.robot.commands.auto.blue.BoilerToLeft());
+		///
+		chooser.addObject("Red Poof", new Poof());
+		chooser.addObject("Red NEW Poof", new ActualPoof());
 		SmartDashboard.putData("Chooser", chooser);
 		Robot.cameraSS.init();
+		Robot.driveSS.navx.reset();
 	}	
 	
 		
@@ -212,10 +218,6 @@ public class Robot extends IterativeRobot {
 		oi.update();
 		logger.writeNewTeleopCycle();
 		c.setClosedLoopControl(true);
-//		if(networkTable.isConnected()){
-//	    	driveSS.getLastKnownAngle();
-//
-//		}
 	}
 
 	/**

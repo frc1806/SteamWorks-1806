@@ -20,7 +20,6 @@ public class RectractGear extends Command {
     protected void initialize() {
     	Robot.states.gearTracker = GearHolder.IN;
     	Robot.gearSS.extend();
-    	System.out.println("RETRACTING GEAR");
     }
 
     // Called repeatedly when this Command is scheduled to run

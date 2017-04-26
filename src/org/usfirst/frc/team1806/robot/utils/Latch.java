@@ -17,4 +17,7 @@ public class Latch {
 			}
 		return theThingToRun;
     }
+    public boolean returnStatus(){
+    	return theThingToRun;
+    }
 }

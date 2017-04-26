@@ -17,19 +17,19 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class IntakeSubsystem extends Subsystem {
 	// There isn't much here to do lmao
 	States states = new States();
-	public Talon intakeMotor;
+	public CANTalon intakeMotor;
 	Constants constants;
 	public IntakeSubsystem(){
 		constants = new Constants();
-		intakeMotor = new Talon(RobotMap.intake);
+		intakeMotor = new CANTalon(RobotMap.intake);
 	}
 	public void setIntaking(){
 		states.intakeStatesTracker = IntakeStates.INTAKE;
-		intakeMotor.set(Constants.intakeSpeed);
+		intakeMotor.set(-Constants.intakeSpeed);
 	}
 	public void setOuttaking(){
 		states.intakeStatesTracker = IntakeStates.OUTTAKE;
-		intakeMotor.set(-Constants.intakeSpeed);
+		intakeMotor.set(Constants.intakeSpeed);
 	}
 	public void stopIntake(){
 		states.intakeStatesTracker = IntakeStates.STOPPED;

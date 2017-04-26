@@ -32,6 +32,7 @@ import org.usfirst.frc.team1806.robot.States.Hopper;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.States.ShootSpeed;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
+import org.usfirst.frc.team1806.robot.commands.InverseDrive;
 import org.usfirst.frc.team1806.robot.commands.VisionTeleOp;
 import org.usfirst.frc.team1806.robot.commands.climber.RunClimberAtSpeed;
 import org.usfirst.frc.team1806.robot.commands.climber.StopClimber;
@@ -81,12 +82,13 @@ public class OI {
 	double maxCurrent = 0;
 	Commands requestCommands = new Commands();
 	
-	Latch intakeLatch = new Latch();
-	Latch conveyorLatch = new Latch();
-	Latch gearHolderLatch = new Latch();
-	Latch shifterLatch = new Latch();
-	Latch shooterLatch = new Latch();			// This is making the latchs to update the states
-	Latch inverseLatch = new Latch();
+	public Latch intakeLatch = new Latch();
+	public Latch conveyorLatch = new Latch();
+	public Latch gearHolderLatch = new Latch();
+	public Latch shifterLatch = new Latch();
+	public Latch shooterLatch = new Latch();			// This is making the latchs to update the states
+	public Latch inverseLatch = new Latch();
+	
 	CommandLatch liftTracker = new CommandLatch();
 	CommandLatch seizureLatch = new CommandLatch();
 	CommandLatch bumpLatch = new CommandLatch();
@@ -120,20 +122,24 @@ public class OI {
 			}
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRClick){
 				if(!Robot.driveSS.isVision){
-					new BoilerTurnToAngle().start();
+					new BoilerTurnToAngle(100).start();
 					System.out.println("turning");
 				}
+		} else if(requestCommands.drivingRequestTracker == DrivingRequest.INVERSE){
+			if(Robot.states.drivingTracker != States.Driving.INVERSE){
+				new InverseDrive().start();
+			}
 		}
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
-		if(Robot.networkTable.isConnected()){
-			if(Robot.networkTable.getNumber("numberOfContours") >= 2){
-				setDriverRumble();
-			} else {
-				stopRumble();
-			}
-		}
+//		if(Robot.networkTable.isConnected()){
+//			if(Robot.networkTable.getNumber("numberOfContours") >= 2){
+//				setDriverRumble();
+//			} else {
+//				stopRumble();
+//			}
+//		}
 		
 		if(cameraLatch.update(dc.getPOV() == 0)){
 			Robot.cameraSS.update();
@@ -150,7 +156,7 @@ public class OI {
 			requestCommands.gearRequestTracker = GearHolderRequest.IN;
 		}
 		
-		if(intakeLatch.update(dX)){
+		if(dLT > .15){
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.INTAKE;
 		} else {
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.STOPPED;
@@ -161,7 +167,7 @@ public class OI {
 		} else if(bumpLatch.update(dPOVDown)){
 			constants.camCoder -= 25;
 		}
-		//-------------------- VISION ---------------------------//
+		//-------------------- DRIVE STATES ---------------------------//
 		if(dA){
 			requestCommands.drivingRequestTracker = DrivingRequest.SEIZURE;
 		} else if(dRB){
@@ -169,11 +175,12 @@ public class OI {
 		}else if(dY){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
 		}else if(dRT > .15){
+			System.out.println("Stuck?");
 			requestCommands.drivingRequestTracker = DrivingRequest.CREEP;
 		} else if(dRClick){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
-		} else if(inverseLatch.update(dB)){
-			Robot.states.drivingTracker = Driving.INVERSE;
+		} else if(inverseLatch.update(dX)){
+			requestCommands.drivingRequestTracker = DrivingRequest.INVERSE;
 		} else {
 			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;
 		}		
@@ -227,7 +234,7 @@ public class OI {
 		
 		
 		if(requestCommands.climberRequestTracker == ClimberRequest.RUNNINGATSPEED){
-			new RunClimberAtSpeed(dLT).start();
+			new RunClimberAtSpeed(oLT).start();
 		} else {
 			new StopClimber().start();
 		}

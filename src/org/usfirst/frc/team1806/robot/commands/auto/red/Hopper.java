@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1806.robot.commands.auto.simple;
+package org.usfirst.frc.team1806.robot.commands.auto.red;
 
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;

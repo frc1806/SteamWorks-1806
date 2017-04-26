@@ -15,8 +15,8 @@ public class CameraSubsystem extends Subsystem {
 	boolean whichCamera = false;
 	UsbCamera camera0, camera1;
 	UsbCamera cameraAtMoment;
-	public int CAMERA_WIDTH = 320;
-	public int CAMERA_HEIGHT = 240;
+	public int CAMERA_WIDTH = 640;
+	public int CAMERA_HEIGHT = 480;
 	public int CAMERA_FPS = 25;
 
 	public CameraSubsystem() {
@@ -28,10 +28,10 @@ public class CameraSubsystem extends Subsystem {
 		switcher = new MjpegServer("switcher", 1180);
 		camera0.setResolution(CAMERA_WIDTH, CAMERA_HEIGHT);
 		camera0.setFPS(CAMERA_FPS);
-		camera0.setExposureManual(0); //3 // Boiler
+		camera0.setExposureManual(0); //3 // Boiler //top camera
 		camera1.setResolution(CAMERA_WIDTH, CAMERA_HEIGHT);
 		camera1.setFPS(CAMERA_FPS);
-		camera1.setExposureManual(0); //3 // lift
+		camera1.setExposureManual(0); //3 // lift // bottom camera
 		cameraAtMoment = camera0;
 		cameraAtMoment.setPixelFormat(PixelFormat.kMJPEG);
 		switcher.setSource(cameraAtMoment);	
