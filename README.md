@@ -20,5 +20,4 @@ http://smithvillehighrobotics.com/
 
 ## Acknowledgements
 * As always, team 1806 would like to extend a huge "Thank You" to all of the FIRST employees and volunteers, as well as mentors of both our team and ALL FIRST Teams.  
-* We would also like to extend a huge "Thank You" to our sponsors which can be found here: http://smithvillehighrobotics.com/sponsors/
-* Thanks to Fague7 of team 3019 on ChiefDelphi for writing Tower Tracker for the 2016 game which we have adapted for targeting various game objectives and has helped us in winning Innovation in Control Awards
+* We would also like to extend a huge "Thank You" to our sponsors which can be found here: http://smithvillehighrobotics.com/sponsors/ 
