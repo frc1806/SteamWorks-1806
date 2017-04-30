@@ -1,31 +1,27 @@
-package org.usfirst.frc.team1806.robot.commands.gear;
+package org.usfirst.frc.team1806.robot.commands;
 
 import org.usfirst.frc.team1806.robot.Robot;
-import org.usfirst.frc.team1806.robot.States.GearHolder;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class RectractGear extends Command {
+public class SetToLift extends Command {
 
-    public RectractGear() {
+    public SetToLift() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.gearSS);
+    	requires(Robot.cameraSS);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("EXTENDING");
-    	Robot.states.gearTracker = GearHolder.IN;
-    	Robot.gearSS.extend();
+    	Robot.cameraSS.setToLiftCamera();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

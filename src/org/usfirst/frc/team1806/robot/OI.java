@@ -4,8 +4,11 @@ import org.usfirst.frc.team1806.robot.utils.CommandLatch;
 import org.usfirst.frc.team1806.robot.utils.Latch;
 import org.usfirst.frc.team1806.robot.utils.XboxController;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -32,7 +35,7 @@ import org.usfirst.frc.team1806.robot.States.Hopper;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.States.ShootSpeed;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
-import org.usfirst.frc.team1806.robot.commands.InverseDrive;
+import org.usfirst.frc.team1806.robot.commands.VibrateForSeconds;
 import org.usfirst.frc.team1806.robot.commands.VisionTeleOp;
 import org.usfirst.frc.team1806.robot.commands.climber.RunClimberAtSpeed;
 import org.usfirst.frc.team1806.robot.commands.climber.StopClimber;
@@ -41,6 +44,7 @@ import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Creep;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.InverseDrive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.VisionandShimmy;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
@@ -64,11 +68,13 @@ import org.usfirst.frc.team1806.robot.commands.sequences.Shimmy;
  */
 
 public class OI {
+	int bits;
 	SmartDashboardUpdater smartDashboardUpdater = new SmartDashboardUpdater();
 	// controller init
 	Constants constants = new Constants();
 	XboxController dc = new XboxController(0);
 	XboxController oc = new XboxController(1);
+	DigitalInput prox = new DigitalInput(4);
 	Joystick stick = new Joystick(0);
 	States states = new States();
 	public double dlsY, drsX, dRT, dLT;
@@ -93,6 +99,7 @@ public class OI {
 	CommandLatch seizureLatch = new CommandLatch();
 	CommandLatch bumpLatch = new CommandLatch();
 	CommandLatch cameraLatch = new CommandLatch();
+	CommandLatch proxLatch = new CommandLatch();
 	public boolean seizureBoolean = false;
 	public void update(){
 		updateButtons();
@@ -133,6 +140,10 @@ public class OI {
 		smartDashboardUpdater.updateValues();
 	}
 	public void updateStates(){
+//		System.out.println(prox.get());
+		if(proxLatch.update(prox.get())){
+			new VibrateForSeconds(2).start();
+		}
 //		if(Robot.networkTable.isConnected()){
 //			if(Robot.networkTable.getNumber("numberOfContours") >= 2){
 //				setDriverRumble();
@@ -162,9 +173,9 @@ public class OI {
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.STOPPED;
 		}
 		
-		if(bumpLatch.update(dPOVUp)){
+		if(bumpLatch.update(oPOVUp)){
 			constants.camCoder += 25;
-		} else if(bumpLatch.update(dPOVDown)){
+		} else if(bumpLatch.update(oPOVDown)){
 			constants.camCoder -= 25;
 		}
 		//-------------------- DRIVE STATES ---------------------------//
@@ -175,7 +186,7 @@ public class OI {
 		}else if(dY){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
 		}else if(dRT > .15){
-			System.out.println("Stuck?");
+			System.out.println("CREEPING");
 			requestCommands.drivingRequestTracker = DrivingRequest.CREEP;
 		} else if(dRClick){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
@@ -217,13 +228,13 @@ public class OI {
 		} else if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.STOPPED) {
 			new StopFlywheel().start();
 		}
-		
+		new RectractGear().start();
 		if(requestCommands.gearRequestTracker == GearHolderRequest.IN){
 			new RectractGear().start();
 		} else if(requestCommands.gearRequestTracker == GearHolderRequest.OUT){
 			new ExtendGear().start();
 		}
-		
+//		
 		if(requestCommands.conveyorRequestTracker == ConveyorRequest.RUNNING && requestCommands.hopperRequestTracker == HopperRequest.RUNNING){
 			new StartConveyor().start();
 			new RunHopper().start();
@@ -235,6 +246,8 @@ public class OI {
 		
 		if(requestCommands.climberRequestTracker == ClimberRequest.RUNNINGATSPEED){
 			new RunClimberAtSpeed(oLT).start();
+		} else if(oA){
+			new RunClimberAtSpeed(.35).start();
 		} else {
 			new StopClimber().start();
 		}
@@ -294,8 +307,8 @@ public class OI {
 
 		}
 	public void setDriverRumble(){
-		dc.setRumble(RumbleType.kLeftRumble, .2);
-		dc.setRumble(RumbleType.kRightRumble, .2);
+		dc.setRumble(RumbleType.kLeftRumble, 1);
+		dc.setRumble(RumbleType.kRightRumble, 1);
 		//egg head vibrator
 	}
 	public void setOperatorRumble(){

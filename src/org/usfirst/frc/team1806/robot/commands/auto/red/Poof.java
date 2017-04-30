@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1806.robot.commands.auto.red;
 
+import org.usfirst.frc.team1806.robot.Constants;
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
@@ -37,7 +38,7 @@ public class Poof extends CommandGroup {
 		addSequential(new DriveToPosition(100, .8, .05, 5));
 		addSequential(new BoilerTurnToAngle(1));
 //		///////////
-		addParallel(new StartFlywheel());
+		addParallel(new StartFlywheel(Constants.camCoder));
 		addSequential(new Wait(1));
 		addSequential(new StartConveyor());
 		addSequential(new RunHopper());

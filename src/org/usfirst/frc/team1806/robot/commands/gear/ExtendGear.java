@@ -18,6 +18,7 @@ public class ExtendGear extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("RETRACTING");
     	Robot.states.gearTracker = GearHolder.OUT;
     	Robot.gearSS.retract();
     }

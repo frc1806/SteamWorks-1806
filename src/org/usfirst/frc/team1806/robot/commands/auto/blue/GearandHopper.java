@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1806.robot.commands.auto.blue;
 
+import org.usfirst.frc.team1806.robot.Constants;
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
@@ -25,7 +26,7 @@ public class GearandHopper extends CommandGroup {
         addSequential(new DriveToPosition(-20, -1, .9, 2)); // Drastic turn into hopper
         addSequential(new DriveToPosition(14, .6, 0, 2)); // Drastic turn into hopper
     	addSequential(new ExtendGear());
-		addParallel(new StartFlywheel());
+		addParallel(new StartFlywheel(Constants.camCoder));
 		addSequential(new Wait(1.2));
 		addSequential(new StartConveyor());
 		addSequential(new RunHopper());

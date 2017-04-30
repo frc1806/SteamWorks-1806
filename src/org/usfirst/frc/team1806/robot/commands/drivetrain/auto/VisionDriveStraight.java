@@ -46,7 +46,7 @@ public class VisionDriveStraight extends Command {
     			Robot.driveSS.rightDrive(desiredPower+ (-currentAngle * .022));
     		}
     	}else if (Robot.driveSS.getVisionAngle() == 0.0){
-    		System.out.println("ayylmao");
+    		System.out.println("oh shoot i cant see it");
     	} else {
     		Robot.driveSS.arcadeDrive(desiredPower, 0);
     	} 

@@ -34,6 +34,21 @@ public class VisionTurnToAngle extends Command {
     		pOut = currentAngle * .035;
     		Robot.driveSS.rightDrive(-pOut);
     		Robot.driveSS.leftDrive(pOut);
+//    	} else if(currentAngle == 0){
+//    		boolean stage1 = false;
+//    		Timer timer = new Timer();
+//    		timer.start();
+//    		if(!stage1){
+//    			if(timer.get() < .5){
+//            		Robot.driveSS.arcadeDrive(0, -.2);
+//            		if(timer.get() > .5){
+//            			stage1 = true;
+//            		}
+//        		}
+//    		} else {
+//    			Robot.driveSS.arcadeDrive(0, .2);
+//    		}
+//    		
     	}
     }
 

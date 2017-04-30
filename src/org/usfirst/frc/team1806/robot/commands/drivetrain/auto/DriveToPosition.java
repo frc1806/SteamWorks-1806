@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveToPosition extends Command {
-	int desiredDistance;
+	double desiredDistance;
 	double desiredPower;
 	double currentDisplacement;
 	int pThreshold = 144;
@@ -19,7 +19,7 @@ public class DriveToPosition extends Command {
 	Timer timer;
 	double time;
 	double turn = 0;
-    public DriveToPosition(int inches, double power, double turn, double seconds) {
+    public DriveToPosition(double inches, double power, double turn, double seconds) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.driveSS);

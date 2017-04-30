@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1806.robot.commands.auto.blue;
 
+import org.usfirst.frc.team1806.robot.Constants;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.DriveToPosition;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.TurnToAngle;
@@ -18,9 +19,8 @@ public class Hopper extends CommandGroup {
     public Hopper() {
     	// HOPPER BLUE
     	addSequential(new ExtendGear());
-    	addParallel(new StartFlywheel());
+    	addParallel(new StartFlywheel(Constants.camCoder));
     	addSequential(new DriveToPosition(-104, .7, 0,2));
-    	addSequential(new StartIntake());
     	addSequential(new TurnToAngle(30, .4, 1));
     	addSequential(new StartConveyor());
     	addSequential(new DriveToPosition(22, .5,0 ,.5));

@@ -14,11 +14,13 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class StartFlywheel extends Command {
 	Timer timer;
-    public StartFlywheel() {
+	double flyWheelSpeed;
+    public StartFlywheel(double flyWheelSpeed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.flywheelSS);
     	timer = new Timer();
+    	this.flyWheelSpeed = flyWheelSpeed;
 
     }
 
@@ -28,11 +30,18 @@ public class StartFlywheel extends Command {
     	Robot.states.shootSpeedTracker = ShootSpeed.RUNNING;
     	timer.reset();
     	timer.start();
+    	if(flyWheelSpeed < 4500){
+    		Robot.flywheelSS.flyWheel.setPID(.3, 0, .83);
+    		Robot.flywheelSS.flyWheel.setF(.0245);
+    	} else {
+    		Robot.flywheelSS.flyWheel.setPID(.45, 0, .83);
+    		Robot.flywheelSS.flyWheel.setF(.0245);
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.flywheelSS.setToShootingSpeed();
+    	Robot.flywheelSS.setShooterRPM(flyWheelSpeed);
     	
     }
 

@@ -4,6 +4,7 @@ import org.usfirst.frc.team1806.robot.Commands;
 
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.wpilibj.command.Subsystem;
 

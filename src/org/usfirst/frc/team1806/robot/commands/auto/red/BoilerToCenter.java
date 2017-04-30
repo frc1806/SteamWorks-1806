@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1806.robot.commands.auto.red;
 
+import org.usfirst.frc.team1806.robot.Constants;
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
@@ -26,7 +27,7 @@ public class BoilerToCenter extends CommandGroup {
 
     public BoilerToCenter() {
     	addSequential(new ExtendGear());
-		addParallel(new StartFlywheel());
+		addParallel(new StartFlywheel(Constants.camCoder));
 		addSequential(new Wait(1.2));
 		addSequential(new StartConveyor());
 		addSequential(new RunHopper());
@@ -35,9 +36,8 @@ public class BoilerToCenter extends CommandGroup {
 		addSequential(new StopConveyor());
 		addSequential(new StopFlywheel());
 		addSequential(new RectractGear());
-		addSequential(new TurnToAngle(2.5, .25, 2));
-		addSequential(new StartIntake());
-		addSequential(new DriveToPosition(-53, -.3,0, 1.5));
+		addSequential(new TurnToAngle(2.5, .25, .3));
+		addSequential(new DriveToPosition(-53, -.5,0, 1.5));
 		addSequential(new TurnToAngle(-90, .7, 2.5));
     	addSequential(new RectractGear());
     	addSequential(new DriveToPosition(30, .5,0 ,2));

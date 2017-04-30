@@ -1,40 +1,45 @@
-package org.usfirst.frc.team1806.robot.commands.gear;
+package org.usfirst.frc.team1806.robot.commands;
+
+import java.util.function.ObjDoubleConsumer;
 
 import org.usfirst.frc.team1806.robot.Robot;
-import org.usfirst.frc.team1806.robot.States.GearHolder;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class RectractGear extends Command {
-
-    public RectractGear() {
+public class VibrateForSeconds extends Command {
+	double ayy;
+	Timer timer;
+    public VibrateForSeconds(double time) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.gearSS);
+    	ayy = time;
+    	timer = new Timer();
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("EXTENDING");
-    	Robot.states.gearTracker = GearHolder.IN;
-    	Robot.gearSS.extend();
+    	timer.reset();
+    	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	Robot.oi.setDriverRumble();
+    	Robot.oi.setOperatorRumble();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return timer.get() > ayy;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.oi.stopRumble();
     }
 
     // Called when another command which requires one or more of the same

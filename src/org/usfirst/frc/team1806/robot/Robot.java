@@ -49,6 +49,7 @@ import org.usfirst.frc.team1806.robot.commands.flywheel.RunFlywheelTime;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StartFlywheel;
 import org.usfirst.frc.team1806.robot.commands.flywheel.StopFlywheel;
 import org.usfirst.frc.team1806.robot.commands.gear.ExtendGear;
+import org.usfirst.frc.team1806.robot.commands.gear.RectractGear;
 import org.usfirst.frc.team1806.robot.commands.hopper.RunHopper;
 import org.usfirst.frc.team1806.robot.commands.hopper.StopHopper;
 import org.usfirst.frc.team1806.robot.commands.intake.StartIntake;
@@ -136,6 +137,8 @@ public class Robot extends IterativeRobot {
 		///
 		chooser.addObject("Red Poof", new Poof());
 		chooser.addObject("Red NEW Poof", new ActualPoof());
+		chooser.addObject("Blue Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.Poof());
+		chooser.addObject("Blue NEW Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.ActualPoof());
 		SmartDashboard.putData("Chooser", chooser);
 		Robot.cameraSS.init();
 		Robot.driveSS.navx.reset();
@@ -201,10 +204,11 @@ public class Robot extends IterativeRobot {
 		matchTimer.reset();
 		matchTimer.start();
 		logger = new DataLogger();
+		new RectractGear().start();
 		logger.addTimestamp();
 		Robot.states.resetStates();
 		Robot.driveSS.navx.reset();
-		new ExtendGear().start();
+		new RectractGear().start();
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}

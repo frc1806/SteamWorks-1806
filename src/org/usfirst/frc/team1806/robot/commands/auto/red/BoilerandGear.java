@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1806.robot.commands.auto.red;
 
+import org.usfirst.frc.team1806.robot.Constants;
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
@@ -27,7 +28,7 @@ public class BoilerandGear extends CommandGroup {
 	
     public BoilerandGear() {
     	addSequential(new RectractGear()); //TODO switch back
-		addParallel(new StartFlywheel());
+		addParallel(new StartFlywheel(Constants.camCoder));
 		addSequential(new Wait(1.2));
 		addSequential(new StartConveyor());
 		addSequential(new RunHopper());
@@ -37,18 +38,14 @@ public class BoilerandGear extends CommandGroup {
 		addSequential(new StopFlywheel());
 		addSequential(new RectractGear());
 		addSequential(new TurnToAngle(-64, .75, 2));
-		addSequential(new StartIntake());
-		addSequential(new DriveToPosition(75, 1, 0 , 1.5));
-		addSequential(new TurnToAngle(-30, .75, 2.5));
+		addSequential(new DriveToPosition(67, 1, 0 , 1.5));
+		addSequential(new TurnToAngle(-37, .75, 2.5));
 		addSequential(new VisionTurnToAngle(.5));
 		addSequential(new VisionDriveStraight(.27, Robot.driveSS.getVisionAngle(), 30)); //13
 		addSequential(new Shimmy());
-		addSequential(new Wait(2));
-		addSequential(new RunDrive(-.3, 0, .3));
-		addSequential(new RunDrive(.3, 0, .3));
-		addSequential(new Shimmy());
-		addSequential(new Shimmy());
-		addSequential(new Shimmy());
+		addSequential(new Wait(1));
+		addSequential(new RunDrive(-.3, 0, .6));
+		addSequential(new RunDrive(.3, 0, .6));
 		addSequential(new Shimmy());
     }
 }

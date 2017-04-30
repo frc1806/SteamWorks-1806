@@ -56,7 +56,7 @@ public class Commands {
 		shiferRequestTracker = ShifterRequest.LOW;
 		drivingRequestTracker = DrivingRequest.DRIVING;
 		shootSpeedRequestTracker = ShootSpeedRequest.STOPPED;
-		gearRequestTracker = GearHolderRequest.OUT;
+		gearRequestTracker = GearHolderRequest.IN;
 		cameraRequestTracker = CameraTypeRequest.LIFT;
 	}
 }

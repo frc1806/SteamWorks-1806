@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1806.robot.commands.auto.red;
 
+import org.usfirst.frc.team1806.robot.Constants;
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
@@ -24,7 +25,7 @@ public class BoilerToLeft extends CommandGroup {
 
     public BoilerToLeft() {
     	addSequential(new ExtendGear());
-		addParallel(new StartFlywheel());
+		addParallel(new StartFlywheel(Constants.camCoder));
 		addSequential(new Wait(1.2));
 		addSequential(new StartConveyor());
 		addSequential(new RunHopper());
