@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class CameraSubsystem extends Subsystem {
 	MjpegServer switcher;
 	boolean whichCamera = false;
-	UsbCamera camera0, camera1;
+	public UsbCamera camera0, camera1;
 	UsbCamera cameraAtMoment;
 	public int CAMERA_WIDTH = 640;
 	public int CAMERA_HEIGHT = 480;
@@ -36,6 +36,11 @@ public class CameraSubsystem extends Subsystem {
 		cameraAtMoment = camera0;
 		cameraAtMoment.setPixelFormat(PixelFormat.kMJPEG);
 		switcher.setSource(cameraAtMoment);	
+	}
+	public void reset(){
+		camera1.setExposureManual(0); //3 // lift // bottom camera
+		camera0.setExposureManual(0); //3 // Boiler //top camera
+
 	}
 	public void update(){
 		cameraAtMoment = ((cameraAtMoment == camera0) ? camera1 : camera0);

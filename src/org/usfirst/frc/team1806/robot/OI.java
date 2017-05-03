@@ -137,10 +137,13 @@ public class OI {
 				new InverseDrive().start();
 			}
 		}
-		smartDashboardUpdater.updateValues();
+		if(requestCommands.gearRequestTracker == GearHolderRequest.IN){
+			new ExtendGear().start();
+		} else {
+			new RectractGear().start();
+		}
 	}
 	public void updateStates(){
-//		System.out.println(prox.get());
 		if(proxLatch.update(prox.get())){
 			new VibrateForSeconds(2).start();
 		}
@@ -162,9 +165,9 @@ public class OI {
 		}
 		
 		if(gearHolderLatch.update(dBack)){
-			requestCommands.gearRequestTracker = GearHolderRequest.OUT;
-		} else {
 			requestCommands.gearRequestTracker = GearHolderRequest.IN;
+		} else {
+			requestCommands.gearRequestTracker = GearHolderRequest.OUT;
 		}
 		
 		if(dLT > .15){
@@ -224,11 +227,10 @@ public class OI {
 		//This will be where the commands actually execute from the states
 		if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.RUNNING){
 				//TODO Fix this
-				Robot.flywheelSS.setToShootingSpeed();
+				new StartFlywheel(constants.camCoder);
 		} else if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.STOPPED) {
 			new StopFlywheel().start();
 		}
-		new RectractGear().start();
 		if(requestCommands.gearRequestTracker == GearHolderRequest.IN){
 			new RectractGear().start();
 		} else if(requestCommands.gearRequestTracker == GearHolderRequest.OUT){

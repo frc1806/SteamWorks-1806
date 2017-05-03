@@ -155,6 +155,7 @@ public class Robot extends IterativeRobot {
 	public void disabledInit() {
 		ss.updateValues();
 		oi.stopRumble();
+		cameraSS.reset();
 	}
 
 	@Override
@@ -203,12 +204,12 @@ public class Robot extends IterativeRobot {
 		ss.updateValues();
 		matchTimer.reset();
 		matchTimer.start();
+		cameraSS.camera0.setExposureAuto();
+		cameraSS.camera1.setExposureAuto();
 		logger = new DataLogger();
-		new RectractGear().start();
 		logger.addTimestamp();
 		Robot.states.resetStates();
 		Robot.driveSS.navx.reset();
-		new RectractGear().start();
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}
@@ -218,6 +219,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		ss.updateValues();
 		Scheduler.getInstance().run();
 		oi.update();
 		logger.writeNewTeleopCycle();

@@ -25,8 +25,6 @@ public class SmartDashboardUpdater {
 		SmartDashboard.putBoolean("Current Connection State ", Robot.driveSS.navx.isConnected());
 		SmartDashboard.putInt("Left Encoder: ", Robot.driveSS.leftEncoder.get());
 		SmartDashboard.putInt("Right Encoder: ", Robot.driveSS.rightEncoder.get());
-		SmartDashboard.putDouble("Right Rate Encoder: ", Robot.driveSS.rightEncoder.getRate());
-		SmartDashboard.putDouble("Left Rate Encoder: ", Robot.driveSS.leftEncoder.getRate());
 		SmartDashboard.putBoolean("Is Seizuring: ", Robot.driveSS.isSeizureMode);
 		SmartDashboard.putBoolean("Is Shimmy: ", Robot.driveSS.isShimmy);
 		SmartDashboard.putBoolean("Is Aimed", Math.abs(Robot.flywheelSS.flyWheel.getSpeed()) < Constants.maxShooterRange && Math.abs(Robot.driveSS.getBoilerAngle()) > Constants.minShooterRange);

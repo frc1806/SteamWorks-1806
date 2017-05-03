@@ -18,7 +18,6 @@ public class RectractGear extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("EXTENDING");
     	Robot.states.gearTracker = GearHolder.IN;
     	Robot.gearSS.extend();
     }

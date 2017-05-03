@@ -30,12 +30,15 @@ public class StartFlywheel extends Command {
     	Robot.states.shootSpeedTracker = ShootSpeed.RUNNING;
     	timer.reset();
     	timer.start();
-    	if(flyWheelSpeed < 4500){
-    		Robot.flywheelSS.flyWheel.setPID(.3, 0, .83);
-    		Robot.flywheelSS.flyWheel.setF(.0245);
-    	} else {
+    	if(flyWheelSpeed > 4500){
     		Robot.flywheelSS.flyWheel.setPID(.45, 0, .83);
     		Robot.flywheelSS.flyWheel.setF(.0245);
+    	} else if(flyWheelSpeed > 4000 && flyWheelSpeed < 4500) {
+    		Robot.flywheelSS.flyWheel.setPID(.3, 0, .83);
+    		Robot.flywheelSS.flyWheel.setF(.0245);
+    	} else if(flyWheelSpeed < 4000 && flyWheelSpeed > 3500){
+    		Robot.flywheelSS.flyWheel.setF(.0199);
+
     	}
     }
 
