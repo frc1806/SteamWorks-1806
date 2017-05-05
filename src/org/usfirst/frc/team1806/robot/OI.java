@@ -123,10 +123,10 @@ public class OI {
 			if(!Robot.driveSS.isShimmy){
 				new Shimmy().start();
 			} 
-		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dY){
-			if(!Robot.driveSS.isVision){
-				new VisionTeleOp(.3, Robot.driveSS.getVisionAngle(), 36).start();
-			}
+//		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dY){
+//			if(!Robot.driveSS.isVision){
+//				new VisionTeleOp(.3, Robot.driveSS.getVisionAngle(), 36).start();
+//			}
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRClick){
 				if(!Robot.driveSS.isVision){
 					new BoilerTurnToAngle(100).start();
@@ -186,10 +186,10 @@ public class OI {
 			requestCommands.drivingRequestTracker = DrivingRequest.SEIZURE;
 		} else if(dRB){
 			requestCommands.drivingRequestTracker = DrivingRequest.SHIMMY;
-		}else if(dY){
-			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
-		}else if(dRT > .15){
-			System.out.println("CREEPING");
+//		}else if(dY){
+//			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
+		}
+			else if(dRT > .15){
 			requestCommands.drivingRequestTracker = DrivingRequest.CREEP;
 		} else if(dRClick){
 			requestCommands.drivingRequestTracker = DrivingRequest.VISION;
@@ -201,7 +201,7 @@ public class OI {
 		//-------------------- OPERATOR ---------------------------//
 		
 
-		if(oB){
+		if(dB){
 			requestCommands.conveyorRequestTracker = ConveyorRequest.RUNNING;
 			requestCommands.hopperRequestTracker = HopperRequest.RUNNING;
 		} else {
@@ -216,7 +216,7 @@ public class OI {
 		}
 		
 		
-		if(shooterLatch.update(oStart)){
+		if(shooterLatch.update(dY)){
 			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.RUNNING;
 		} else {
 			requestCommands.shootSpeedRequestTracker = ShootSpeedRequest.STOPPED;
