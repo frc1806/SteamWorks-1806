@@ -227,7 +227,7 @@ public class OI {
 		//This will be where the commands actually execute from the states
 		if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.RUNNING){
 				//TODO Fix this
-				new StartFlywheel(constants.camCoder);
+				Robot.flywheelSS.setShooterRPM(constants.camCoder);
 		} else if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.STOPPED) {
 			new StopFlywheel().start();
 		}
