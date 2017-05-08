@@ -176,9 +176,9 @@ public class OI {
 			requestCommands.intakeRequestTracker = IntakeStatesRequest.STOPPED;
 		}
 		
-		if(bumpLatch.update(oPOVUp)){
+		if(bumpLatch.update(dPOVUp)){
 			constants.camCoder += 25;
-		} else if(bumpLatch.update(oPOVDown)){
+		} else if(bumpLatch.update(dPOVDown)){
 			constants.camCoder -= 25;
 		}
 		//-------------------- DRIVE STATES ---------------------------//

@@ -219,6 +219,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		networkTable.putDouble("timer", matchTimer.get());
 		ss.updateValues();
 		Scheduler.getInstance().run();
 		oi.update();
