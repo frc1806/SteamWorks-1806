@@ -222,6 +222,7 @@ public class Robot extends IterativeRobot {
 		ss.updateValues();
 		Scheduler.getInstance().run();
 		oi.update();
+		SmartDashboard.putDouble("MATCH TIMER!!!!", 135 - matchTimer.get());
 		logger.writeNewTeleopCycle();
 		c.setClosedLoopControl(true);
 	}
@@ -233,4 +234,5 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 	}
+	//If robot is on, be good, also BE SAF - safty captan, also break titanium LOLOLOLOLOLOLOLOLOLOLOLOL
 }

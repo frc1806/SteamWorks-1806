@@ -144,6 +144,7 @@ public class OI {
 		}
 	}
 	public void updateStates(){
+		System.out.println(prox.get());
 		if(proxLatch.update(prox.get())){
 			new VibrateForSeconds(2).start();
 		}

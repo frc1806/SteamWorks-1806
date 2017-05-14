@@ -32,7 +32,7 @@ public class BoilerandGear extends CommandGroup {
 		addSequential(new Wait(1.2));
 		addSequential(new StartConveyor());
 		addSequential(new RunHopper());
-		addSequential(new Wait(3));
+		addSequential(new Wait(2.5));
 		addSequential(new StopHopper());
 		addSequential(new StopConveyor());
 		addSequential(new StopFlywheel());
