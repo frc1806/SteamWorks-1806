@@ -204,8 +204,8 @@ public class Robot extends IterativeRobot {
 		ss.updateValues();
 		matchTimer.reset();
 		matchTimer.start();
-		cameraSS.camera0.setExposureAuto();
-		cameraSS.camera1.setExposureAuto();
+//		cameraSS.camera0.setExposureAuto();
+//		cameraSS.camera1.setExposureAuto();
 		logger = new DataLogger();
 		logger.addTimestamp();
 		Robot.states.resetStates();

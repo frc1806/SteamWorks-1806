@@ -46,7 +46,6 @@ import org.usfirst.frc.team1806.robot.commands.drivetrain.Creep;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.Drive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.InverseDrive;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.ShiftLow;
-import org.usfirst.frc.team1806.robot.commands.drivetrain.VisionandShimmy;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.BoilerTurnToAngle;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.RunDrive;
@@ -148,13 +147,6 @@ public class OI {
 		if(proxLatch.update(prox.get())){
 			new VibrateForSeconds(2).start();
 		}
-//		if(Robot.networkTable.isConnected()){
-//			if(Robot.networkTable.getNumber("numberOfContours") >= 2){
-//				setDriverRumble();
-//			} else {
-//				stopRumble();
-//			}
-//		}
 		
 		if(cameraLatch.update(dc.getPOV() == 0)){
 			Robot.cameraSS.update();
@@ -250,8 +242,10 @@ public class OI {
 		if(requestCommands.climberRequestTracker == ClimberRequest.RUNNINGATSPEED){
 			new RunClimberAtSpeed(oLT).start();
 		} else if(oA){
-			new RunClimberAtSpeed(.35).start();
-		} else {
+			new RunClimberAtSpeed(.35).start(); //TODO: Change this back
+		} else if(oX){
+			new RunClimberAtSpeed(.15).start();
+		}else {
 			new StopClimber().start();
 		}
 		if(requestCommands.shiferRequestTracker == ShifterRequest.HIGH){
