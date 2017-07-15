@@ -45,6 +45,8 @@ public class DrivetrainSubsystem extends Subsystem {
 	public boolean isSeizureMode = false;
 	public boolean isVision= false;
 	public double maxSpeed = 1;
+	public double oldAngle = 0;
+	public double currentAngle = 0;
 	public double lastKnownAngle = 0;
 	public DrivetrainSubsystem(){
 		rightMotor1 = new Talon(RobotMap.rightMotor);
@@ -192,7 +194,9 @@ public class DrivetrainSubsystem extends Subsystem {
 	    	return Math.sqrt(Math.pow(navx.getPitch(), 2) + Math.pow(navx.getRoll(), 2));
 	    }
 	    public double getVisionAngle(){
-	    	return Robot.networkTable.getNumber("angleFromGoal", 0);
+	    	oldAngle = currentAngle;
+	    	currentAngle = Robot.networkTable.getNumber("angleFromGoal", 0);
+	    	return currentAngle;
 	    }
 	    public double getVisionDistance(){
 	    	return Robot.networkTable.getDouble("distanceFromTarget");
@@ -204,10 +208,10 @@ public class DrivetrainSubsystem extends Subsystem {
 	    	return Robot.boilerTable.getNumberArray("centerY");
 	    }
 	    public double getLastKnownAngle(){
-	    	if(getVisionAngle() != 0){
-	    		lastKnownAngle = getVisionAngle();
+	    	if(currentAngle == 0 && oldAngle !=0) {
+	    		lastKnownAngle = oldAngle;
 	    	} else {
-	    		
+	    		System.out.println("you really jacked up here chris");
 	    	}
 	    	return lastKnownAngle;
 	    }

@@ -6,6 +6,7 @@ import org.usfirst.frc.team1806.robot.States;
 import org.usfirst.frc.team1806.robot.Commands.DrivingRequest;
 import org.usfirst.frc.team1806.robot.States.Driving;
 import org.usfirst.frc.team1806.robot.States.Shifter;
+import org.usfirst.frc.team1806.robot.commands.VibrateForSeconds;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -28,6 +29,7 @@ public class InverseDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	new VibrateForSeconds(.3, 1).start();
 		if(states.drivingTracker == Driving.INVERSE){
     		if(Math.abs(Robot.oi.dlsY) > deadZone && Math.abs(Robot.oi.drsX) > deadZone){
     			Robot.driveSS.execute(-Robot.oi.dlsY, Robot.oi.drsX);

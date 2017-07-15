@@ -15,7 +15,6 @@ public class SmartDashboardUpdater {
 		SmartDashboard.putDouble("Flywheel p", Robot.flywheelSS.flyWheel.getP());
 		SmartDashboard.putDouble("Flywheel I", Robot.flywheelSS.flyWheel.getI());
 		SmartDashboard.putDouble("Flywheel D", Robot.flywheelSS.flyWheel.getD());
-		SmartDashboard.putDouble("Max Current Draw", Robot.oi.maxCurrent);
 		SmartDashboard.putDouble("Flywheel Power ", Robot.flywheelSS.getPower());
 		SmartDashboard.putDouble("Left Motor Speed", Robot.driveSS.leftMotor1.get());
 		SmartDashboard.putDouble("Right Motor Speed", Robot.driveSS.rightMotor1.get());

@@ -69,12 +69,15 @@ public class DriveToPosition extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	System.out.println("Done going to distance");
     	Robot.driveSS.leftDrive(0);
     	Robot.driveSS.rightDrive(0);
+    	Robot.driveSS.navx.reset();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.driveSS.navx.reset();
     }
 }

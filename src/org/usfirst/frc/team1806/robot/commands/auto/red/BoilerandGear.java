@@ -38,8 +38,8 @@ public class BoilerandGear extends CommandGroup {
 		addSequential(new StopFlywheel());
 		addSequential(new RectractGear());
 		addSequential(new TurnToAngle(-64, .75, 2));
-		addSequential(new DriveToPosition(67, 1, 0 , 1.5));
-		addSequential(new TurnToAngle(-37, .75, 2.5));
+		addSequential(new DriveToPosition(78, 1, 0 , 1.5));
+		addSequential(new TurnToAngle(-40, .75, 2.5));
 		addSequential(new VisionTurnToAngle(.5));
 		addSequential(new VisionDriveStraight(.27, Robot.driveSS.getVisionAngle(), 30)); //13
 		addSequential(new Shimmy());

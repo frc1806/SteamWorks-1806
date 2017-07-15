@@ -39,9 +39,9 @@ public class BoilerTurnToAngle extends Command {
     	if(toPosition){
         	if(Math.abs(currentAngle) > 3){
         		if(Math.abs(currentAngle) > 11){
-            		pOut = currentAngle * .008;
-            		if(pOut > .4){
-            			pOut = .4;
+            		pOut = currentAngle * .006;
+            		if(pOut > .3){
+            			pOut = .3;
             		}
             		System.out.println(pOut);
             		Robot.driveSS.rightDrive(pOut);

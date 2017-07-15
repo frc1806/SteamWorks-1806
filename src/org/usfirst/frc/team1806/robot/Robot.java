@@ -222,6 +222,7 @@ public class Robot extends IterativeRobot {
 		ss.updateValues();
 		Scheduler.getInstance().run();
 		oi.update();
+		System.out.println(Robot.flywheelSS.flyWheel.getSpeed());
 		SmartDashboard.putDouble("MATCH TIMER!!!!", 135 - matchTimer.get());
 		logger.writeNewTeleopCycle();
 		c.setClosedLoopControl(true);

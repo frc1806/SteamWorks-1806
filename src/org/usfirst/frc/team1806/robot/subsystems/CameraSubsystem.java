@@ -18,7 +18,7 @@ public class CameraSubsystem extends Subsystem {
 	UsbCamera cameraAtMoment;
 	public int CAMERA_WIDTH = 320;
 	public int CAMERA_HEIGHT = 240;
-	public int CAMERA_FPS = 25;
+	public int CAMERA_FPS = 30;
 
 	public CameraSubsystem() {
 		

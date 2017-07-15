@@ -83,8 +83,6 @@ public class OI {
 	double olsY, orsY, oRT, oLT;
 	boolean oA, oB, oX, oY, oRB, oLB, oStart, oBack, oRsClick;
 	public boolean oPOVUp, oPOVDown;
-	public static boolean isInverse = false;
-	double maxCurrent = 0;
 	Commands requestCommands = new Commands();
 	
 	public Latch intakeLatch = new Latch();
@@ -100,6 +98,7 @@ public class OI {
 	CommandLatch cameraLatch = new CommandLatch();
 	CommandLatch proxLatch = new CommandLatch();
 	public boolean seizureBoolean = false;
+	public static boolean isInverse = false;
 	public void update(){
 		updateButtons();
 		updateStates();
@@ -143,9 +142,9 @@ public class OI {
 		}
 	}
 	public void updateStates(){
-		System.out.println(prox.get());
+		//System.out.println(prox.get());
 		if(proxLatch.update(prox.get())){
-			new VibrateForSeconds(2).start();
+			new VibrateForSeconds(2, 1).start();
 		}
 		
 		if(cameraLatch.update(dc.getPOV() == 0)){
@@ -242,7 +241,7 @@ public class OI {
 		if(requestCommands.climberRequestTracker == ClimberRequest.RUNNINGATSPEED){
 			new RunClimberAtSpeed(oLT).start();
 		} else if(oA){
-			new RunClimberAtSpeed(.35).start(); //TODO: Change this back
+			new RunClimberAtSpeed(.35).start(); 
 		} else if(oX){
 			new RunClimberAtSpeed(.15).start();
 		}else {
@@ -303,9 +302,9 @@ public class OI {
 			oPOVDown = oc.getPOVDown();
 
 		}
-	public void setDriverRumble(){
-		dc.setRumble(RumbleType.kLeftRumble, 1);
-		dc.setRumble(RumbleType.kRightRumble, 1);
+	public void setDriverRumble(double value){
+		dc.setRumble(RumbleType.kLeftRumble, value);
+		dc.setRumble(RumbleType.kRightRumble, value);
 		//egg head vibrator
 	}
 	public void setOperatorRumble(){

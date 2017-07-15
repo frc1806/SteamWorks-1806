@@ -33,7 +33,7 @@ public class TurnToAngle extends Command {
     Timer timeOutTaker;
     
     public TurnToAngle(double angle, double power, double timeout) {
-    	Robot.driveSS.navx.zeroYaw();
+    	Robot.driveSS.navx.reset();
        	if(angle > 0) {
     		//turning clockwise
     		isClockwise = true;
@@ -54,14 +54,10 @@ public class TurnToAngle extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.driveSS.navx.zeroYaw();
+    	Robot.driveSS.navx.reset();
     	timeOutTaker.start();
     	leftPower = motorBaseSpeed;
        	rightPower = motorBaseSpeed;
-    	
-    	
-    	
-
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -109,9 +105,9 @@ public class TurnToAngle extends Command {
 				rightPower = Pout ;
 			}
 */
-    		System.out.println("error: " + error);
-			System.out.println("current : " + currentPos);
-			System.out.println("targetAngle: " + targetAngle);
+    		System.out.println("EX: error: " + error);
+			System.out.println("EX: current : " + currentPos);
+			System.out.println("EX: targetAngle: " + targetAngle);
     		
     		Robot.driveSS.leftDrive(-leftPower);
         	Robot.driveSS.rightDrive(rightPower);
@@ -122,6 +118,9 @@ public class TurnToAngle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+		System.out.println("FIN: error: " + error);
+		System.out.println("FIN: current : " + currentPos);
+		System.out.println("FIN: targetAngle: " + targetAngle);
         return (error < 2) || timeOutTaker.get() > timeoutTaker;
     }
 
