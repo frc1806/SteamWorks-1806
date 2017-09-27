@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1806.robot.commands.auto.blue;
 
 import org.usfirst.frc.team1806.robot.Robot;
-import org.usfirst.frc.team1806.robot.commands.SetToLift;
 import org.usfirst.frc.team1806.robot.commands.Wait;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StartConveyor;
 import org.usfirst.frc.team1806.robot.commands.conveyor.StopConveyor;

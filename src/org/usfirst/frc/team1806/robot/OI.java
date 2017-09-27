@@ -148,7 +148,6 @@ public class OI {
 		}
 		
 		if(cameraLatch.update(dc.getPOV() == 0)){
-			Robot.cameraSS.update();
 		}
 		if(shifterLatch.update(dLB)){
 			requestCommands.shiferRequestTracker = ShifterRequest.HIGH;

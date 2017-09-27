@@ -128,6 +128,7 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightMotor1.set(speed);
 	}
 	public void arcadeDrive(double power, double turn){
+		System.out.println("Power: " + power + " Turn:  "+ turn);
 		leftDrive(power + turn); //verify signs
 		rightDrive(power - turn);
 	}

@@ -25,6 +25,7 @@ import org.usfirst.frc.team1806.robot.States.GearHolder;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.Wait;
+import org.usfirst.frc.team1806.robot.commands.auto.SimpleRight;
 import org.usfirst.frc.team1806.robot.commands.auto.blue.BoilerToGear;
 import org.usfirst.frc.team1806.robot.commands.auto.red.ActualPoof;
 import org.usfirst.frc.team1806.robot.commands.auto.red.BoilerToCenter;
@@ -89,7 +90,6 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 	SendableChooser chooser = new SendableChooser<>();
 	Compressor c = new Compressor();
-	public static CameraSubsystem cameraSS;
 	public static Timer matchTimer = new Timer();
 	DataLogger logger;
 
@@ -101,7 +101,6 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		pdPowerDistributionPanel = new PowerDistributionPanel();
 		states = new States();
-		cameraSS = new CameraSubsystem();
 		climberSS = new ClimberSubsystem();
 		driveSS = new DrivetrainSubsystem();
 		flywheelSS = new FlywheelSubsystem();
@@ -136,11 +135,12 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Blue: EXPERIMENTAL Boiler + Left Side", new org.usfirst.frc.team1806.robot.commands.auto.blue.BoilerToLeft());
 		///
 		chooser.addObject("Red Poof", new Poof());
+		chooser.addObject("MOTION SIMPLE RIGHT", new SimpleRight());
 		chooser.addObject("Red NEW Poof", new ActualPoof());
 		chooser.addObject("Blue Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.Poof());
 		chooser.addObject("Blue NEW Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.ActualPoof());
 		SmartDashboard.putData("Chooser", chooser);
-		Robot.cameraSS.init();
+		//Robot.cameraSS.init();
 		Robot.driveSS.navx.reset();
 	}	
 	
@@ -155,7 +155,6 @@ public class Robot extends IterativeRobot {
 	public void disabledInit() {
 		ss.updateValues();
 		oi.stopRumble();
-		cameraSS.reset();
 	}
 
 	@Override
