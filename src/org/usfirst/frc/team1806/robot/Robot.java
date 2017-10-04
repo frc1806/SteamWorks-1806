@@ -225,6 +225,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putDouble("MATCH TIMER!!!!", 135 - matchTimer.get());
 		logger.writeNewTeleopCycle();
 		c.setClosedLoopControl(true);
+		System.out.println("Right: " + driveSS.rightEncoder.get() + "Left: " + driveSS.leftEncoder.get());
 	}
 
 	/**

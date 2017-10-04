@@ -16,6 +16,7 @@ public class SimpleRight extends Command {
 	EncoderFollower left;
 	EncoderFollower right;
 	Trajectory trajectory;
+	TankModifier modifier;
     public SimpleRight() {
         // Use requires() here to declare subsystem dependencies
          //eg. requires(chassis); //
@@ -25,53 +26,44 @@ public class SimpleRight extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	// 3 Waypoints
-    	Waypoint[] points = new Waypoint[] {
-        	new Waypoint(0, 0, 0),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
-    	    new Waypoint(1.778, -2.3622, Pathfinder.d2r(-45)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
+
+    	Waypoint[] points = new Waypoint[]{
+    		    new Waypoint(-5, 10, Pathfinder.d2r(-55)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
+    		    new Waypoint(0, 0, 0)                           // Waypoint @ x=0, y=0,   exit angle=0 radians
     	};
+    	Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2, 60);
+    	trajectory = Pathfinder.generate(points, config);
+    	//.762
+    	TankModifier modifier = new TankModifier(trajectory).modify(0.762);
 
-    	// Create the Trajectory Configuration
-    	//
-    	// Arguments:
-    	// Fit Method:          HERMITE_CUBIC or HERMITE_QUINTIC
-    	// Sample Count:        SAMPLES_HIGH (100 000)
-//    	                      SAMPLES_LOW  (10 000)
-//    	                      SAMPLES_FAST (1 000)
-    	// Time Step:           0.05 Seconds
-    	// Max Velocity:        1.7 m/s
-    	// Max Acceleration:    2.0 m/s/s
-    	// Max Jerk:            60.0 m/s/s/s
-    	Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.3, 2.0, 60.0);
-
-    	// Generate the trajectory
-    	 trajectory = Pathfinder.generate(points, config);
-        TankModifier modifier = new TankModifier(trajectory).modify(.762);
     	left = new EncoderFollower(modifier.getLeftTrajectory());
     	right = new EncoderFollower(modifier.getRightTrajectory());
     	
-    	left.configureEncoder(Robot.driveSS.leftEncoder.get(), 258, 0.0889);
-    	right.configureEncoder(Robot.driveSS.rightEncoder.get(), 258, 0.0889);
+    	left.configureEncoder(Robot.driveSS.leftEncoder.get(), 250, 0.889);
+    	right.configureEncoder(Robot.driveSS.rightEncoder.get(), 250, 0.889);
     	
-    	left.configurePIDVA(.007, 0.0, 0.0, 1 / 1.3, 0);
-    	right.configurePIDVA(0.007, 0.0, 0.0, 1 / 1.3, 0);
-    	Robot.driveSS.navx.reset();
+    	left.configurePIDVA(1, 0, 0, 1/ 1.7, 0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double leftOutput = left.calculate(Robot.driveSS.leftEncoder.get());
-    	double rightOutput = left.calculate(Robot.driveSS.rightEncoder.get());
+    	double l = left.calculate(Robot.driveSS.leftEncoder.get());
+    	double r = right.calculate(Robot.driveSS.rightEncoder.get());
     	
     	double gyroHeading = Robot.driveSS.navx.getAngle();
-    	double desired_heading = left.getHeading();  // Should also be in degrees
+    	double desiredHeading = Pathfinder.r2d(left.getHeading());
     	
-    	double angleDifference = desired_heading - gyroHeading;
-    	double turn = 0.8 * (-1.0/80.0) * angleDifference;
-    	
-    	System.out.println("Desired Angle: "+ desired_heading + "   GyroHeading: " + gyroHeading);
-    	Robot.driveSS.leftDrive(leftOutput + turn);
-    	Robot.driveSS.rightDrive(rightOutput - turn);
+    	double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading - gyroHeading);
+    	double turn = .8 * (-1/80) * angleDifference;
+    	Robot.driveSS.leftDrive(l + turn);
+    	Robot.driveSS.rightDrive(r - turn);
+    	for (int i = 0; i < trajectory.length(); i++) {
+    	    Trajectory.Segment seg = trajectory.get(i);
+    	    
+    	    System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", 
+    	        seg.dt, seg.x, seg.y, seg.position, seg.velocity, 
+    	            seg.acceleration, seg.jerk, seg.heading);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
