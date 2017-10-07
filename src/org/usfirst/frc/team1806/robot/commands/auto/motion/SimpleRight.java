@@ -17,6 +17,17 @@ public class SimpleRight extends Command {
 	EncoderFollower right;
 	Trajectory trajectory;
 	TankModifier modifier;
+	
+	double maxVelocity = 2;				///
+	double maxAcceleration = 2.5;		/// REMEMBER THESE ARE ALL IN METERS
+	double maxJerk = 60;				///	
+	double drivebaseWidth = .762;
+	double wheelDiam = .0889;
+	
+	double kP = 2;
+	double kI = 0;
+	double kD = 0;
+	double accGain = 0;
     public SimpleRight() {
         // Use requires() here to declare subsystem dependencies
          //eg. requires(chassis); //
@@ -28,21 +39,31 @@ public class SimpleRight extends Command {
     protected void initialize() {
 
     	Waypoint[] points = new Waypoint[]{
-    		    new Waypoint(-5, 10, Pathfinder.d2r(-55)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
-    		    new Waypoint(0, 0, 0)                           // Waypoint @ x=0, y=0,   exit angle=0 radians
+    		    new Waypoint(0, 0 ,0),     // This is the start out waypoint 
+    		    new Waypoint(5, 0, 0)	// 5m forward
     	};
-    	Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2, 60);
+    	Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, maxVelocity, maxAcceleration, maxJerk);
     	trajectory = Pathfinder.generate(points, config);
     	//.762
-    	TankModifier modifier = new TankModifier(trajectory).modify(0.762);
+    	TankModifier modifier = new TankModifier(trajectory).modify(drivebaseWidth);
 
+    	// This 
     	left = new EncoderFollower(modifier.getLeftTrajectory());
     	right = new EncoderFollower(modifier.getRightTrajectory());
     	
-    	left.configureEncoder(Robot.driveSS.leftEncoder.get(), 250, 0.889);
-    	right.configureEncoder(Robot.driveSS.rightEncoder.get(), 250, 0.889);
+    	// Configure encoders (Base Value, Encoder Clicks Per Rotation of Wheel, 
+    	left.configureEncoder(Robot.driveSS.leftEncoder.get(), 250, wheelDiam);
+    	right.configureEncoder(Robot.driveSS.rightEncoder.get(), 250, wheelDiam);
     	
-    	left.configurePIDVA(1, 0, 0, 1/ 1.7, 0);
+    	// Configuring our PID for both of our encoders
+    	// The first argument is the proportional gain. Usually this will be quite high
+    	// The second argument is the integral gain. This is unused for motion profiling
+    	// The third argument is the derivative gain. Tweak this if you are unhappy with the tracking of the trajectory
+    	// The fourth argument is the velocity ratio. This is 1 over the maximum velocity you provided in the 
+    	//trajectory configuration (it translates m/s to a -1 to 1 scale that your motors can read)
+    	// The fifth argument is your acceleration gain. Tweak this if you want to get to a higher or lower speed quicker
+    	left.configurePIDVA(kP, kI, kD, 1/ maxVelocity, accGain);
+    	right.configurePIDVA(kP, kI, kD, 1/ maxVelocity, accGain);
     }
 
     // Called repeatedly when this Command is scheduled to run
