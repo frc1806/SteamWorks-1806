@@ -25,6 +25,7 @@ import org.usfirst.frc.team1806.robot.States.GearHolder;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.Wait;
+import org.usfirst.frc.team1806.robot.commands.auto.SimpleLeft;
 import org.usfirst.frc.team1806.robot.commands.auto.SimpleRight;
 import org.usfirst.frc.team1806.robot.commands.auto.blue.BoilerToGear;
 import org.usfirst.frc.team1806.robot.commands.auto.red.ActualPoof;
@@ -136,6 +137,7 @@ public class Robot extends IterativeRobot {
 		///
 		chooser.addObject("Red Poof", new Poof());
 		chooser.addObject("MOTION SIMPLE RIGHT", new SimpleRight());
+		chooser.addObject("MOTION SIMPLE LEFT", new SimpleLeft());
 		chooser.addObject("Red NEW Poof", new ActualPoof());
 		chooser.addObject("Blue Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.Poof());
 		chooser.addObject("Blue NEW Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.ActualPoof());

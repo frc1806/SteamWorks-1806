@@ -13,7 +13,7 @@ import jaci.pathfinder.modifiers.TankModifier;
 /**
  *
  */
-public class SimpleRight extends Command {
+public class SimpleLeft extends Command {
 	EncoderFollower left;
 	EncoderFollower right;
 	Trajectory trajectory;
@@ -34,7 +34,7 @@ public class SimpleRight extends Command {
 	double l;
 	double r;
 	
-    public SimpleRight() {
+    public SimpleLeft() {
         // Use requires() here to declare subsystem dependencies
          //eg. requires(chassis); //
     	requires(Robot.driveSS);
@@ -48,7 +48,7 @@ public class SimpleRight extends Command {
     	timer.start();
     	Waypoint[] points = new Waypoint[]{
     		    new Waypoint(0, 0 ,0),     // This is the start out waypoint 
-    		    new Waypoint(2.17, .2, 45)	// 5m forward
+    		    new Waypoint(2.17, -.2, -45)	// 5m forward
     	};
     	Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, maxVelocity, maxAcceleration, maxJerk);
     	trajectory = Pathfinder.generate(points, config);

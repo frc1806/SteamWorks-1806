@@ -5,6 +5,7 @@ import java.util.function.ObjDoubleConsumer;
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.commands.sequences.Shimmy;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -26,6 +27,7 @@ public class VisionDriveStraight extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+
     	Robot.driveSS.leftEncoder.reset();
     	Robot.driveSS.rightEncoder.reset();
     	Robot.driveSS.isVision = true;
@@ -34,6 +36,7 @@ public class VisionDriveStraight extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	currentAngle = Robot.driveSS.getVisionAngle();
+
     	if(Math.abs(currentAngle) > 5){
     		System.out.println(currentAngle);
     		if(Math.signum(currentAngle) == 1){
