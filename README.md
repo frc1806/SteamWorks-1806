@@ -7,6 +7,7 @@ http://smithvillehighrobotics.com/
 * Autonomously target and shoot balls into the goal
 * Autonomously target lift and place a gear on it
 * Can start in numerous positions
+* Motion Profiled Autos
 ### Teleop
 * Pick up gear from floor
 * Target lift and place gear
