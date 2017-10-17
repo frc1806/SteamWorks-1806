@@ -67,7 +67,6 @@ import org.usfirst.frc.team1806.robot.commands.sequences.Shimmy;
  */
 
 public class OI {
-	int bits;
 	SmartDashboardUpdater smartDashboardUpdater = new SmartDashboardUpdater();
 	// controller init
 	Constants constants = new Constants();
@@ -98,12 +97,15 @@ public class OI {
 	CommandLatch cameraLatch = new CommandLatch();
 	CommandLatch proxLatch = new CommandLatch();
 	public boolean seizureBoolean = false;
+	public boolean isSeeing = false;
 	public static boolean isInverse = false;
 	public void update(){
 		updateButtons();
 		updateStates();
 		updateCommands();
-		
+		if(Robot.driveSS.getVisionAngle() < 10 && Robot.driveSS.getVisionAngle() > -10){
+			isSeeing = true;
+		}
 		if(requestCommands.drivingRequestTracker == DrivingRequest.DRIVING){
 			new Drive().start(); //make the dude drive a wee bit
 			Robot.driveSS.isSeizureMode = false;
@@ -187,6 +189,7 @@ public class OI {
 		} else if(inverseLatch.update(dX)){
 			requestCommands.drivingRequestTracker = DrivingRequest.INVERSE;
 		} else {
+			Robot.led.defaultState();
 			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;
 		}		
 		//-------------------- OPERATOR ---------------------------//
@@ -214,10 +217,11 @@ public class OI {
 		}
 	}
 	public void updateCommands(){
-
+		if(isSeeing){
+			Robot.led.flashColor(255, 0, 0, 0, 0, 0);
+		}
 		//This will be where the commands actually execute from the states
 		if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.RUNNING){
-				//TODO Fix this
 				Robot.flywheelSS.setShooterRPM(constants.camCoder);
 		} else if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.STOPPED) {
 			new StopFlywheel().start();
@@ -239,9 +243,12 @@ public class OI {
 		
 		if(requestCommands.climberRequestTracker == ClimberRequest.RUNNINGATSPEED){
 			new RunClimberAtSpeed(oLT).start();
+			Robot.led.rainbowFade();
 		} else if(oA){
+			Robot.led.rainbowFade();
 			new RunClimberAtSpeed(.35).start(); 
 		} else if(oX){
+			Robot.led.rainbowFade();
 			new RunClimberAtSpeed(.15).start();
 		}else {
 			new StopClimber().start();

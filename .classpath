@@ -11,5 +11,10 @@
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
 	<classpathentry kind="lib" path="C:/Users/SWAT/wpilib/user/java/lib/Pathfinder-Java.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/Pathfinder-Java.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/mindsensors-javadoc.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/mindsensors.jar"/>
+	<classpathentry kind="var" path="SWATLed"/>
+	<classpathentry kind="src" path="/SWATLight"/>
+	<classpathentry kind="lib" path="/SWATLight/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

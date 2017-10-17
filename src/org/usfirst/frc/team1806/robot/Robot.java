@@ -5,6 +5,7 @@ import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Sendable;
@@ -25,6 +26,7 @@ import org.usfirst.frc.team1806.robot.States.GearHolder;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.Wait;
+import org.usfirst.frc.team1806.robot.commands.auto.RedShoot;
 import org.usfirst.frc.team1806.robot.commands.auto.SimpleLeft;
 import org.usfirst.frc.team1806.robot.commands.auto.SimpleRight;
 import org.usfirst.frc.team1806.robot.commands.auto.blue.BoilerToGear;
@@ -74,6 +76,7 @@ import org.usfirst.frc.team1806.robot.subsystems.IntakeSubsystem;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	public static SWATLED led;
 	public static SmartDashboardUpdater ss;
 	public static DrivetrainSubsystem driveSS;
 	public static FlywheelSubsystem flywheelSS;
@@ -111,7 +114,7 @@ public class Robot extends IterativeRobot {
 		states.resetStates();
 		ss = new SmartDashboardUpdater();
 		oi = new OI();
-		
+		led = new SWATLED(3, DriverStation.getInstance().getAlliance());
 		boilerTable = NetworkTable.getTable("BoilerTracker");
 		networkTable = NetworkTable.getTable("LiftTracker");
 		Robot.driveSS.navx.reset();
@@ -138,6 +141,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Red Poof", new Poof());
 		chooser.addObject("MOTION SIMPLE RIGHT", new SimpleRight());
 		chooser.addObject("MOTION SIMPLE LEFT", new SimpleLeft());
+		chooser.addObject("MOTION SIMPLE Shoot", new RedShoot());
 		chooser.addObject("Red NEW Poof", new ActualPoof());
 		chooser.addObject("Blue Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.Poof());
 		chooser.addObject("Blue NEW Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.ActualPoof());
@@ -223,11 +227,9 @@ public class Robot extends IterativeRobot {
 		ss.updateValues();
 		Scheduler.getInstance().run();
 		oi.update();
-		System.out.println(Robot.flywheelSS.flyWheel.getSpeed());
 		SmartDashboard.putDouble("MATCH TIMER!!!!", 135 - matchTimer.get());
 		logger.writeNewTeleopCycle();
 		c.setClosedLoopControl(true);
-		System.out.println("Right: " + driveSS.rightEncoder.get() + "Left: " + driveSS.leftEncoder.get());
 	}
 
 	/**
