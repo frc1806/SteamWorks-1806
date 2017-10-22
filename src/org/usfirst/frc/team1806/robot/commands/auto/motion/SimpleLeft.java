@@ -39,13 +39,6 @@ public class SimpleLeft extends Command {
          //eg. requires(chassis); //
     	requires(Robot.driveSS);
     	timer = new Timer();
-
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	timer.reset();
-    	timer.start();
     	Waypoint[] points = new Waypoint[]{
     		    new Waypoint(0, 0 ,0),     // This is the start out waypoint 
     		    new Waypoint(2.17, -.2, -45)	// 5m forward
@@ -72,6 +65,14 @@ public class SimpleLeft extends Command {
     	// The fifth argument is your acceleration gain. Tweak this if you want to get to a higher or lower speed quicker
     	left.configurePIDVA(kP, kI, kD, 1/ maxVelocity, accGain);
     	right.configurePIDVA(kP, kI, kD, 1/ maxVelocity, accGain);
+
+    }
+
+    // Called just before this Command runs the first time
+    protected void initialize() {
+    	timer.reset();
+    	timer.start();
+
     }
 
     // Called repeatedly when this Command is scheduled to run
