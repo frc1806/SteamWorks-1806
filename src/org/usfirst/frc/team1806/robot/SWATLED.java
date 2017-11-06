@@ -31,17 +31,17 @@ public class SWATLED {
 		light.cycle(0, 1);
 	}
 	public void defaultState() {
-		teamColor();
+		showColor(255,255,0);
 	}
-	public void teamColor(){
-		if (ds.getAlliance() == DriverStation.Alliance.Red) {
-			light.showRGB(255, 0, 0);
-        } else if (ds.getAlliance() == DriverStation.Alliance.Blue) {
-        	light.showRGB(0, 0, 255);
-        } else if (ds.getAlliance() == DriverStation.Alliance.Invalid) {
-        	light.showRGB(255, 200, 0); // yellow
-        }
-	}
+//	public void teamColor(){
+//		if (ds.getAlliance() == DriverStation.Alliance.Red) {
+//			light.showRGB(255, 0, 0);
+//        } else if (ds.getAlliance() == DriverStation.Alliance.Blue) {
+//        	light.showRGB(0, 0, 255);
+//        } else if (ds.getAlliance() == DriverStation.Alliance.Invalid) {
+//        	light.showRGB(255, 200, 0); // yellow
+//        }
+//	}
 	public void rainbowFade(){
 		light.free();
 		light.writeRegister(0, .2, 255,0,0);

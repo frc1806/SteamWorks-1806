@@ -16,5 +16,6 @@
 	<classpathentry kind="var" path="SWATLed"/>
 	<classpathentry kind="src" path="/SWATLight"/>
 	<classpathentry kind="lib" path="/SWATLight/src"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/SWATLed.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

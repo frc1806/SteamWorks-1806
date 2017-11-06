@@ -86,6 +86,7 @@ public class Robot extends IterativeRobot {
 	public static GearHolderSubsystem gearSS;
 	public static NetworkTable networkTable;
 	public static NetworkTable boilerTable;
+	public static CameraSubsystem cameraSS;
 	public static OI oi;
 	public static PowerDistributionPanel pdPowerDistributionPanel;
 	public static States states;
@@ -111,10 +112,12 @@ public class Robot extends IterativeRobot {
 		hopperSS = new HopperSubsystem();
 		intakeSS = new IntakeSubsystem();
 		gearSS = new GearHolderSubsystem();
+		cameraSS = new CameraSubsystem();
+		cameraSS.init();
 		states.resetStates();
 		ss = new SmartDashboardUpdater();
 		oi = new OI();
-		led = new SWATLED(3, DriverStation.getInstance().getAlliance());
+//		led = new SWATLED(1, DriverStation.getInstance().getAlliance());
 		boilerTable = NetworkTable.getTable("BoilerTracker");
 		networkTable = NetworkTable.getTable("LiftTracker");
 		Robot.driveSS.navx.reset();

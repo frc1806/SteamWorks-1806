@@ -39,9 +39,15 @@ public class SimpleRight extends Command {
          //eg. requires(chassis); //
     	requires(Robot.driveSS);
     	timer = new Timer();
+    }
+
+    // Called just before this Command runs the first time
+    protected void initialize() {
+    	timer.reset();
+    	timer.start();
     	Waypoint[] points = new Waypoint[]{
     		    new Waypoint(0, 0 ,0),     // This is the start out waypoint 
-    		    new Waypoint(2.17, .2, 45)	// 5m forward
+    		    new Waypoint(2.2, .16, 45)	// 5m forward
     	};
     	Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, maxVelocity, maxAcceleration, maxJerk);
     	trajectory = Pathfinder.generate(points, config);
@@ -67,13 +73,6 @@ public class SimpleRight extends Command {
     	right.configurePIDVA(kP, kI, kD, 1/ maxVelocity, accGain);
     }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	timer.reset();
-    	timer.start();
-
-    }
-
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	 l = left.calculate(Robot.driveSS.leftEncoder.get());
@@ -89,16 +88,17 @@ public class SimpleRight extends Command {
     	for (int i = 0; i < trajectory.length(); i++) {
     	    Trajectory.Segment seg = trajectory.get(i);
     	    
-    	    System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", 
-    	        seg.dt, seg.x, seg.y, seg.position, seg.velocity, 
-    	            seg.acceleration, seg.jerk, seg.heading);
+    	    System.out.println("X: " + seg.y);
+    	    System.out.println("Y: " + seg.x);
+    	    Robot.networkTable.putValue("segX", seg.y); //Y IS X X IS Y
+    	    Robot.networkTable.putValue("segY", seg.x);
     	}
-    	System.out.println(l + " " + r);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(r) <= .1 && Math.abs(l) <= .1 && timer.get() > 2;
+        return Math.abs(r) <= .1
+        		&& Math.abs(l) <= .1 && timer.get() > 2;
     }
 
     // Called once after isFinished returns true

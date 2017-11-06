@@ -82,7 +82,7 @@ public class OI {
 	double olsY, orsY, oRT, oLT;
 	boolean oA, oB, oX, oY, oRB, oLB, oStart, oBack, oRsClick;
 	public boolean oPOVUp, oPOVDown;
-	Commands requestCommands = new Commands();
+	public Commands requestCommands = new Commands();
 	
 	public Latch intakeLatch = new Latch();
 	public Latch conveyorLatch = new Latch();
@@ -125,7 +125,7 @@ public class OI {
 			} 
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dY){
 			if(!Robot.driveSS.isVision){
-				new VisionTeleOp(.3, Robot.driveSS.getVisionAngle(), 36).start();
+				new VisionTeleOp(.45, Robot.driveSS.getVisionAngle(), 36).start();
 			}
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRClick){
 				if(!Robot.driveSS.isVision){
@@ -189,7 +189,7 @@ public class OI {
 		} else if(inverseLatch.update(dX)){
 			requestCommands.drivingRequestTracker = DrivingRequest.INVERSE;
 		} else {
-			Robot.led.defaultState();
+//			Robot.led.defaultState();
 			requestCommands.drivingRequestTracker = DrivingRequest.DRIVING;
 		}		
 		//-------------------- OPERATOR ---------------------------//
@@ -218,7 +218,7 @@ public class OI {
 	}
 	public void updateCommands(){
 		if(isSeeing){
-			Robot.led.flashColor(255, 0, 0, 0, 0, 0);
+//			Robot.led.flashColor(255, 0, 0, 0, 0, 0);
 		}
 		//This will be where the commands actually execute from the states
 		if(requestCommands.shootSpeedRequestTracker == ShootSpeedRequest.RUNNING){
@@ -243,12 +243,12 @@ public class OI {
 		
 		if(requestCommands.climberRequestTracker == ClimberRequest.RUNNINGATSPEED){
 			new RunClimberAtSpeed(oLT).start();
-			Robot.led.rainbowFade();
+//			Robot.led.rainbowFade();
 		} else if(oA){
-			Robot.led.rainbowFade();
+//			Robot.led.rainbowFade();
 			new RunClimberAtSpeed(.35).start(); 
 		} else if(oX){
-			Robot.led.rainbowFade();
+//			Robot.led.rainbowFade();
 			new RunClimberAtSpeed(.15).start();
 		}else {
 			new StopClimber().start();

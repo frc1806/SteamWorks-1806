@@ -39,9 +39,9 @@ public class BoilerToGear extends CommandGroup {
 		addSequential(new RectractGear());
 		addSequential(new TurnToAngle(64, .75, 2));
 		addSequential(new DriveToPosition(75, 1, 0 , 1.5));
-		addSequential(new TurnToAngle(40, .75, 2.5));
+		addSequential(new TurnToAngle(70, .75, 2.5));
 		addSequential(new VisionTurnToAngle(.5));
-		addSequential(new VisionDriveStraight(.27, Robot.driveSS.getVisionAngle(), 30)); //13
+		addSequential(new VisionDriveStraight(.27, Robot.driveSS.getVisionAngle(), 37)); //13
 		addSequential(new Shimmy());
 		addSequential(new Wait(1));
 		addSequential(new RunDrive(-.3, 0, .6));

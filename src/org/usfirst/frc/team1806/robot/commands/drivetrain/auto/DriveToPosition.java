@@ -47,14 +47,14 @@ public class DriveToPosition extends Command {
     	if(error < pThreshold){
     		if(turn == 0){
     			System.out.println("gyro");
-        		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .009);
+        		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .01);
     		} else {
     			System.out.println("turn");
         		Robot.driveSS.autoArcadeDrive(desiredPower, turn);
     		}    	} else {
     		if(turn == 0){
     			System.out.println("gyro");
-        		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .009);
+        		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .01);
     		} else {
     			System.out.println("turn");
         		Robot.driveSS.autoArcadeDrive(desiredPower, turn);

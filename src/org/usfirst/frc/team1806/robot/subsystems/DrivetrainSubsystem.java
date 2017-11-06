@@ -128,13 +128,12 @@ public class DrivetrainSubsystem extends Subsystem {
 		rightMotor1.set(speed);
 	}
 	public void arcadeDrive(double power, double turn){
-		System.out.println("Power: " + power + " Turn:  "+ turn);
 		leftDrive(power + turn); //verify signs
 		rightDrive(power - turn);
 	}
 	public void autoArcadeDrive(double power, double turn){
-		leftDrive(power + turn); //verify signs
-		rightDrive((power * 1.04) - turn);
+		leftDrive((power ) + turn); //verify signs
+		rightDrive((power) - turn);
 	}
 	public void shiftHigh(){
 		Robot.states.shifterTracker = Shifter.HIGH;

@@ -16,6 +16,7 @@ public class VisionDriveStraight extends Command {
 	double desiredPower;
 	double currentAngle;
 	double desiredDistance;
+	double time;
     public VisionDriveStraight(double power, double vision, int distance) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -40,16 +41,18 @@ public class VisionDriveStraight extends Command {
     	if(Math.abs(currentAngle) > 5){
     		System.out.println(currentAngle);
     		if(Math.signum(currentAngle) == 1){
-    			Robot.driveSS.leftDrive(desiredPower + (currentAngle * .022));
+    			Robot.driveSS.leftDrive(desiredPower + (currentAngle * .032));
     			System.out.println("is it positive");
     			Robot.driveSS.rightDrive(desiredPower);
     		} else {
     			Robot.driveSS.leftDrive(desiredPower);
     			System.out.println("is negative");
-    			Robot.driveSS.rightDrive(desiredPower+ (-currentAngle * .022));
+    			Robot.driveSS.rightDrive(desiredPower+ (-currentAngle * .032));
     		}
     	}else if (Robot.driveSS.getVisionAngle() == 0.0){
-    		System.out.println("oh shoot i cant see it");
+    		//System.out.println("oh shoot i cant see it");
+    		Robot.driveSS.arcadeDrive(.2, 0);
+
     	} else {
     		Robot.driveSS.arcadeDrive(desiredPower, 0);
     	} 

@@ -29,15 +29,19 @@ public class Drive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
 		if(states.drivingTracker == Driving.DRIVING){
-    		if(Math.abs(Robot.oi.dlsY) > deadZone && Math.abs(Robot.oi.drsX) > deadZone){
+			if(Math.abs(Robot.oi.dlsY) > deadZone && Robot.states.shifterTracker == Shifter.HIGH){
+				double tempPower = Math.pow(Robot.oi.drsX, 2);
+				double power = Math.signum(Robot.oi.drsX);
+	   			Robot.driveSS.execute(Robot.oi.dlsY, power * tempPower);
+	   			System.out.println("HI");
+	    		} else if(Math.abs(Robot.oi.dlsY) > deadZone && Math.abs(Robot.
+	    				oi.drsX) > deadZone){
     			Robot.driveSS.execute(Robot.oi.dlsY, Robot.oi.drsX);
     		}else if(Math.abs(Robot.oi.dlsY) > deadZone){
     			Robot.driveSS.execute(Robot.oi.dlsY, 0);
     		} else if(Math.abs(Robot.oi.drsX) > deadZone){
     			Robot.driveSS.execute(0, Robot.oi.drsX);
-    		} else if(Math.abs(Robot.oi.dlsY) > deadZone && Math.abs(Robot.oi.drsX) > deadZone && Robot.states.shifterTracker == Shifter.HIGH){
-    			Robot.driveSS.execute(Robot.oi.dlsY, Math.pow(Robot.oi.drsX, 2));
-    		} else {
+    		} else  {
     			Robot.driveSS.execute(0, 0);
     		}
 		} 
