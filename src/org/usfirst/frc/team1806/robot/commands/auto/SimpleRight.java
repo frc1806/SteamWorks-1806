@@ -17,13 +17,13 @@ public class SimpleRight extends CommandGroup {
 
     public SimpleRight() {
     	addSequential(new org.usfirst.frc.team1806.robot.commands.auto.motion.SimpleRight());
-		addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 30)); //13
-		addSequential(new Shimmy());
-    	addSequential(new Shimmy());
-		addSequential(new Wait(2));
-		addSequential(new RunDrive(-.3, 0, .7));
-		addSequential(new RunDrive(.3, 0, .7));
-		addSequential(new Shimmy());
+//		addSequential(new VisionDriveStraight(.5, Robot.driveSS.getVisionAngle(), 30)); //13
+//		addSequential(new Shimmy());
+//    	addSequential(new Shimmy());
+//		addSequential(new Wait(2));
+//		addSequential(new RunDrive(-.3, 0, .7));
+//		addSequential(new RunDrive(.3, 0, .7));
+//		addSequential(new Shimmy());
 
     }
 }

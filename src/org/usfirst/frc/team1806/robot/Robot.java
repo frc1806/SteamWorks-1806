@@ -170,6 +170,11 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		oi.update();
+		Robot.driveSS.arcadeDrive(0, 0);
+		Robot.flywheelSS.flyWheel.set(0);
+		Robot.flywheelSS.stopConveyor();
+		Robot.intakeSS.intakeMotor.set(0);
+		Robot.climberSS.climbAtSpeed(0);
 	}
 
 	/**
@@ -215,6 +220,7 @@ public class Robot extends IterativeRobot {
 //		cameraSS.camera0.setExposureAuto();
 //		cameraSS.camera1.setExposureAuto();
 		logger = new DataLogger();
+
 		logger.addTimestamp();
 		Robot.states.resetStates();
 		Robot.driveSS.navx.reset();

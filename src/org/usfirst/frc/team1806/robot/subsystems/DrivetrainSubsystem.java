@@ -194,7 +194,7 @@ public class DrivetrainSubsystem extends Subsystem {
 	    	return Math.sqrt(Math.pow(navx.getPitch(), 2) + Math.pow(navx.getRoll(), 2));
 	    }
 	    public double getVisionAngle(){
-	    	oldAngle = currentAngle;
+	    	oldAngle = currentAngle; 
 	    	currentAngle = Robot.networkTable.getNumber("angleFromGoal", 0);
 	    	return currentAngle;
 	    }

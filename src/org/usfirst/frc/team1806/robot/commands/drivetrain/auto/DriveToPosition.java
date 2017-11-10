@@ -12,7 +12,7 @@ public class DriveToPosition extends Command {
 	double desiredDistance;
 	double desiredPower;
 	double currentDisplacement;
-	int pThreshold = 144;
+	int pThreshold = 100;
 	
 	double stopThreshold = .25;
 	int encoderValue = 24;
@@ -47,14 +47,14 @@ public class DriveToPosition extends Command {
     	if(error < pThreshold){
     		if(turn == 0){
     			System.out.println("gyro");
-        		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .01);
+        		Robot.driveSS.autoArcadeDrive(error * .003 , 0);
     		} else {
     			System.out.println("turn");
         		Robot.driveSS.autoArcadeDrive(desiredPower, turn);
-    		}    	} else {
+    		}    	
+    	} else {
     		if(turn == 0){
-    			System.out.println("gyro");
-        		Robot.driveSS.autoArcadeDrive(desiredPower, -currentAngle * .01);
+        		Robot.driveSS.autoArcadeDrive(desiredPower , -currentAngle * .02);
     		} else {
     			System.out.println("turn");
         		Robot.driveSS.autoArcadeDrive(desiredPower, turn);
@@ -64,7 +64,7 @@ public class DriveToPosition extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(currentDisplacement - desiredDistance) <= 50 || timer.get() > time;
+        return Math.abs(currentDisplacement - desiredDistance) <= 50 ;
     }
 
     // Called once after isFinished returns true
