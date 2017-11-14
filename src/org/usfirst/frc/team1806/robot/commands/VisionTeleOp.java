@@ -3,6 +3,9 @@ package org.usfirst.frc.team1806.robot.commands;
 import java.util.function.ObjDoubleConsumer;
 
 import org.usfirst.frc.team1806.robot.Robot;
+import org.usfirst.frc.team1806.robot.States.Driving;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.ShiftLow;
+import org.usfirst.frc.team1806.robot.commands.drivetrain.shiftHigh;
 import org.usfirst.frc.team1806.robot.commands.drivetrain.auto.TurnToAngle;
 import org.usfirst.frc.team1806.robot.commands.sequences.Shimmy;
 
@@ -34,6 +37,8 @@ public class VisionTeleOp extends Command {
     	Robot.driveSS.rightEncoder.reset();
     	Robot.driveSS.resetNavx();
     	Robot.driveSS.isVision = true;
+//    	Robot.states.drivingTracker = Driving.VISION;
+//    	new ShiftLow().start();
     }
     public double returnPID(double angle) {
     	double maxP = .1;
@@ -86,6 +91,7 @@ public class VisionTeleOp extends Command {
     protected void end() {
     	System.out.println("vision finished ");
     	Robot.driveSS.isVision = false;
+//    	Robot.states.drivingTracker = Driving.DRIVING;
     }
 
     // Called when another command which requires one or more of the same

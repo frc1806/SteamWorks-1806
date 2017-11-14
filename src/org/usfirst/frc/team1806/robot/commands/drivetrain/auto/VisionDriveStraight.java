@@ -37,7 +37,7 @@ public class VisionDriveStraight extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	currentAngle = Robot.driveSS.getVisionAngle();
-
+    	System.out.println(Robot.driveSS.leftEncoder.get());
     	if(Math.abs(currentAngle) > 5){
     		System.out.println(currentAngle);
     		if(Math.signum(currentAngle) == 1){

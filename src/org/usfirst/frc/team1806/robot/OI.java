@@ -125,7 +125,7 @@ public class OI {
 			} 
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dY){
 			if(!Robot.driveSS.isVision){
-				new VisionTeleOp(.45, Robot.driveSS.getVisionAngle(), 36).start();
+				new VisionTeleOp(.3, Robot.driveSS.getVisionAngle(), 36).start();
 			}
 		} else if(requestCommands.drivingRequestTracker == DrivingRequest.VISION && dRClick){
 				if(!Robot.driveSS.isVision){
