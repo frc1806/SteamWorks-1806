@@ -26,6 +26,9 @@ public class SmartDashboardUpdater {
 		SmartDashboard.putInt("Right Encoder: ", Robot.driveSS.rightEncoder.get());
 		SmartDashboard.putBoolean("Is Seizuring: ", Robot.driveSS.isSeizureMode);
 		SmartDashboard.putBoolean("Is Shimmy: ", Robot.driveSS.isShimmy);
+		SmartDashboard.putDouble("Total Amps", Robot.pdPowerDistributionPanel.getTotalCurrent());
+		SmartDashboard.putDouble("Right Side Current", Robot.driveSS.rightMotor1.getTotalAmps());
+		SmartDashboard.putDouble("Left Side Current", Robot.driveSS.leftMotor1.getTotalAmps());
 		SmartDashboard.putBoolean("Is Aimed", Math.abs(Robot.flywheelSS.flyWheel.getSpeed()) < Constants.maxShooterRange && Math.abs(Robot.driveSS.getBoilerAngle()) > Constants.minShooterRange);
 		
 	}

@@ -1,6 +1,10 @@
 package org.usfirst.frc.team1806.robot.subsystems;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 import org.usfirst.frc.team1806.robot.Robot;
 import org.usfirst.frc.team1806.robot.RobotMap;
 import org.usfirst.frc.team1806.robot.States;
@@ -29,9 +33,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class DrivetrainSubsystem extends Subsystem {
-	public Talon rightMotor1;
-	public Talon leftMotor1;
-	Talon leftMotor2;
+	public VoltageLimiter rightMotor1;
+	public VoltageLimiter leftMotor1;
 	public AHRS navx;
 	States states;
 	public DoubleSolenoid shifter;
@@ -48,9 +51,21 @@ public class DrivetrainSubsystem extends Subsystem {
 	public double oldAngle = 0;
 	public double currentAngle = 0;
 	public double lastKnownAngle = 0;
+	private HashSet<Integer> rightSidePDP = new HashSet<Integer>() {{
+		add(13);
+		add(14);
+		add(15);
+	}};
+	private HashSet<Integer> leftSidePDP = new HashSet<Integer>() {{
+		add(0);
+		add(1);
+		add(2);
+	}};
 	public DrivetrainSubsystem(){
-		rightMotor1 = new Talon(RobotMap.rightMotor);
-		leftMotor1 = new Talon(RobotMap.leftMotor);
+		rightMotor1 = new VoltageLimiter(RobotMap.rightMotor, rightSidePDP);
+		leftMotor1 = new VoltageLimiter(RobotMap.leftMotor, leftSidePDP);
+		rightMotor1.setMaxAmp(50);
+		leftMotor1.setMaxAmp(50);
 		leftEncoder = new Encoder(0, 1);
 		rightEncoder = new Encoder(2,3);
 		rightEncoder.setReverseDirection(true);
