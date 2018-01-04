@@ -21,11 +21,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.logging.Logger;
 
-
+import org.omg.CORBA.BooleanHolder;
 import org.usfirst.frc.team1806.robot.States.GearHolder;
 import org.usfirst.frc.team1806.robot.States.IntakeStates;
 import org.usfirst.frc.team1806.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1806.robot.commands.Wait;
+import org.usfirst.frc.team1806.robot.commands.auto.AutoTest;
 import org.usfirst.frc.team1806.robot.commands.auto.RedShoot;
 import org.usfirst.frc.team1806.robot.commands.auto.SimpleLeft;
 import org.usfirst.frc.team1806.robot.commands.auto.SimpleRight;
@@ -148,6 +149,8 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Red NEW Poof", new ActualPoof());
 		chooser.addObject("Blue Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.Poof());
 		chooser.addObject("Blue NEW Poof", new org.usfirst.frc.team1806.robot.commands.auto.blue.ActualPoof());
+		
+		chooser.addObject("AutoCloseable TEST BooleanHolder BLAH", new AutoTest());
 		SmartDashboard.putData("Chooser", chooser);
 		//Robot.cameraSS.init();
 		Robot.driveSS.navx.reset();
@@ -170,6 +173,7 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		oi.update();
+		Robot.driveSS.stopDriveToPosition();
 		Robot.driveSS.arcadeDrive(0, 0);
 		Robot.flywheelSS.flyWheel.set(0);
 		Robot.flywheelSS.stopConveyor();
@@ -224,6 +228,7 @@ public class Robot extends IterativeRobot {
 		logger.addTimestamp();
 		Robot.states.resetStates();
 		Robot.driveSS.navx.reset();
+		Robot.driveSS.stopDriveToPosition();
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}

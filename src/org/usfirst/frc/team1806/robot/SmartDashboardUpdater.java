@@ -22,8 +22,8 @@ public class SmartDashboardUpdater {
 		SmartDashboard.putDouble("Current Fly Wheel Set Speed: ", Robot.oi.constants.camCoder);
 		SmartDashboard.putDouble("Current Yaw: ", Robot.driveSS.navx.getYaw());
 		SmartDashboard.putBoolean("Current Connection State ", Robot.driveSS.navx.isConnected());
-		SmartDashboard.putInt("Left Encoder: ", Robot.driveSS.leftEncoder.get());
-		SmartDashboard.putInt("Right Encoder: ", Robot.driveSS.rightEncoder.get());
+		SmartDashboard.putDouble("Left Encoder: ", Robot.driveSS.leftEncoder.getDistance());
+		SmartDashboard.putDouble("Right Encoder: ", Robot.driveSS.rightEncoder.getDistance());
 		SmartDashboard.putBoolean("Is Seizuring: ", Robot.driveSS.isSeizureMode);
 		SmartDashboard.putBoolean("Is Shimmy: ", Robot.driveSS.isShimmy);
 		SmartDashboard.putDouble("Total Amps", Robot.pdPowerDistributionPanel.getTotalCurrent());

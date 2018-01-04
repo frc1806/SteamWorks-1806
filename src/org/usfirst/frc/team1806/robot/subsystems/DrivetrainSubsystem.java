@@ -64,19 +64,18 @@ public class DrivetrainSubsystem extends Subsystem {
 	public DrivetrainSubsystem(){
 		rightMotor1 = new VoltageLimiter(RobotMap.rightMotor, rightSidePDP);
 		leftMotor1 = new VoltageLimiter(RobotMap.leftMotor, leftSidePDP);
-		rightMotor1.setMaxAmp(50);
-		leftMotor1.setMaxAmp(50);
+		rightMotor1.setMaxAmp(200);
+		leftMotor1.setMaxAmp(200);
 		leftEncoder = new Encoder(0, 1);
 		rightEncoder = new Encoder(2,3);
 		rightEncoder.setReverseDirection(true);
 		leftMotor1.setInverted(true);
 		rightEncoder.reset();
 		leftEncoder.reset();
-		leftEncoder.setDistancePerPulse(24);
-		rightEncoder.setDistancePerPulse(24); //TODO Fix these values
+		leftEncoder.setDistancePerPulse((3.5 * Math.PI) / 256);
+		rightEncoder.setDistancePerPulse((3.5 * Math.PI) / 256); //TODO Fix these values
 		navx = new AHRS(SPI.Port.kMXP);
 		shifter = new DoubleSolenoid(RobotMap.shiftLow, RobotMap.shiftHigh);
-
 		
 		drivePS = new PIDSource() {
 			
@@ -85,11 +84,10 @@ public class DrivetrainSubsystem extends Subsystem {
 				// TODO Auto-generated method stub
 				setPIDSourceType(PIDSourceType.kDisplacement);
 			}
-			
 			@Override
 			public double pidGet() {
 				// TODO use two 
-				return Robot.driveSS.rightEncoder.getDistance();
+				return (Robot.driveSS.rightEncoder.getDistance() + Robot.driveSS.leftEncoder.getDistance()) / 2;
 			}
 			
 			@Override
@@ -98,39 +96,41 @@ public class DrivetrainSubsystem extends Subsystem {
 				return PIDSourceType.kDisplacement;
 			}
 		};
+
 		drivePO = new PIDOutput() {
 			
 			@Override
 			public void pidWrite(double output) {
 				// TODO Auto-generated method stub
-				if(Math.abs(output) > maxSpeed){
-					output = maxSpeed * Math.signum(output);
-				}
-				execute(output, getYaw() * .05);
+				execute(output, getYaw() * -.05);
 			}
 		};
-		drivePos = new PIDController(.03, 0, 0, drivePS, drivePO);
+		drivePos = new PIDController(.0353, 0, 0.1, drivePS, drivePO);
 		drivePos.setContinuous(false);
 		drivePos.setOutputRange(-1, 1);
-		drivePos.setAbsoluteTolerance(48);
+		drivePos.setAbsoluteTolerance(.5);
 	}
+
+
 	
-	
-	
-	
-	public void driveToPositionDisable(){
-		drivePos.reset();
+	public void stopDriveToPosition(){
 		drivePos.disable();
-	}
-	public void driveToPositionEnable(){
+		execute(0, 0);
 		drivePos.reset();
+	}
+	public void startDriveToPosition(double position){
+		drivePos.reset();
+		leftEncoder.reset();
+		rightEncoder.reset();
+		navx.reset();
+		driveToSetpoint(position);
 		drivePos.enable();
 	}
 	public void driveToSetpoint(double pos){
 		drivePos.setSetpoint(pos);
 	}
 	public boolean isDriveOnTarget(){
-		return Math.abs(drivePos.getError()) < 48;
+		return drivePos.onTarget();
 	}
 
 	public void execute(double power, double turn){
